@@ -1,69 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="SpaceGame_OLD">
-      <UniqueIdentifier>{d90fdc94-4244-42df-a303-ad101975b3f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{fc9a38db-10da-4546-aa13-e8aa0822c3f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\PlatformerGame">
-      <UniqueIdentifier>{6d62ca1b-ede0-4eab-a1b8-dec102da55c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\PlatformerGame\Scene">
-      <UniqueIdentifier>{bdb95d8b-35a0-4295-90dd-fac2f82d8fff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PlatformerGame">
-      <UniqueIdentifier>{d28afd6a-77e9-43cd-b8f2-680211f96829}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SpaceGame_OLD\Bullet.cpp">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame_OLD\Marker.cpp">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame_OLD\Ship3D.cpp">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="PlatformerGame\PlayerController.cpp">
-      <Filter>PlatformerGame</Filter>
-    </ClCompile>
-    <ClCompile Include="PlatformerGame\Platfrom.cpp">
-      <Filter>PlatformerGame</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SpaceGame_OLD\SpaceGame3D.h">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame_OLD\Assets.h">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame_OLD\Bullet.h">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame_OLD\Marker.h">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame_OLD\Ship3D.h">
-      <Filter>SpaceGame_OLD</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformerGame\PlatformerGame.h">
-      <Filter>PlatformerGame</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformerGame\PlayerController.h">
-      <Filter>PlatformerGame</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformerGame\Platform.h">
-      <Filter>PlatformerGame</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Build\Assets\PlatformerGame\Scenes\Level1.json">
-      <Filter>Assets\PlatformerGame\Scene</Filter>
-    </None>
   </ItemGroup>
 </Project>

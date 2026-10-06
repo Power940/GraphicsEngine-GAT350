@@ -172,29 +172,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PlatformerGame\Platfrom.cpp" />
-    <ClCompile Include="PlatformerGame\PlayerController.cpp" />
-    <ClCompile Include="SpaceGame_OLD\Bullet.cpp" />
-    <ClCompile Include="SpaceGame_OLD\Marker.cpp" />
-    <ClCompile Include="SpaceGame_OLD\Ship3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{10f6bc58-e24a-47dd-80c3-48b392a9864e}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="PlatformerGame\Platform.h" />
-    <ClInclude Include="PlatformerGame\PlatformerGame.h" />
-    <ClInclude Include="PlatformerGame\PlayerController.h" />
-    <ClInclude Include="SpaceGame_OLD\Assets.h" />
-    <ClInclude Include="SpaceGame_OLD\Bullet.h" />
-    <ClInclude Include="SpaceGame_OLD\Marker.h" />
-    <ClInclude Include="SpaceGame_OLD\Ship3D.h" />
-    <ClInclude Include="SpaceGame_OLD\SpaceGame3D.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Build\Assets\PlatformerGame\Scenes\Level1.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

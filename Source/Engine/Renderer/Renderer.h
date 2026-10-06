@@ -14,6 +14,11 @@ namespace STR_FALL
 	private:
 		SDL_Window* m_window = nullptr;
 		SDL_Renderer* m_renderer = nullptr;
+
+		SDL_GPUDevice* m_GPUDevice = nullptr;
+		SDL_GPUCommandBuffer* m_GPUCommandBuffer = nullptr;
+		SDL_GPURenderPass* m_GPURenderPass = nullptr;
+
 		Color* m_lastSetColor = nullptr;
 		Camera3D* m_cam = &(Camera3D::Empty);
 
@@ -35,6 +40,9 @@ namespace STR_FALL
 		void ClearF(float r = 0, float g = 0, float b = 0, float a = 1.0f);
         void Present();
 		void ShutDown();
+
+		bool BeginFrame();
+		bool EndFrame();
 
 		inline int GetSreenWidth() const { return m_WINDOW_WIDTH; }
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }

@@ -15,21 +15,24 @@ namespace STR_FALL
             return false;
         }
 
-        m_renderer = SDL_CreateRenderer(m_window, NULL);
-        if (m_renderer == nullptr) {
-            std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-            SDL_DestroyWindow(m_window);
-            SDL_Quit();
-            return false;
-        }
-
         if (!TTF_Init()) {
             std::cerr << "TTF_Init Error: " << SDL_GetError() << std::endl;
             return false;
         }
 
-        //SDL_SetDefaultTextureScaleMode(m_renderer, SDL_SCALEMODE_PIXELART);
-        SDL_SetRenderVSync(m_renderer, 1);
+        SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
+        m_GPUDevice = SDL_CreateGPUDevice(formats, true, nullptr);
+        if (!m_GPUDevice)
+        {
+            std::cerr << "Failed to create GPU Device: " << SDL_GetError() << std::endl;
+            SDL_DestroyWindow(m_window);
+            SDL_Quit();
+            return false;
+        }
+
+        SDL_ClaimWindowForGPUDevice(m_GPUDevice, m_window);
+        std::cout << "GPU Driver Initialized: " << SDL_GetGPUDeviceDriver(m_GPUDevice) << std::endl;
+
 
         m_lastSetColor = new Color(1.0f, 1.0f, 1.0f);
         m_WINDOW_WIDTH = WINDOW_WIDTH;
@@ -97,6 +100,49 @@ namespace STR_FALL
         delete m_lastSetColor;
         m_lastSetColor = nullptr;
         SDL_Quit();
+    }
+
+    bool Renderer::BeginFrame()
+    {
+        m_GPUCommandBuffer = SDL_AcquireGPUCommandBuffer(m_GPUDevice);
+        if (!m_GPUCommandBuffer)
+        {
+            std::cerr << "Could not acquire command buffer: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+
+        SDL_GPUTexture* swapchainTexture = nullptr;
+        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_GPUCommandBuffer, m_window, &swapchainTexture, nullptr, nullptr))
+        {
+            std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+        if (swapchainTexture != nullptr)
+        {
+            SDL_GPUColorTargetInfo color_target_info{};
+            color_target_info.texture = swapchainTexture;
+            color_target_info.clear_color = SDL_FColor{ 1.0f, 0.0f, 0.0f, 1.0f };
+            color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
+            color_target_info.store_op = SDL_GPU_STOREOP_STORE;
+
+            m_GPURenderPass = SDL_BeginGPURenderPass(m_GPUCommandBuffer, &color_target_info, 1, nullptr);
+            SDL_EndGPURenderPass(m_GPURenderPass);
+        }
+
+        return true;
+    }
+
+    bool Renderer::EndFrame()
+    {
+        if (!SDL_SubmitGPUCommandBuffer(m_GPUCommandBuffer))
+        {
+            std::cerr << "Could not submit command buffer: " << SDL_GetError() << std::endl;
+            return false;
+        }
+
+        return true;
     }
 
     void Renderer::RenderDebugText(const std::string& text, const Vector2& point) const

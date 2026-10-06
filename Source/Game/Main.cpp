@@ -1,13 +1,11 @@
 #include "StarFallEngine.h"
-#include "PlatformerGame/PlatformerGame.h"
+
 #include <memory>
 
 using namespace STR_FALL;
 
 int const WINDOW_WIDTH = 1920;
 int const WINDOW_HEIGHT = 1080;
-
-std::unique_ptr<PlatformerGame> game = std::make_unique<PlatformerGame>();
 
 int main()
 {
@@ -16,7 +14,6 @@ int main()
     int initCode = STR_Engine::Get().Initialize("Platformer Game", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
 
-    game->Initialize();
     SDL_Event SDLEvent;
     bool quit = false;
 
@@ -27,12 +24,13 @@ int main()
                 quit = true;
                 break;
             }
-        }
-        game->Update();
-        game->Draw();
-    }
 
-    game.reset();
+            STR_Engine::Get().Update();
+
+            STR_Engine::Get().m_renderer.BeginFrame();
+            STR_Engine::Get().m_renderer.EndFrame();
+        }
+    }
 
     STR_Engine::Get().Shutdown();
     
