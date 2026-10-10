@@ -120,4 +120,20 @@ namespace STR_FALL
 
 		return true;
 	}
+
+	std::vector<uint8_t> ReadBinaryFile(const std::string& path)
+	{
+		std::ifstream file(path, std::ios::binary | std::ios::ate);
+
+		if (!file.is_open()) { return {}; }
+
+		std::streamsize size = file.tellg();
+		std::vector<uint8_t> bytes(size);
+
+		file.seekg(0, std::ios::beg);
+
+		if (!file.read(reinterpret_cast<char*>(bytes.data()), size)) { return {}; }
+
+		return bytes;
+	}
 }

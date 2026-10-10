@@ -2,27 +2,28 @@
 #define PCH_H
 
 // Standard Library Includes
-#include <string>
-#include <map>
-#include <iostream>
-#include <memory>
-#include <cctype>
-#include <vector>
-#include <utility>
-#include <filesystem>
-#include <sstream>
-#include <fstream>
-#include <ctime>
-#include <cstdlib>
-#include <random>
-#include <cmath>
-#include <ostream>
-#include <unordered_set>
 #include <algorithm>
+#include <array>
 #include <cassert>
-#include <cstdint>
+#include <cctype>
+#include <cmath>
 #include <concepts>
+#include <cstdint>
+#include <cstdlib>
+#include <ctime>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 #include <iterator>
+#include <map>
+#include <memory>
+#include <ostream>
+#include <random>
+#include <sstream>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 // Third Party Includes
 #include <SDL3/SDL.h>

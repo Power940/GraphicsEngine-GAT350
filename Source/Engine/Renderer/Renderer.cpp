@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Renderer/Pipeline.h"
+#include "Renderer/VertexBuffer.h"
 
 
 namespace STR_FALL
@@ -102,6 +104,17 @@ namespace STR_FALL
         SDL_Quit();
     }
 
+    void Renderer::SetPipeline(const Pipeline& pipeline) { SDL_BindGPUGraphicsPipeline(m_GPURenderPass, pipeline.m_GPUPipeline); }
+    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer)
+    {
+        SDL_GPUBufferBinding binding{
+            .buffer = vertexBuffer.m_GPUBuffer,
+            .offset = 0
+        };
+        SDL_BindGPUVertexBuffers(m_GPURenderPass, 0, &binding, 1);
+    }
+    void Renderer::Draw(uint32_t vertexCount) { SDL_DrawGPUPrimitives(m_GPURenderPass, vertexCount, 1, 0, 0); }
+
     bool Renderer::BeginFrame()
     {
         m_GPUCommandBuffer = SDL_AcquireGPUCommandBuffer(m_GPUDevice);
@@ -121,26 +134,33 @@ namespace STR_FALL
 
         if (swapchainTexture != nullptr)
         {
+            // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{};
             color_target_info.texture = swapchainTexture;
-            color_target_info.clear_color = SDL_FColor{ 1.0f, 0.0f, 0.0f, 1.0f };
+            color_target_info.clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f };
             color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
             color_target_info.store_op = SDL_GPU_STOREOP_STORE;
 
             m_GPURenderPass = SDL_BeginGPURenderPass(m_GPUCommandBuffer, &color_target_info, 1, nullptr);
-            SDL_EndGPURenderPass(m_GPURenderPass);
         }
 
         return true;
     }
-
     bool Renderer::EndFrame()
     {
+        if (m_GPURenderPass)
+        {
+            SDL_EndGPURenderPass(m_GPURenderPass);
+            m_GPURenderPass = nullptr;
+        }
+
         if (!SDL_SubmitGPUCommandBuffer(m_GPUCommandBuffer))
         {
             std::cerr << "Could not submit command buffer: " << SDL_GetError() << std::endl;
             return false;
         }
+
+        m_GPUCommandBuffer = nullptr;
 
         return true;
     }
@@ -150,7 +170,6 @@ namespace STR_FALL
         SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
         SDL_RenderDebugText(m_renderer, point.m_x, point.m_y, text.c_str());
     }
-
     void Renderer::RenderTexture(const Texture* texture, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
     {
         Vector2 size = texture->m_size;
@@ -166,7 +185,6 @@ namespace STR_FALL
 
         SDL_RenderTextureRotated(m_renderer, texture->m_texture, NULL, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
-
     void Renderer::RenderTexture(const Texture* texture, const Rect2D& source, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
     {
         Vector2 size = texture->m_size;

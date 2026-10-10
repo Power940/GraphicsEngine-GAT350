@@ -93,6 +93,15 @@
     <ClCompile Include="Components\MeshColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\Pipeline.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Shader.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\VertexBuffer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -217,6 +226,15 @@
     <ClInclude Include="Components\MeshColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\Pipeline.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Shader.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\VertexBuffer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Audio">
@@ -237,9 +255,6 @@
     <Filter Include="Math">
       <UniqueIdentifier>{14f1e1af-0dbd-4663-951d-b82e2964f6e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{431d9ee8-852e-40ff-829a-ee8b7c11a896}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{1911c279-1a69-447e-a641-501f2e9ddd34}</UniqueIdentifier>
     </Filter>
@@ -248,6 +263,9 @@
     </Filter>
     <Filter Include="Serialization">
       <UniqueIdentifier>{fa941673-0004-4eae-a070-7b3be62bdf9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{431d9ee8-852e-40ff-829a-ee8b7c11a896}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

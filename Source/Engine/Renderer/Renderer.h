@@ -12,10 +12,11 @@ namespace STR_FALL
 	class Renderer
 	{
 	private:
-		SDL_Window* m_window = nullptr;
 		SDL_Renderer* m_renderer = nullptr;
 
+		SDL_Window* m_window = nullptr;
 		SDL_GPUDevice* m_GPUDevice = nullptr;
+
 		SDL_GPUCommandBuffer* m_GPUCommandBuffer = nullptr;
 		SDL_GPURenderPass* m_GPURenderPass = nullptr;
 
@@ -40,6 +41,13 @@ namespace STR_FALL
 		void ClearF(float r = 0, float g = 0, float b = 0, float a = 1.0f);
         void Present();
 		void ShutDown();
+
+		SDL_GPUDevice* GetGPUDevice() const { return m_GPUDevice; }
+		SDL_Window* GetWindow() const { return m_window; }
+
+		void SetPipeline(const class Pipeline& pipeline);
+		void SetVertexBuffer(const class VertexBuffer& vertexBuffer);
+		void Draw(uint32_t vertexCount);
 
 		bool BeginFrame();
 		bool EndFrame();
