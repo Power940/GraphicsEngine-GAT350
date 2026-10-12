@@ -1,26 +1,25 @@
+cbuffer Unifroms : register(b0, space1)
+{
+    float scale;
+}
+
 struct Input
 {
-    float3 position : TEXCOORD0;
+    float3 pos : TEXCOORD0;
+    float4 color : TEXCOORD1;
 };
 
 struct Output
 {
-    float4 Position : SV_Position;
-    float3 PassPosition : TEXCOORD0;
+    float4 pos : SV_Position;
+    float4 color : TEXCOORD0;
 };
 
 Output main(Input input)
 {
     Output output;
-    if (input.position.x == 0.0f)
-    {
-        output.Position = float4(input.position.x - 0.5f, input.position.yz, 1.0f);
-    }
-    else
-    {
-        output.Position = float4(input.position.x * 0.5f, input.position.yz, 1.0f);
-    }
-    output.PassPosition = input.position;
+    output.pos = float4(input.pos * scale, 1.0f);
+    output.color = input.color;
 
     return output;
 }

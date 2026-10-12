@@ -165,6 +165,15 @@ namespace STR_FALL
         return true;
     }
 
+    void Renderer::SetVertexUniforms(uint32_t slot, const void* data, uint32_t size)
+    {
+        SDL_PushGPUVertexUniformData(m_GPUCommandBuffer, slot, data, size);
+    }
+    void Renderer::SetFragmentUniforms(uint32_t slot, const void* data, uint32_t size)
+    {
+        SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, slot, data, size);
+    }
+
     void Renderer::RenderDebugText(const std::string& text, const Vector2& point) const
     {
         SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);

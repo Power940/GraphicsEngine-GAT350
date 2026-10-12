@@ -1,6 +1,11 @@
+cbuffer Unifroms : register(b0, space3)
+{
+    float4 color;
+}
+
 struct Input
 {
-    float3 PassPosition : TEXCOORD0;
+    float4 color : TEXCOORD0;
 };
 
 struct Output
@@ -11,16 +16,7 @@ struct Output
 Output main(Input input)
 {
     Output output;
-    
-    float x = saturate((input.PassPosition.x + 1.0f) / 2.0f);
-    float y = saturate((input.PassPosition.y + 1.0f) / 2.0f);
-
-    output.Color = float4(
-        1.0f - x,
-        y,
-        x,
-        1.0f
-    );
+    output.Color = color;
 
     return output;
 }

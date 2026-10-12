@@ -10,7 +10,7 @@ namespace STR_FALL
 		if (m_GPUDevice && m_GPUShader) { SDL_ReleaseGPUShader(m_GPUDevice, m_GPUShader); }
 	}
 
-	bool Shader::Load(const std::string& filename, Renderer& renderer)
+	bool Shader::Load(const std::string& filename, Renderer& renderer, uint32_t uniformCount)
 	{
 		m_GPUDevice = renderer.GetGPUDevice();
 
@@ -25,8 +25,8 @@ namespace STR_FALL
 		const char* entrypoint = "main";
 
 		SDL_GPUShaderFormat backendFormats = SDL_GetGPUShaderFormats(m_GPUDevice);
-		if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) { shaderFilename.append(".spv"); format = SDL_GPU_SHADERFORMAT_SPIRV; }
-		else if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) { shaderFilename.append(".dxil"); format = SDL_GPU_SHADERFORMAT_DXIL; }
+		if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) { shaderFilename += ".spv"; format = SDL_GPU_SHADERFORMAT_SPIRV; }
+		else if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) { shaderFilename += ".dxil"; format = SDL_GPU_SHADERFORMAT_DXIL; }
 		else { std::cerr << "ERROR: Shader::Load no supported shader formmat" << std::endl; return false; }
 
 		std::vector<uint8_t> bytes = ReadBinaryFile(shaderFilename);
@@ -37,7 +37,8 @@ namespace STR_FALL
 			.code = bytes.data(),
 			.entrypoint = entrypoint,
 			.format = format,
-			.stage = stage
+			.stage = stage,
+			.num_uniform_buffers = uniformCount
 		};
 
 		m_GPUShader = SDL_CreateGPUShader(m_GPUDevice, &shaderInfo);

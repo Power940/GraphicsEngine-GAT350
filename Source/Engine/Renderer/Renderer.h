@@ -52,6 +52,9 @@ namespace STR_FALL
 		bool BeginFrame();
 		bool EndFrame();
 
+		void SetVertexUniforms(uint32_t slot, const void* data, uint32_t size);
+		void SetFragmentUniforms(uint32_t slot, const void* data, uint32_t size);
+
 		inline int GetSreenWidth() const { return m_WINDOW_WIDTH; }
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
 

@@ -114,6 +114,11 @@
     <ClInclude Include="Serialization\Json.h" />
     <ClInclude Include="StarFallEngine.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shaders\Shaders.vcxproj">
+      <Project>{1dc1933f-925a-3eb9-ac2e-61b6862b1f0c}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
