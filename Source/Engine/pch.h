@@ -41,6 +41,10 @@
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/error/en.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 // Project Includes
 #include "Core/StringUtils.h"
 #include "Serialization/Json.h"

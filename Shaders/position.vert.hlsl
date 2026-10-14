@@ -1,24 +1,25 @@
-cbuffer Unifroms : register(b0, space1)
+cbuffer Uniforms : register(b0, space1)
 {
-    float scale;
+    float4x4 mvp;
 }
 
 struct Input
 {
-    float3 pos : TEXCOORD0;
+    float3 position : TEXCOORD0;
     float4 color : TEXCOORD1;
 };
 
 struct Output
 {
-    float4 pos : SV_Position;
+    float4 position : SV_Position;
     float4 color : TEXCOORD0;
+    
 };
 
 Output main(Input input)
 {
     Output output;
-    output.pos = float4(input.pos * scale, 1.0f);
+    output.position = mul(mvp, float4(input.position, 1.0f));
     output.color = input.color;
 
     return output;

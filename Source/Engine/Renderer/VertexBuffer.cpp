@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "VertexBuffer.h"
+#include "Renderer.h"
 
 namespace STR_FALL
 {
@@ -8,10 +9,10 @@ namespace STR_FALL
 		if (m_GPUBuffer && m_GPUDevice) { SDL_ReleaseGPUBuffer(m_GPUDevice, m_GPUBuffer); }
 	}
 
-	bool VertexBuffer::Create(uint32_t vertexCount, uint32_t vertexSize, const uint8_t* data, SDL_GPUDevice* gpuDevice)
+	bool VertexBuffer::Create(uint32_t vertexCount, uint32_t vertexSize, const uint8_t* data, const Renderer& renderer)
 	{
 		m_vertexCount = vertexCount;
-		m_GPUDevice = gpuDevice;
+		m_GPUDevice = renderer.m_GPUDevice;
 
 		uint32_t verticesSize = m_vertexCount * vertexSize;
 		SDL_GPUBufferCreateInfo vertexBufferCreateInfo{
@@ -38,8 +39,8 @@ namespace STR_FALL
 		if (!transferData)
 		{
 			std::cerr << "Could not map transfer buffer: " << SDL_GetError() << std::endl;
-			SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
-			SDL_ReleaseGPUBuffer(gpuDevice, m_GPUBuffer);
+			SDL_ReleaseGPUTransferBuffer(m_GPUDevice, transferBuffer);
+			SDL_ReleaseGPUBuffer(m_GPUDevice, m_GPUBuffer);
 			m_GPUBuffer = nullptr;
 			return false;
 		}
@@ -50,8 +51,8 @@ namespace STR_FALL
 		if (!commandBuffer)
 		{
 			std::cerr << "Could not acquire GPU command buffer: " << SDL_GetError() << std::endl;
-			SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
-			SDL_ReleaseGPUBuffer(gpuDevice, m_GPUBuffer);
+			SDL_ReleaseGPUTransferBuffer(m_GPUDevice, transferBuffer);
+			SDL_ReleaseGPUBuffer(m_GPUDevice, m_GPUBuffer);
 			m_GPUBuffer = nullptr;
 			return false;
 		}
@@ -71,8 +72,8 @@ namespace STR_FALL
 		if (!SDL_SubmitGPUCommandBuffer(commandBuffer))
 		{
 			std::cerr << "Could not submit GPU command buffer: " << SDL_GetError() << std::endl;
-			SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
-			SDL_ReleaseGPUBuffer(gpuDevice, m_GPUBuffer);
+			SDL_ReleaseGPUTransferBuffer(m_GPUDevice, transferBuffer);
+			SDL_ReleaseGPUBuffer(m_GPUDevice, m_GPUBuffer);
 			m_GPUBuffer = nullptr;
 			return false;
 		}

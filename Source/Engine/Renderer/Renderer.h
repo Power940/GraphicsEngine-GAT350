@@ -87,5 +87,6 @@ namespace STR_FALL
 
 		friend struct Text;
 		friend class Texture;
+		friend class VertexBuffer;
 	};
 }
