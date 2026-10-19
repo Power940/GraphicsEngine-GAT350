@@ -39,6 +39,7 @@
     </ClCompile>
     <ClCompile Include="Renderer\Font.cpp" />
     <ClCompile Include="Renderer\IndexBuffer.cpp" />
+    <ClCompile Include="Renderer\Model.cpp" />
     <ClCompile Include="Renderer\ParticleSystem.cpp" />
     <ClCompile Include="Renderer\Pipeline.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Renderer\Font.h" />
     <ClInclude Include="Renderer\IndexBuffer.h" />
     <ClInclude Include="Renderer\Mesh.h" />
+    <ClInclude Include="Renderer\Model.h" />
     <ClInclude Include="Renderer\ParticleSystem.h" />
     <ClInclude Include="Renderer\Pipeline.h" />
     <ClInclude Include="Renderer\Renderer.h" />
@@ -178,7 +180,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -204,7 +206,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -228,7 +230,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -254,7 +256,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

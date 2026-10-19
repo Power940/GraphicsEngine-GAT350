@@ -7,6 +7,8 @@ struct Input
 {
     float3 position : TEXCOORD0;
     float2 texcoord : TEXCOORD1;
+    float3 normal : TEXCOORD2;
+    float3 tangent : TEXCOORD3;
 };
 
 struct Output

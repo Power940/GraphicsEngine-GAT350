@@ -10,37 +10,23 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
+#include <Renderer/Model.h>
 
 using namespace STR_FALL;
 
 int const WINDOW_WIDTH = 1920;
 int const WINDOW_HEIGHT = 1080;
 
-struct Vertex
-{
-    Vector3 pos;
-    Color color;
-};
+
 
 struct vertexUniform
 {
     glm::mat4 mvp;
 };
 
-vertexUniform uniform;
-glm::vec3 camPos = glm::vec3(0, 0, 5);
 
-std::vector<Vertex> vertices =
-{
-    Vertex{ {-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-    Vertex{ {0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-    Vertex{ {0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
-    Vertex{ {-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
-};
 
-Transform3D t;
 
-std::vector<uint32_t> indices = {0,1,2,2,3,0};
 
 int main()
 {
@@ -51,21 +37,21 @@ int main()
 
 
 
+    vertexUniform uniform;
+    Transform3D t;
+    glm::vec3 camPos = glm::vec3(0, 0, 5);
 
 
-    auto vb = std::make_shared<VertexBuffer>();
-    vb->Create<Vertex>(vertices, STR_Engine::Get().m_renderer);
-
-    auto ib = std::make_shared<IndexBuffer>();
-    ib->Create(indices, STR_Engine::Get().m_renderer);
-
+    auto model = ResourceManager().Get<Model>("models/suzanne.obj", STR_Engine::Get().m_renderer);
     auto vshader = ResourceManager().Get<Shader>("shaders/unlit.vert", STR_Engine::Get().m_renderer, 1);
     auto fshader = ResourceManager().Get<Shader>("shaders/unlit.frag", STR_Engine::Get().m_renderer, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
-    pipeline->AddVertexBuffer(sizeof(Vertex));
-    pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Vertex, pos));
-    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Vertex, color));
+    pipeline->AddVertexBuffer(sizeof(Model::Vertex));
+    pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, position));
+    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
+    pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
+    pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
     pipeline->Create(*vshader.get(), *fshader.get(), STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
 
 
@@ -86,6 +72,7 @@ int main()
         STR_Engine::Get().Update();
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
+        Color tint = Color();
 
         Vector3 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_D, Input::KeyCodes::VK_A, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S).Normalize() * dt;
         float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_Q, Input::KeyCodes::VK_E) * dt;
@@ -94,21 +81,17 @@ int main()
         camPos.y += up;
 
         auto view = glm::lookAtRH(camPos, camPos + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
-
-        float aspect = static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT);
-        auto projection = glm::perspective(glm::radians(70.0f), aspect, 0.01f, 50.0f);
+        auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 50.0f);
 
         uniform.mvp = projection * view * t.GetMatrix();;
 
         STR_Engine::Get().m_renderer.BeginFrame();
 
         STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
-        STR_Engine::Get().m_renderer.SetVertexBuffer(*vb);
-        STR_Engine::Get().m_renderer.SetIndexBuffer(*ib);
-
         STR_Engine::Get().m_renderer.SetVertexUniforms(0, &uniform, sizeof(uniform));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &tint, sizeof(tint));
 
-        STR_Engine::Get().m_renderer.DrawIndex(*ib);
+        model->Draw(STR_Engine::Get().m_renderer);
 
         STR_Engine::Get().m_renderer.EndFrame();
     }

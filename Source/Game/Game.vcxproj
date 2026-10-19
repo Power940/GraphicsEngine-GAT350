@@ -93,14 +93,14 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib;assimp-vc145-mt.lib</AdditionalDependencies>
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>;$(SolutionDir)ThirdParty\Box2D\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>;$(SolutionDir)ThirdParty\Box2D\lib;$(SolutionDir)ThirdParty\assimp\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -119,14 +119,14 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib;assimp-vc145-mt.lib</AdditionalDependencies>
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>;$(SolutionDir)ThirdParty\Box2D\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>;$(SolutionDir)ThirdParty\Box2D\lib;$(SolutionDir)ThirdParty\assimp\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -143,13 +143,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\Box2D\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\Box2D\lib;$(SolutionDir)ThirdParty\assimp\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib;assimp-vc145-mt.lib</AdditionalDependencies>
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
@@ -169,13 +169,13 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\Box2D\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\Box2D\lib;$(SolutionDir)ThirdParty\assimp\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib;assimp-vc145-mt.lib</AdditionalDependencies>
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
