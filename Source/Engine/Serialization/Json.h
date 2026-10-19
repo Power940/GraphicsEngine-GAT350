@@ -24,12 +24,12 @@ namespace STR_FALL::Json
 	bool Read(const rapidjson::Value& value, const std::string& name, std::vector<std::string>& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, std::unordered_set<std::string>& data);
 
-	bool Read(const rapidjson::Value& value, const std::string& name, Vector2& data);
-	bool Read(const rapidjson::Value& value, const std::string& name, Vector3& data);
-	bool Read(const rapidjson::Value& value, const std::string& name, Vector4& data);
+	bool Read(const rapidjson::Value& value, const std::string& name, glm::vec2& data);
+	bool Read(const rapidjson::Value& value, const std::string& name, glm::vec3& data);
+	bool Read(const rapidjson::Value& value, const std::string& name, glm::vec4& data);
 
-	bool Read(const rapidjson::Value& value, const std::string& name, Matrix2& data);
-	bool Read(const rapidjson::Value& value, const std::string& name, Matrix3& data);
+	//bool Read(const rapidjson::Value& value, const std::string& name, glm::mat2& data);
+	//bool Read(const rapidjson::Value& value, const std::string& name, glm::mat3& data);
 
 
 	/// <summary>

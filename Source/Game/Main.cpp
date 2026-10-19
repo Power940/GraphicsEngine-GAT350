@@ -2,13 +2,14 @@
 #include <memory>
 #include <Renderer/Pipeline.h>
 #include <Renderer/VertexBuffer.h>
+#include <Renderer/IndexBuffer.h>
 #include <Renderer/Shader.h>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
-#include <Input/Input.h>
 
 using namespace STR_FALL;
 
@@ -33,10 +34,13 @@ std::vector<Vertex> vertices =
 {
     Vertex{ {-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
     Vertex{ {0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-    Vertex{ {0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
-
-    //Vertex{ {-0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+    Vertex{ {0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
+    Vertex{ {-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}},
 };
+
+Transform3D t;
+
+std::vector<uint32_t> indices = {0,1,2,2,3,0};
 
 int main()
 {
@@ -52,13 +56,16 @@ int main()
     auto vb = std::make_shared<VertexBuffer>();
     vb->Create<Vertex>(vertices, STR_Engine::Get().m_renderer);
 
-    auto vshader = ResourceManager().Get<Shader>("shaders/position.vert", STR_Engine::Get().m_renderer, 1);
-    auto fshader = ResourceManager().Get<Shader>("shaders/color.frag", STR_Engine::Get().m_renderer, 1);
+    auto ib = std::make_shared<IndexBuffer>();
+    ib->Create(indices, STR_Engine::Get().m_renderer);
+
+    auto vshader = ResourceManager().Get<Shader>("shaders/unlit.vert", STR_Engine::Get().m_renderer, 1);
+    auto fshader = ResourceManager().Get<Shader>("shaders/unlit.frag", STR_Engine::Get().m_renderer, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Vertex));
     pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Vertex, pos));
-    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4, offsetof(Vertex, color));
+    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Vertex, color));
     pipeline->Create(*vshader.get(), *fshader.get(), STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
 
 
@@ -86,26 +93,22 @@ int main()
         camPos.z -= dir.m_y;
         camPos.y += up;
 
-        auto mxt = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
-        auto mxr = glm::eulerAngleXYZ(0.0f, 0.0f, 0.0f);
-        auto mxs = glm::scale(glm::vec3(1, 1, 1));
-        auto model = mxt * mxr * mxs;
-
         auto view = glm::lookAtRH(camPos, camPos + glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 
         float aspect = static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT);
         auto projection = glm::perspective(glm::radians(70.0f), aspect, 0.01f, 50.0f);
 
-        uniform.mvp = projection * view * model;
+        uniform.mvp = projection * view * t.GetMatrix();;
 
         STR_Engine::Get().m_renderer.BeginFrame();
 
         STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
         STR_Engine::Get().m_renderer.SetVertexBuffer(*vb);
+        STR_Engine::Get().m_renderer.SetIndexBuffer(*ib);
 
         STR_Engine::Get().m_renderer.SetVertexUniforms(0, &uniform, sizeof(uniform));
 
-        STR_Engine::Get().m_renderer.Draw(vb->GetVertexCount());
+        STR_Engine::Get().m_renderer.DrawIndex(*ib);
 
         STR_Engine::Get().m_renderer.EndFrame();
     }

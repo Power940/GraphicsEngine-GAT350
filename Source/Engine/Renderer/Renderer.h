@@ -47,7 +47,9 @@ namespace STR_FALL
 
 		void SetPipeline(const class Pipeline& pipeline);
 		void SetVertexBuffer(const class VertexBuffer& vertexBuffer);
+		void SetIndexBuffer(const class IndexBuffer& indexBuffer);
 		void Draw(uint32_t vertexCount);
+		void DrawIndex(const class IndexBuffer& indexBuffer);
 
 		bool BeginFrame();
 		bool EndFrame();
@@ -58,35 +60,36 @@ namespace STR_FALL
 		inline int GetSreenWidth() const { return m_WINDOW_WIDTH; }
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
 
-		void RenderDebugText(const std::string& text, const Vector2& point) const;
-		void RenderTexture(const class Texture* texture, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false, const Vector2& origin = Vector2(0.5f, 0.5f));
-		void RenderTexture(const class Texture* texture, const struct Rect2D& source, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false, const Vector2& origin = Vector2(0.5f, 0.5f));
+		//void RenderDebugText(const std::string& text, const Vector2& point) const;
+		//void RenderTexture(const class Texture* texture, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false, const Vector2& origin = Vector2(0.5f, 0.5f));
+		//void RenderTexture(const class Texture* texture, const struct Rect2D& source, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false, const Vector2& origin = Vector2(0.5f, 0.5f));
 
-		void RenderPoint(const Vector2& point) const;
-		void RenderPoints(const std::vector<Vector2>& points) const;
-		void RenderLine(const Line2D& line) const;
-		void RenderLines(const std::vector<Line2D>& lines) const;
-		void RenderFillTriangle(const Triangle2D& tri) const;
-		void RenderOutlineTriangle(const Triangle2D& tri) const;
-		void RenderCustomFilled(const std::vector<Vector2>& points, const std::vector<int>& indices) const;
-		void RenderCustomOutline(const std::vector<Vector2>& points) const;
+		//void RenderPoint(const Vector2& point) const;
+		//void RenderPoints(const std::vector<Vector2>& points) const;
+		//void RenderLine(const Line2D& line) const;
+		//void RenderLines(const std::vector<Line2D>& lines) const;
+		//void RenderFillTriangle(const Triangle2D& tri) const;
+		//void RenderOutlineTriangle(const Triangle2D& tri) const;
+		//void RenderCustomFilled(const std::vector<Vector2>& points, const std::vector<int>& indices) const;
+		//void RenderCustomOutline(const std::vector<Vector2>& points) const;
 
-		void RenderPointColor(const Vector2C& point) const;
-		void RenderPointsColor(const std::vector<Vector2C>& points) const;
-		void RenderLineColor(const Line2DC& line) const;
-		void RenderLinesColor(const std::vector<Line2DC>& lines) const;
-		void RenderFillTriangleColor(const Triangle2DC& tri) const;
-		void RenderOutlineTriangleColor(const Triangle2DC& tri) const;
-		void RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const;
-		void RenderCustomOutlineColor(const std::vector<Vector2C>& points) const;
+		//void RenderPointColor(const Vector2C& point) const;
+		//void RenderPointsColor(const std::vector<Vector2C>& points) const;
+		//void RenderLineColor(const Line2DC& line) const;
+		//void RenderLinesColor(const std::vector<Line2DC>& lines) const;
+		//void RenderFillTriangleColor(const Triangle2DC& tri) const;
+		//void RenderOutlineTriangleColor(const Triangle2DC& tri) const;
+		//void RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const;
+		//void RenderCustomOutlineColor(const std::vector<Vector2C>& points) const;
 
-		void CameraProjection(const std::vector<VertexUV3D>* vertices, const std::vector<int>* indices, std::vector<VertexUV2D>* drawVertices, std::vector<int>* drawIndices) const;
+		//void CameraProjection(const std::vector<VertexUV3D>* vertices, const std::vector<int>* indices, std::vector<VertexUV2D>* drawVertices, std::vector<int>* drawIndices) const;
 
-		void Render3DCustomOutline(const std::vector<VertexUV3D>& points, const std::vector<int>& indices) const;
-		void Render3DCustomTexture(const std::vector<VertexUV3D>& points, const std::vector<int>& indices, const class Texture* texture) const;
+		//void Render3DCustomOutline(const std::vector<VertexUV3D>& points, const std::vector<int>& indices) const;
+		//void Render3DCustomTexture(const std::vector<VertexUV3D>& points, const std::vector<int>& indices, const class Texture* texture) const;
 
 		friend struct Text;
 		friend class Texture;
 		friend class VertexBuffer;
+		friend class IndexBuffer;
 	};
 }

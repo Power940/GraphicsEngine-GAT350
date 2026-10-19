@@ -5,13 +5,7 @@
     <ClCompile Include="Audio\Audio.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Components\CircleColliderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Components\MeshRenderer3DComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\SpriteRenderer2DComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Core\file.cpp">
@@ -31,9 +25,6 @@
     </ClCompile>
     <ClCompile Include="Math\Structs.cpp">
       <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\Physics.cpp">
-      <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Font.cpp">
       <Filter>Renderer</Filter>
@@ -63,32 +54,11 @@
       <Filter>Serialization</Filter>
     </ClCompile>
     <ClCompile Include="StarFallEngine.cpp" />
-    <ClCompile Include="Components\SpriteAnimationRenderer2DComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\PhysicsComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\RidgidBodyPhysicsComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics\PhysicsBody.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\Box2DPhysicsComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\TileMap.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Components\TileMapRendererComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Game.cpp">
       <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\SpriteAnimator2DRendererComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Components\MeshColliderComponent.cpp">
       <Filter>Components</Filter>
@@ -102,14 +72,14 @@
     <ClCompile Include="Renderer\VertexBuffer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\IndexBuffer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Audio\Audio.h">
       <Filter>Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\CircleColliderComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\ColliderComponent.h">
       <Filter>Components</Filter>
@@ -121,9 +91,6 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\RendererComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\SpriteRenderer2DComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Core\Factory.h">
@@ -165,9 +132,6 @@
     <ClInclude Include="Math\Constants.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\Physics.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\TextureFrames.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -199,29 +163,8 @@
       <Filter>Serialization</Filter>
     </ClInclude>
     <ClInclude Include="StarFallEngine.h" />
-    <ClInclude Include="Components\SpriteAnimationRenderer2DComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\PhysicsComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\RidgidBodyPhysicsComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics\PhysicsBody.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\Box2DPhysicsComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\TileMap.h">
       <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\TileMapRendererComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\SpriteAnimator2DRendererComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\MeshColliderComponent.h">
       <Filter>Components</Filter>
@@ -233,6 +176,9 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\VertexBuffer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\IndexBuffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -263,9 +209,6 @@
     </Filter>
     <Filter Include="Serialization">
       <UniqueIdentifier>{fa941673-0004-4eae-a070-7b3be62bdf9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{431d9ee8-852e-40ff-829a-ee8b7c11a896}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

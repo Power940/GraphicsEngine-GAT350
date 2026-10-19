@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="color.frag.hlsl" />
-    <FxCompile Include="position.vert.hlsl" />
+    <FxCompile Include="unlit.frag.hlsl" />
+    <FxCompile Include="unlit.vert.hlsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

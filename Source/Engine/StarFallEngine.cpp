@@ -17,16 +17,12 @@ namespace STR_FALL
         m_audio = Audio();
         if (!m_audio.Initialize()) { return 4; }
 
-        m_phys = Physics();
-        if (!m_phys.Initialize()) { return 5; }
-
         m_time = Time();
 
         return 0;
     }
     void STR_Engine::Shutdown()
     {
-        m_phys.Shutdown();
         m_audio.ShutDown();
         m_PS2D.Shutdown();
         m_renderer.ShutDown();
@@ -36,7 +32,6 @@ namespace STR_FALL
         m_time.Tick();
         m_input.Update();
         m_audio.Update();
-        m_phys.Update(m_time.GetDeltaTime());
         m_PS2D.Update(m_time.GetDeltaTime());
     }
 };

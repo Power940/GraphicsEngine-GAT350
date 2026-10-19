@@ -23,18 +23,18 @@ namespace STR_FALL
 
 		virtual void Draw(Renderer& r) override
 		{
-			for (Mesh3D& mesh : m_mesh.m_meshes)
-			{
-				if (mesh.m_texture)
-				{
-					r.Render3DCustomTexture(mesh.m_points, mesh.m_indices, mesh.m_texture.get());
-				}
-				else
-				{
-					r.SetColor(mesh.m_color);
-					r.Render3DCustomOutline(mesh.m_points, mesh.m_indices);
-				}
-			}
+			//for (Mesh3D& mesh : m_mesh.m_meshes)
+			//{
+			//	if (mesh.m_texture)
+			//	{
+			//		r.Render3DCustomTexture(mesh.m_points, mesh.m_indices, mesh.m_texture.get());
+			//	}
+			//	else
+			//	{
+			//		r.SetColor(mesh.m_color);
+			//		r.Render3DCustomOutline(mesh.m_points, mesh.m_indices);
+			//	}
+			//}
 		}
 
 		virtual void Read(const rapidjson::Value& value) override
@@ -52,10 +52,10 @@ namespace STR_FALL
 
 		void UpdateMesh(const Transform3D& newTransform)
 		{
-			m_mesh = m_baseMesh;
-			m_mesh *= newTransform.m_rotMat;
-			m_mesh *= newTransform.m_scale;
-			m_mesh += newTransform.m_pos;
+			//m_mesh = m_baseMesh;
+			//m_mesh *= newTransform.m_rot;
+			//m_mesh *= newTransform.m_scale;
+			//m_mesh += newTransform.m_pos;
 		}
 	};
 

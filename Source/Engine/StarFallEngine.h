@@ -17,7 +17,6 @@
 #include "Core/StringUtils.h"
 #include "Core/Factory.h"
 #include "Serialization/Json.h"
-#include "Physics/Physics.h"
 
 
 namespace STR_FALL
@@ -32,7 +31,6 @@ namespace STR_FALL
 		inline static Time m_time;
 		inline static Audio m_audio;
 		inline static ParticleSystem2D m_PS2D;
-		inline static Physics m_phys;
 
 		int Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT);
 		void Shutdown();

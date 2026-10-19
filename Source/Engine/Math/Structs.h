@@ -6,6 +6,12 @@
 #include <cstdlib>
 #include <ostream>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/transform.hpp>
+
 
 namespace STR_FALL
 {
@@ -523,12 +529,23 @@ namespace STR_FALL
 	struct Transform3D
 	{
 	public:
-		Vector3 m_pos;
-		Vector3 m_scale;
-		Matrix3 m_rotMat;
+		glm::vec3 m_pos;
+		glm::vec3 m_scale;
+		glm::vec3 m_rot;
+		glm::mat4 m_mat;
 
-		inline Transform3D(const Vector3& pos = Vector3(), const Vector3& scale = Vector3(1.0f, 1.0f, 1.0f), const Matrix3& rotMat = Matrix3()) :
-			m_pos(pos), m_scale(scale), m_rotMat(rotMat) {
+		inline Transform3D(const glm::vec3& pos = glm::vec3(), const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f), const glm::vec3& rot = glm::vec3()) :
+			m_pos(pos), m_scale(scale), m_rot(rot) {
+			GetMatrix();
+		}
+
+		inline const glm::mat4& GetMatrix()
+		{
+			glm::mat4 mxt = glm::translate(m_pos);
+			glm::mat4 mxr = glm::eulerAngleXYZ(m_rot.y, m_rot.x, m_rot.z);
+			glm::mat4 mxs = glm::scale(m_scale);
+			m_mat = mxt * mxr * mxs;
+			return m_mat;
 		}
 	};
 

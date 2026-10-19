@@ -7,10 +7,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="position.vert.hlsl">
+    <FxCompile Include="unlit.frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="color.frag.hlsl">
+    <FxCompile Include="unlit.vert.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

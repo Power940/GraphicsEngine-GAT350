@@ -25,13 +25,13 @@ namespace STR_FALL
 
 	void ParticleSystem2D::Draw(Renderer& r)
 	{
-		for (Particle2D& particle : m_particles)
-		{
-			if (particle.m_active)
-			{
-				r.RenderTexture(particle.m_texture.get(), particle.m_position.m_x, particle.m_position.m_y);
-			}
-		}
+		//for (Particle2D& particle : m_particles)
+		//{
+		//	if (particle.m_active)
+		//	{
+		//		r.RenderTexture(particle.m_texture.get(), particle.m_position.m_x, particle.m_position.m_y);
+		//	}
+		//}
 	}
 
 	void ParticleSystem2D::AddParticle(const Particle2D& particle)

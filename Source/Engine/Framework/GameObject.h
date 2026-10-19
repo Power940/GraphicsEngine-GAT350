@@ -70,29 +70,29 @@ namespace STR_FALL
 			m_transform = transform;
 		}
 
-		void SetTransformPos(const Vector3& pos)
+		void SetTransformPos(const glm::vec3& pos)
 		{
 			m_transform.m_pos = pos;
 		}
-		void IncrementTransformPos(const Vector3& pos)
+		void IncrementTransformPos(const glm::vec3& pos)
 		{
 			m_transform.m_pos += pos;
 		}
-		void SetTransformScale(const Vector3& scale)
+		void SetTransformScale(const glm::vec3& scale)
 		{
 			m_transform.m_scale = scale;
 		}
-		void IncrementTransformScale(const Vector3& scale)
+		void IncrementTransformScale(const glm::vec3& scale)
 		{
 			m_transform.m_scale += scale;
 		}
-		void SetTransformRotation(const Matrix3& rot)
+		void SetTransformRotation(const glm::vec3& rot)
 		{
-			m_transform.m_rotMat = rot;
+			m_transform.m_rot = rot;
 		}
-		void IncrementTransformRotation(const Matrix3& rot)
+		void IncrementTransformRotation(const glm::vec3& rot)
 		{
-			m_transform.m_rotMat = m_transform.m_rotMat * rot;
+			m_transform.m_rot += rot;
 		}
 
 		template<std::derived_from<Component> T>

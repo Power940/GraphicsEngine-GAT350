@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Renderer/Pipeline.h"
 #include "Renderer/VertexBuffer.h"
+#include "Renderer/IndexBuffer.h"
 
 
 namespace STR_FALL
@@ -113,7 +114,19 @@ namespace STR_FALL
         };
         SDL_BindGPUVertexBuffers(m_GPURenderPass, 0, &binding, 1);
     }
+    void Renderer::SetIndexBuffer(const class IndexBuffer& indexBuffer)
+    {
+        SDL_GPUBufferBinding binding{
+            .buffer = indexBuffer.m_GPUBuffer,
+            .offset = 0
+        };
+        SDL_BindGPUIndexBuffer(m_GPURenderPass, &binding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
+    }
     void Renderer::Draw(uint32_t vertexCount) { SDL_DrawGPUPrimitives(m_GPURenderPass, vertexCount, 1, 0, 0); }
+    void Renderer::DrawIndex(const class IndexBuffer& indexBuffer)
+    {
+        SDL_DrawGPUIndexedPrimitives(m_GPURenderPass, indexBuffer.GetIndexCount(), 1, 0, 0, 0);
+    }
 
     bool Renderer::BeginFrame()
     {
@@ -174,308 +187,308 @@ namespace STR_FALL
         SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, slot, data, size);
     }
 
-    void Renderer::RenderDebugText(const std::string& text, const Vector2& point) const
-    {
-        SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
-        SDL_RenderDebugText(m_renderer, point.m_x, point.m_y, text.c_str());
-    }
-    void Renderer::RenderTexture(const Texture* texture, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
-    {
-        Vector2 size = texture->m_size;
+    //void Renderer::RenderDebugText(const std::string& text, const Vector2& point) const
+    //{
+    //    SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
+    //    SDL_RenderDebugText(m_renderer, point.m_x, point.m_y, text.c_str());
+    //}
+    //void Renderer::RenderTexture(const Texture* texture, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
+    //{
+    //    Vector2 size = texture->m_size;
 
-        float cameraX = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_x - (m_WINDOW_WIDTH * 0.5f) : 0.0f;
-        float cameraY = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_y - (m_WINDOW_HEIGHT * 0.5f) : 0.0f;
+    //    float cameraX = (m_useCamera2D) ? m_cam->m_transform.m_pos.x - (m_WINDOW_WIDTH * 0.5f) : 0.0f;
+    //    float cameraY = (m_useCamera2D) ? m_cam->m_transform.m_pos.y - (m_WINDOW_HEIGHT * 0.5f) : 0.0f;
 
-        SDL_FRect destRect;
-        destRect.w = size.m_x * xScale;
-        destRect.h = size.m_y * yScale;
-        destRect.x = (x - cameraX) - (destRect.w * origin.m_x);
-        destRect.y = (y - cameraY) - (destRect.h * origin.m_y);
+    //    SDL_FRect destRect;
+    //    destRect.w = size.m_x * xScale;
+    //    destRect.h = size.m_y * yScale;
+    //    destRect.x = (x - cameraX) - (destRect.w * origin.m_x);
+    //    destRect.y = (y - cameraY) - (destRect.h * origin.m_y);
 
-        SDL_RenderTextureRotated(m_renderer, texture->m_texture, NULL, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
-    void Renderer::RenderTexture(const Texture* texture, const Rect2D& source, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
-    {
-        Vector2 size = texture->m_size;
+    //    SDL_RenderTextureRotated(m_renderer, texture->m_texture, NULL, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    //}
+    //void Renderer::RenderTexture(const Texture* texture, const Rect2D& source, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
+    //{
+    //    Vector2 size = texture->m_size;
 
-        float cameraX = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_x - (m_WINDOW_WIDTH * 0.5f) : 0.0f;
-        float cameraY = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_y - (m_WINDOW_HEIGHT * 0.5f) : 0.0f;
+    //    float cameraX = (m_useCamera2D) ? m_cam->m_transform.m_pos.x - (m_WINDOW_WIDTH * 0.5f) : 0.0f;
+    //    float cameraY = (m_useCamera2D) ? m_cam->m_transform.m_pos.y - (m_WINDOW_HEIGHT * 0.5f) : 0.0f;
 
-        SDL_FRect srcRect;
-        srcRect.x = source.m_x;
-        srcRect.y = source.m_y;
-        srcRect.w = source.m_w;
-        srcRect.h = source.m_h;
+    //    SDL_FRect srcRect;
+    //    srcRect.x = source.m_x;
+    //    srcRect.y = source.m_y;
+    //    srcRect.w = source.m_w;
+    //    srcRect.h = source.m_h;
 
-        SDL_FRect destRect;
-        destRect.w = source.m_w * xScale;
-        destRect.h = source.m_h * yScale;
-        destRect.x = (x - cameraX) - (destRect.w * origin.m_x);
-        destRect.y = (y - cameraY) - (destRect.h * origin.m_y);
-        SDL_RenderTextureRotated(m_renderer, texture->m_texture, &srcRect, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
+    //    SDL_FRect destRect;
+    //    destRect.w = source.m_w * xScale;
+    //    destRect.h = source.m_h * yScale;
+    //    destRect.x = (x - cameraX) - (destRect.w * origin.m_x);
+    //    destRect.y = (y - cameraY) - (destRect.h * origin.m_y);
+    //    SDL_RenderTextureRotated(m_renderer, texture->m_texture, &srcRect, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    //}
 
-    void Renderer::RenderPoint(const Vector2& point) const { SDL_RenderPoint(m_renderer, point.m_x, point.m_y); }
-    void Renderer::RenderPoints(const std::vector<Vector2>& points) const
-    {
-        for (const Vector2 point : points)
-        {
-            SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
-        }
-    }
-    void Renderer::RenderLine(const Line2D& line) const { SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y); }
-    void Renderer::RenderLines(const std::vector<Line2D>& lines) const
-    {
-        for (const Line2D line : lines)
-        {
-            SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
-        }
-    }
-    void Renderer::RenderFillTriangle(const Triangle2D& tri) const {
-        std::vector<SDL_Vertex> vertices;
+    //void Renderer::RenderPoint(const Vector2& point) const { SDL_RenderPoint(m_renderer, point.m_x, point.m_y); }
+    //void Renderer::RenderPoints(const std::vector<Vector2>& points) const
+    //{
+    //    for (const Vector2 point : points)
+    //    {
+    //        SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
+    //    }
+    //}
+    //void Renderer::RenderLine(const Line2D& line) const { SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y); }
+    //void Renderer::RenderLines(const std::vector<Line2D>& lines) const
+    //{
+    //    for (const Line2D line : lines)
+    //    {
+    //        SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
+    //    }
+    //}
+    //void Renderer::RenderFillTriangle(const Triangle2D& tri) const {
+    //    std::vector<SDL_Vertex> vertices;
 
-        vertices.push_back(SDL_Vertex(
-            SDL_FPoint(tri[0].m_x, tri[0].m_y),
-            SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
-            SDL_FPoint(0, 0)
-        ));
-        vertices.push_back(SDL_Vertex(
-            SDL_FPoint(tri[1].m_x, tri[1].m_y),
-            SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
-            SDL_FPoint(0, 0)
-        ));
-        vertices.push_back(SDL_Vertex(
-            SDL_FPoint(tri[2].m_x, tri[2].m_y),
-            SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
-            SDL_FPoint(0, 0)
-        ));
+    //    vertices.push_back(SDL_Vertex(
+    //        SDL_FPoint(tri[0].m_x, tri[0].m_y),
+    //        SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
+    //        SDL_FPoint(0, 0)
+    //    ));
+    //    vertices.push_back(SDL_Vertex(
+    //        SDL_FPoint(tri[1].m_x, tri[1].m_y),
+    //        SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
+    //        SDL_FPoint(0, 0)
+    //    ));
+    //    vertices.push_back(SDL_Vertex(
+    //        SDL_FPoint(tri[2].m_x, tri[2].m_y),
+    //        SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
+    //        SDL_FPoint(0, 0)
+    //    ));
 
-        SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), 3, nullptr, 0);
-    }
-    void Renderer::RenderOutlineTriangle(const Triangle2D& tri) const {
+    //    SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), 3, nullptr, 0);
+    //}
+    //void Renderer::RenderOutlineTriangle(const Triangle2D& tri) const {
 
-        SDL_RenderLine(m_renderer, tri[0].m_x, tri[0].m_y, tri[1].m_x, tri[1].m_y);
-        SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
-        SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
-    }
-    void Renderer::RenderCustomFilled(const std::vector<Vector2>& points, const std::vector<int>& indices) const
-    {
-        if (points.size() > 1)
-        {
-            std::vector<SDL_Vertex> vertices;
+    //    SDL_RenderLine(m_renderer, tri[0].m_x, tri[0].m_y, tri[1].m_x, tri[1].m_y);
+    //    SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
+    //    SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
+    //}
+    //void Renderer::RenderCustomFilled(const std::vector<Vector2>& points, const std::vector<int>& indices) const
+    //{
+    //    if (points.size() > 1)
+    //    {
+    //        std::vector<SDL_Vertex> vertices;
 
-            for (const Vector2& point : points)
-            {
-                vertices.push_back(SDL_Vertex(
-                    SDL_FPoint(point.m_x, point.m_y),
-                    SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
-                    SDL_FPoint(0, 0)
-                ));
-            }
-            SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
-        }
-    }
-    void Renderer::RenderCustomOutline(const std::vector<Vector2>& points) const
-    {
-        unsigned int size = static_cast<unsigned int>(points.size());
-        if (size > 1)
-        {
-            for (unsigned int index = 0; index < size; index++)
-            {
-                SDL_RenderLine(m_renderer,
-                    points[index].m_x, points[index].m_y,
-                    points[(index + 1) % size].m_x, points[(index + 1) % size].m_y
-                );
-            }
-        }
-    }
+    //        for (const Vector2& point : points)
+    //        {
+    //            vertices.push_back(SDL_Vertex(
+    //                SDL_FPoint(point.m_x, point.m_y),
+    //                SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
+    //                SDL_FPoint(0, 0)
+    //            ));
+    //        }
+    //        SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
+    //    }
+    //}
+    //void Renderer::RenderCustomOutline(const std::vector<Vector2>& points) const
+    //{
+    //    unsigned int size = static_cast<unsigned int>(points.size());
+    //    if (size > 1)
+    //    {
+    //        for (unsigned int index = 0; index < size; index++)
+    //        {
+    //            SDL_RenderLine(m_renderer,
+    //                points[index].m_x, points[index].m_y,
+    //                points[(index + 1) % size].m_x, points[(index + 1) % size].m_y
+    //            );
+    //        }
+    //    }
+    //}
 
-    void Renderer::RenderPointColor(const Vector2C& point) const
-    {
-        SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w);
-        SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
-    }
-    void Renderer::RenderPointsColor(const std::vector<Vector2C>& points) const
-    {
-        for (const Vector2C& point : points)
-        {
-            SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w);
-            SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
-        }
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
-    }
-    void Renderer::RenderLineColor(const Line2DC& line) const
-    {
-        SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_x, line.m_color.m_y, line.m_color.m_z, line.m_color.m_w);
-        SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
-    }
-    void Renderer::RenderLinesColor(const std::vector<Line2DC>& lines) const
-    {
-        for (const Line2DC& line : lines)
-        {
-            SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_x, line.m_color.m_y, line.m_color.m_z, line.m_color.m_w);
-            SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
-        }
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
-    }
-    void Renderer::RenderFillTriangleColor(const Triangle2DC& tri) const
-    {
-        std::vector<SDL_Vertex> vertices;
+    //void Renderer::RenderPointColor(const Vector2C& point) const
+    //{
+    //    SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w);
+    //    SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
+    //    SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    //}
+    //void Renderer::RenderPointsColor(const std::vector<Vector2C>& points) const
+    //{
+    //    for (const Vector2C& point : points)
+    //    {
+    //        SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w);
+    //        SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
+    //    }
+    //    SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    //}
+    //void Renderer::RenderLineColor(const Line2DC& line) const
+    //{
+    //    SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_x, line.m_color.m_y, line.m_color.m_z, line.m_color.m_w);
+    //    SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
+    //    SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    //}
+    //void Renderer::RenderLinesColor(const std::vector<Line2DC>& lines) const
+    //{
+    //    for (const Line2DC& line : lines)
+    //    {
+    //        SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_x, line.m_color.m_y, line.m_color.m_z, line.m_color.m_w);
+    //        SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
+    //    }
+    //    SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    //}
+    //void Renderer::RenderFillTriangleColor(const Triangle2DC& tri) const
+    //{
+    //    std::vector<SDL_Vertex> vertices;
 
-        vertices.push_back(SDL_Vertex(
-            SDL_FPoint(tri[0].m_x, tri[0].m_y),
-            SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
-            SDL_FPoint(0, 0)
-        ));
-        vertices.push_back(SDL_Vertex(
-            SDL_FPoint(tri[1].m_x, tri[1].m_y),
-            SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
-            SDL_FPoint(0, 0)
-        ));
-        vertices.push_back(SDL_Vertex(
-            SDL_FPoint(tri[2].m_x, tri[2].m_y),
-            SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
-            SDL_FPoint(0, 0)
-        ));
+    //    vertices.push_back(SDL_Vertex(
+    //        SDL_FPoint(tri[0].m_x, tri[0].m_y),
+    //        SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
+    //        SDL_FPoint(0, 0)
+    //    ));
+    //    vertices.push_back(SDL_Vertex(
+    //        SDL_FPoint(tri[1].m_x, tri[1].m_y),
+    //        SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
+    //        SDL_FPoint(0, 0)
+    //    ));
+    //    vertices.push_back(SDL_Vertex(
+    //        SDL_FPoint(tri[2].m_x, tri[2].m_y),
+    //        SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
+    //        SDL_FPoint(0, 0)
+    //    ));
 
-        SDL_RenderGeometry(m_renderer, NULL, vertices.data(), 3, NULL, 0);
-    }
-    void Renderer::RenderOutlineTriangleColor(const Triangle2DC& tri) const
-    {
-        SDL_SetRenderDrawColorFloat(m_renderer, tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w);
-        SDL_RenderLine(m_renderer, tri[0].m_x, tri[0].m_y, tri[1].m_x, tri[1].m_y);
-        SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
-        SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
-    }
-    void Renderer::RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const
-    {
-        if (points.size() > 1)
-        {
-            std::vector<SDL_Vertex> vertices;
+    //    SDL_RenderGeometry(m_renderer, NULL, vertices.data(), 3, NULL, 0);
+    //}
+    //void Renderer::RenderOutlineTriangleColor(const Triangle2DC& tri) const
+    //{
+    //    SDL_SetRenderDrawColorFloat(m_renderer, tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w);
+    //    SDL_RenderLine(m_renderer, tri[0].m_x, tri[0].m_y, tri[1].m_x, tri[1].m_y);
+    //    SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
+    //    SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
+    //    SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    //}
+    //void Renderer::RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const
+    //{
+    //    if (points.size() > 1)
+    //    {
+    //        std::vector<SDL_Vertex> vertices;
 
-            for (const Vector2C& point : points)
-            {
-                vertices.push_back(SDL_Vertex(
-                    SDL_FPoint(point.m_x, point.m_y),
-                    SDL_FColor(point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w),
-                    SDL_FPoint(0, 0)
-                ));
-            }
-            SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
-        }
-    }
-    void Renderer::RenderCustomOutlineColor(const std::vector<Vector2C>& points) const
-    {
-        size_t size = points.size();
-        if (size > 1)
-        {
-            for (size_t index = 0; index < size; index++)
-            {
-                SDL_SetRenderDrawColorFloat(m_renderer,
-                    points[index].m_color.m_x, points[index].m_color.m_y, points[index].m_color.m_z, points[index].m_color.m_w
-                );
-                SDL_RenderLine(m_renderer,
-                    points[index].m_x, points[index].m_y,
-                    points[(index + 1) % size].m_x, points[(index + 1) % size].m_y
-                );
-            }
-            SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
-        }
-    }
+    //        for (const Vector2C& point : points)
+    //        {
+    //            vertices.push_back(SDL_Vertex(
+    //                SDL_FPoint(point.m_x, point.m_y),
+    //                SDL_FColor(point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w),
+    //                SDL_FPoint(0, 0)
+    //            ));
+    //        }
+    //        SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
+    //    }
+    //}
+    //void Renderer::RenderCustomOutlineColor(const std::vector<Vector2C>& points) const
+    //{
+    //    size_t size = points.size();
+    //    if (size > 1)
+    //    {
+    //        for (size_t index = 0; index < size; index++)
+    //        {
+    //            SDL_SetRenderDrawColorFloat(m_renderer,
+    //                points[index].m_color.m_x, points[index].m_color.m_y, points[index].m_color.m_z, points[index].m_color.m_w
+    //            );
+    //            SDL_RenderLine(m_renderer,
+    //                points[index].m_x, points[index].m_y,
+    //                points[(index + 1) % size].m_x, points[(index + 1) % size].m_y
+    //            );
+    //        }
+    //        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    //    }
+    //}
 
-    void Renderer::CameraProjection(const std::vector<VertexUV3D>* vertices, const std::vector<int>* indices, std::vector<VertexUV2D>* drawVertices, std::vector<int>* drawIndices) const
-    {
-        std::vector<int> indicesConversion;
-        int validIndex = 0;
+    //void Renderer::CameraProjection(const std::vector<VertexUV3D>* vertices, const std::vector<int>* indices, std::vector<VertexUV2D>* drawVertices, std::vector<int>* drawIndices) const
+    //{
+    //    std::vector<int> indicesConversion;
+    //    int validIndex = 0;
 
-        for (int index = 0; index < vertices->size(); index++)
-        {
-            const VertexUV3D& vertex = vertices->at(index);
+    //    for (int index = 0; index < vertices->size(); index++)
+    //    {
+    //        const VertexUV3D& vertex = vertices->at(index);
 
-            Vector3 pointVector = Vector3(m_cam->m_transform.m_pos, vertex.m_pos);
+    //        Vector3 pointVector = Vector3(m_cam->m_transform.m_pos, vertex.m_pos);
 
-            float z = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
+    //        float z = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
 
-            if (z < 0.00001f)
-            {
-                indicesConversion.push_back(-1);
-                continue;
-            }
+    //        if (z < 0.00001f)
+    //        {
+    //            indicesConversion.push_back(-1);
+    //            continue;
+    //        }
 
-            float x = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
-            float y = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
+    //        float x = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
+    //        float y = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
 
-            float px = x / z * m_cam->m_fovScaling / m_cam->m_aspect;
-            float py = y / z * m_cam->m_fovScaling;
+    //        float px = x / z * m_cam->m_fovScaling / m_cam->m_aspect;
+    //        float py = y / z * m_cam->m_fovScaling;
 
-            Vector2 screenPos((px + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py) * 0.5f * m_cam->m_ScreenDim.m_y);
+    //        Vector2 screenPos((px + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py) * 0.5f * m_cam->m_ScreenDim.m_y);
 
-            drawVertices->push_back(VertexUV2D(
-                    screenPos.m_x, screenPos.m_y,
-                    vertex.m_uv.m_x, vertex.m_uv.m_y
-                ));
+    //        drawVertices->push_back(VertexUV2D(
+    //                screenPos.m_x, screenPos.m_y,
+    //                vertex.m_uv.m_x, vertex.m_uv.m_y
+    //            ));
 
-            indicesConversion.push_back(validIndex++);
-        }
+    //        indicesConversion.push_back(validIndex++);
+    //    }
 
-        for (int index = 0; index < indices->size(); index += 3)
-        {
-            int i0 = indices->at(index);
-            int i1 = indices->at(index + 1);
-            int i2 = indices->at(index + 2);
+    //    for (int index = 0; index < indices->size(); index += 3)
+    //    {
+    //        int i0 = indices->at(index);
+    //        int i1 = indices->at(index + 1);
+    //        int i2 = indices->at(index + 2);
 
-            if (indicesConversion[i0] == -1 || indicesConversion[i1] == -1 || indicesConversion[i2] == -1) { continue; }
+    //        if (indicesConversion[i0] == -1 || indicesConversion[i1] == -1 || indicesConversion[i2] == -1) { continue; }
 
-            drawIndices->push_back(indicesConversion[i0]);
-            drawIndices->push_back(indicesConversion[i1]);
-            drawIndices->push_back(indicesConversion[i2]);
-        }
-    }
+    //        drawIndices->push_back(indicesConversion[i0]);
+    //        drawIndices->push_back(indicesConversion[i1]);
+    //        drawIndices->push_back(indicesConversion[i2]);
+    //    }
+    //}
 
-    void Renderer::Render3DCustomOutline(const std::vector<VertexUV3D>& points, const std::vector<int>& indices) const
-    {
-        std::vector<VertexUV2D> drawPoints;
-        std::vector<int> drawIndices;
+    //void Renderer::Render3DCustomOutline(const std::vector<VertexUV3D>& points, const std::vector<int>& indices) const
+    //{
+    //    std::vector<VertexUV2D> drawPoints;
+    //    std::vector<int> drawIndices;
 
-        CameraProjection(&points, &indices, &drawPoints, &drawIndices);
+    //    CameraProjection(&points, &indices, &drawPoints, &drawIndices);
 
-        for (int index = 0; index < drawIndices.size(); index += 3)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int nextI = (i + 1) % 3;
-                SDL_RenderLine(m_renderer,
-                    drawPoints[drawIndices[index + i]].m_pos.m_x, drawPoints[drawIndices[index + i]].m_pos.m_y,
-                    drawPoints[drawIndices[index + nextI]].m_pos.m_x, drawPoints[drawIndices[index + nextI]].m_pos.m_y
-                );
-            }
-        }
-    }
-    void Renderer::Render3DCustomTexture(const std::vector<VertexUV3D>& points, const std::vector<int>& indices, const Texture* texture) const
-    {
-        std::vector<VertexUV2D> drawPoints;
-        std::vector<int> drawIndices;
+    //    for (int index = 0; index < drawIndices.size(); index += 3)
+    //    {
+    //        for (int i = 0; i < 3; i++)
+    //        {
+    //            int nextI = (i + 1) % 3;
+    //            SDL_RenderLine(m_renderer,
+    //                drawPoints[drawIndices[index + i]].m_pos.m_x, drawPoints[drawIndices[index + i]].m_pos.m_y,
+    //                drawPoints[drawIndices[index + nextI]].m_pos.m_x, drawPoints[drawIndices[index + nextI]].m_pos.m_y
+    //            );
+    //        }
+    //    }
+    //}
+    //void Renderer::Render3DCustomTexture(const std::vector<VertexUV3D>& points, const std::vector<int>& indices, const Texture* texture) const
+    //{
+    //    std::vector<VertexUV2D> drawPoints;
+    //    std::vector<int> drawIndices;
 
-        CameraProjection(&points, &indices, &drawPoints, &drawIndices);
+    //    CameraProjection(&points, &indices, &drawPoints, &drawIndices);
 
-        std::vector<SDL_Vertex> vertices;
+    //    std::vector<SDL_Vertex> vertices;
 
-        for (int index = 0; index < drawPoints.size(); index++)
-        {
-            vertices.push_back(SDL_Vertex(
-                SDL_FPoint(drawPoints[index].m_pos.m_x, drawPoints[index].m_pos.m_y),
-                SDL_FColor(1.0f, 1.0f, 1.0f, 1.0f),
-                SDL_FPoint(drawPoints[index].m_uv.m_x, drawPoints[index].m_uv.m_y)
-            ));
-        }
+    //    for (int index = 0; index < drawPoints.size(); index++)
+    //    {
+    //        vertices.push_back(SDL_Vertex(
+    //            SDL_FPoint(drawPoints[index].m_pos.m_x, drawPoints[index].m_pos.m_y),
+    //            SDL_FColor(1.0f, 1.0f, 1.0f, 1.0f),
+    //            SDL_FPoint(drawPoints[index].m_uv.m_x, drawPoints[index].m_uv.m_y)
+    //        ));
+    //    }
 
-        SDL_RenderGeometry(
-            m_renderer, texture->m_texture,
-            vertices.data(), static_cast<int>(vertices.size()),
-            drawIndices.data(), static_cast<int>(drawIndices.size())
-        );
-    }
+    //    SDL_RenderGeometry(
+    //        m_renderer, texture->m_texture,
+    //        vertices.data(), static_cast<int>(vertices.size()),
+    //        drawIndices.data(), static_cast<int>(drawIndices.size())
+    //    );
+    //}
 }
