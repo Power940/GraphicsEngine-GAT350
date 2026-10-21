@@ -3,6 +3,7 @@
 #include "Renderer/Pipeline.h"
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
+#include "Renderer/Texture.h"
 
 
 namespace STR_FALL
@@ -123,5 +124,16 @@ namespace STR_FALL
     void Renderer::SetFragmentUniforms(uint32_t slot, const void* data, uint32_t size)
     {
         SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, slot, data, size);
+    }
+
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
+    {
+        SDL_GPUTextureSamplerBinding binding
+        {
+            .texture = texture.m_GPUTexture,
+            .sampler = texture.m_GPUSampler
+        };
+
+        SDL_BindGPUFragmentSamplers(m_GPURenderPass, slot, &binding, 1);
     }
 }
