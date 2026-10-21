@@ -47,10 +47,10 @@ int main()
     float leftRot = F_PI;
 
 
-    auto model = ResourceManager().Get<Model>("models/spot.obj", STR_Engine::Get().m_renderer);
-    auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", STR_Engine::Get().m_renderer);
-    auto vshader = ResourceManager().Get<Shader>("shaders/unlit.vert", STR_Engine::Get().m_renderer, 1);
-    auto fshader = ResourceManager().Get<Shader>("shaders/unlit.frag", STR_Engine::Get().m_renderer, 1, 1);
+    auto model = ResourceManager().Get<Model>("models/BadGuy.obj", STR_Engine::Get().m_renderer);
+    auto texture = ResourceManager().Get<Texture>("textures/BadGuy_Material_BaseColor.png", STR_Engine::Get().m_renderer);
+    auto vshader = ResourceManager().Get<Shader>("shaders/lit.vert", STR_Engine::Get().m_renderer, 1);
+    auto fshader = ResourceManager().Get<Shader>("shaders/lit.frag", STR_Engine::Get().m_renderer, 1, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Model::Vertex));

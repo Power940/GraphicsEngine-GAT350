@@ -10,9 +10,12 @@ namespace STR_FALL
 {
     bool Renderer::Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT)
     {
+        m_WINDOW_WIDTH = WINDOW_WIDTH;
+        m_WINDOW_HEIGHT = WINDOW_HEIGHT;
+
         SDL_Init(SDL_INIT_VIDEO);
 
-        m_window = SDL_CreateWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+        m_window = SDL_CreateWindow(name, m_WINDOW_WIDTH, m_WINDOW_HEIGHT, 0);
         if (m_window == nullptr) {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
             SDL_Quit();
@@ -32,8 +35,7 @@ namespace STR_FALL
         SDL_ClaimWindowForGPUDevice(m_GPUDevice, m_window);
         std::cout << "GPU Driver Initialized: " << SDL_GetGPUDeviceDriver(m_GPUDevice) << std::endl;
 
-        m_WINDOW_WIDTH = WINDOW_WIDTH;
-        m_WINDOW_HEIGHT = WINDOW_HEIGHT;
+        CreateDepthBuffer();
 
         return true;
     }
@@ -87,13 +89,23 @@ namespace STR_FALL
         if (swapchainTexture != nullptr)
         {
             // configure the color target attachments (This handles clearing the screen)
-            SDL_GPUColorTargetInfo color_target_info{};
-            color_target_info.texture = swapchainTexture;
-            color_target_info.clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f };
-            color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
-            color_target_info.store_op = SDL_GPU_STOREOP_STORE;
+            SDL_GPUColorTargetInfo color_target_info{
+                .texture = swapchainTexture,
+                .clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f },
+                .load_op = SDL_GPU_LOADOP_CLEAR,
+                .store_op = SDL_GPU_STOREOP_STORE,
+            };
 
-            m_GPURenderPass = SDL_BeginGPURenderPass(m_GPUCommandBuffer, &color_target_info, 1, nullptr);
+            SDL_GPUDepthStencilTargetInfo depthTargetInfo{
+                .texture = m_GPUDepthTexture,
+                .clear_depth = 1.0f,
+                .load_op = SDL_GPU_LOADOP_CLEAR,
+                .store_op = SDL_GPU_STOREOP_DONT_CARE,
+                .stencil_load_op = SDL_GPU_LOADOP_DONT_CARE,
+                .stencil_store_op = SDL_GPU_STOREOP_DONT_CARE,
+            };
+
+            m_GPURenderPass = SDL_BeginGPURenderPass(m_GPUCommandBuffer, &color_target_info, 1, &depthTargetInfo);
         }
 
         return true;
@@ -135,5 +147,21 @@ namespace STR_FALL
         };
 
         SDL_BindGPUFragmentSamplers(m_GPURenderPass, slot, &binding, 1);
+    }
+
+    void Renderer::CreateDepthBuffer()
+    {
+        SDL_GPUTextureCreateInfo depthInfo{
+            .type = SDL_GPU_TEXTURETYPE_2D,
+            .format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
+            .usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+            .width = static_cast<uint32_t>(m_WINDOW_WIDTH),
+            .height = static_cast<uint32_t>(m_WINDOW_HEIGHT),
+            .layer_count_or_depth = 1,
+            .num_levels = 1,
+            .sample_count = SDL_GPU_SAMPLECOUNT_1
+        };
+
+        m_GPUDepthTexture = SDL_CreateGPUTexture(m_GPUDevice, &depthInfo);
     }
 }

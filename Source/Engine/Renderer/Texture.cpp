@@ -7,7 +7,11 @@ namespace STR_FALL
 {
 	Texture::~Texture()
 	{
-		if (m_GPUDevice) { SDL_ReleaseGPUSampler(m_GPUDevice, m_GPUSampler); SDL_ReleaseGPUTexture(m_GPUDevice, m_GPUTexture); }
+		if (m_GPUDevice)
+		{
+			if (m_GPUSampler) { SDL_ReleaseGPUSampler(m_GPUDevice, m_GPUSampler); }
+			if (m_GPUTexture) { SDL_ReleaseGPUTexture(m_GPUDevice, m_GPUTexture); }
+		}
 	}
 
 	bool Texture::Load(const std::string& filename, const Renderer& renderer)

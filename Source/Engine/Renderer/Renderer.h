@@ -14,6 +14,7 @@ namespace STR_FALL
 		SDL_GPUDevice* m_GPUDevice = nullptr;
 		SDL_GPUCommandBuffer* m_GPUCommandBuffer = nullptr;
 		SDL_GPURenderPass* m_GPURenderPass = nullptr;
+		SDL_GPUTexture* m_GPUDepthTexture = nullptr;
 
 		int m_WINDOW_WIDTH = -1;
 		int m_WINDOW_HEIGHT = -1;
@@ -38,6 +39,8 @@ namespace STR_FALL
 		void SetFragmentUniforms(uint32_t slot, const void* data, uint32_t size);
 
 		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
+
+		void CreateDepthBuffer();
 
 		inline int GetSreenWidth() const { return m_WINDOW_WIDTH; }
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }

@@ -34,9 +34,16 @@ namespace STR_FALL
 				.cull_mode = SDL_GPU_CULLMODE_BACK,
 				.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE
 			},
+			.depth_stencil_state = SDL_GPUDepthStencilState{
+				.compare_op = SDL_GPU_COMPAREOP_LESS,
+				.enable_depth_test = true,
+				.enable_depth_write = true
+			},
 			.target_info = SDL_GPUGraphicsPipelineTargetInfo{
 				.color_target_descriptions = colorTargetDescriptions.data(),
-				.num_color_targets = colorTargetDescriptions.size()
+				.num_color_targets = colorTargetDescriptions.size(),
+				.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
+				.has_depth_stencil_target = true
 			}
 		};
 
