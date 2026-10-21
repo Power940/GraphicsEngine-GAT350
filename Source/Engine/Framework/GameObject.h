@@ -2,7 +2,6 @@
 #include <Components/Component.h>
 #include <Math/Structs.h>
 #include "Object.h"
-#include <Components/RendererComponent.h>
 #include <concepts>
 #include <rapidjson/document.h>
 #include <Serialization/Json.h>
@@ -54,11 +53,11 @@ namespace STR_FALL
 				{
 					continue;
 				}
-				RendererComponent* rend = dynamic_cast<RendererComponent*>(component.get());
-				if (rend)
-				{
-					rend->Draw(r);
-				}
+				//RendererComponent* rend = dynamic_cast<RendererComponent*>(component.get());
+				//if (rend)
+				//{
+				//	rend->Draw(r);
+				//}
 			}
 		}
 		virtual void OnCollision(GameObject* other) {}

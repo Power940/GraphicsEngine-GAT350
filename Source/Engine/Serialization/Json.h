@@ -4,7 +4,6 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-#include <Renderer/Mesh.h>
 
 
 #define JSON_READ_NAME(value, string, data) STR_FALL::Json::Read(value, string, data)
@@ -57,6 +56,4 @@ namespace STR_FALL::Json
 	/// <para>32 ones and zeros -> raw underlying 32 int | Left to Right -> Big to Small</para>
 	/// </summary>
 	bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt& data);
-
-	bool Read(const rapidjson::Value& value, const std::string& name, Mesh3D& data);
 }

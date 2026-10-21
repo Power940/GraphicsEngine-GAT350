@@ -6,13 +6,8 @@
 #include "Input/Input.h"
 #include "Core/StarTime.h"
 #include "Framework/GameObject.h"
-#include "Audio/Audio.h"
 #include "Framework/Scene.h"
 #include "Core/file.h"
-#include "Renderer/Text.h"
-#include "Framework/Game.h"
-#include "Renderer/ParticleSystem.h"
-#include "Renderer/Texture.h"
 #include "Resources/ResourceManager.h"
 #include "Core/StringUtils.h"
 #include "Core/Factory.h"
@@ -29,8 +24,6 @@ namespace STR_FALL
 		inline static Renderer m_renderer;
 		inline static Input m_input;
 		inline static Time m_time;
-		inline static Audio m_audio;
-		inline static ParticleSystem2D m_PS2D;
 
 		int Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT);
 		void Shutdown();

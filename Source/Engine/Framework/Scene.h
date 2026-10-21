@@ -1,5 +1,4 @@
 #pragma once
-#include "Game.h"
 #include "GameObject.h"
 #include "Object.h"
 #include <memory>
@@ -18,8 +17,6 @@ namespace STR_FALL
 		bool m_safeToAddObject = true;
 
 	public:
-		class Game* m_game = nullptr;
-
 		void AddObject(std::unique_ptr<GameObject> object)
 		{
 			if (object->m_scene == nullptr) { object->m_scene = this; }

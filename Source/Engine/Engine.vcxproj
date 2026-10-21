@@ -19,12 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Audio\Audio.cpp" />
-    <ClCompile Include="Components\MeshColliderComponent.cpp" />
-    <ClCompile Include="Components\MeshRenderer3DComponent.cpp" />
     <ClCompile Include="Core\file.cpp" />
     <ClCompile Include="Core\StarTime.cpp" />
-    <ClCompile Include="Framework\Game.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="Input\Input.cpp" />
@@ -37,17 +33,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Renderer\Font.cpp" />
     <ClCompile Include="Renderer\IndexBuffer.cpp" />
     <ClCompile Include="Renderer\Model.cpp" />
-    <ClCompile Include="Renderer\ParticleSystem.cpp" />
     <ClCompile Include="Renderer\Pipeline.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />
-    <ClCompile Include="Renderer\Text.cpp" />
-    <ClCompile Include="Renderer\Texture.cpp" />
-    <ClCompile Include="Renderer\TextureFrames.cpp" />
-    <ClCompile Include="Renderer\TileMap.cpp" />
     <ClCompile Include="Renderer\VertexBuffer.cpp" />
     <ClCompile Include="Resources\Resource.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
@@ -60,19 +50,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio\Audio.h" />
-    <ClInclude Include="Components\ColliderComponent.h" />
     <ClInclude Include="Components\Component.h" />
-    <ClInclude Include="Components\MeshColliderComponent.h" />
-    <ClInclude Include="Components\MeshRenderer3DComponent.h" />
-    <ClInclude Include="Components\RendererComponent.h" />
     <ClInclude Include="Core\Factory.h" />
     <ClInclude Include="Core\file.h" />
     <ClInclude Include="Core\Random.h" />
     <ClInclude Include="Core\Singleton.h" />
     <ClInclude Include="Core\StarTime.h" />
     <ClInclude Include="Core\StringUtils.h" />
-    <ClInclude Include="Framework\Game.h" />
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\Object.h" />
     <ClInclude Include="Framework\Scene.h" />
@@ -80,18 +64,11 @@
     <ClInclude Include="Math\Constants.h" />
     <ClInclude Include="Math\Structs.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Renderer\Font.h" />
     <ClInclude Include="Renderer\IndexBuffer.h" />
-    <ClInclude Include="Renderer\Mesh.h" />
     <ClInclude Include="Renderer\Model.h" />
-    <ClInclude Include="Renderer\ParticleSystem.h" />
     <ClInclude Include="Renderer\Pipeline.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\Shader.h" />
-    <ClInclude Include="Renderer\Text.h" />
-    <ClInclude Include="Renderer\Texture.h" />
-    <ClInclude Include="Renderer\TextureFrames.h" />
-    <ClInclude Include="Renderer\TileMap.h" />
     <ClInclude Include="Renderer\VertexBuffer.h" />
     <ClInclude Include="Resources\Resource.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
@@ -180,7 +157,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -191,8 +168,9 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\FMOD\core\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -206,7 +184,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -217,8 +195,9 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\FMOD\core\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -230,7 +209,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -241,8 +220,9 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\FMOD\core\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -256,7 +236,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)Source\Engine;$(SolutionDir)ThirdParty\glm;$(SolutionDir)ThirdParty\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -267,8 +247,9 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\FMOD\core\lib\$(PlatformTarget);$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

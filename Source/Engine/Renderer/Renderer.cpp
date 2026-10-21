@@ -18,11 +18,6 @@ namespace STR_FALL
             return false;
         }
 
-        if (!TTF_Init()) {
-            std::cerr << "TTF_Init Error: " << SDL_GetError() << std::endl;
-            return false;
-        }
-
         SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
         m_GPUDevice = SDL_CreateGPUDevice(formats, true, nullptr);
         if (!m_GPUDevice)
@@ -43,7 +38,6 @@ namespace STR_FALL
     }
     void Renderer::ShutDown()
     {
-        TTF_Quit();
         SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
         SDL_Quit();

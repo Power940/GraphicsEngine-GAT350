@@ -2,12 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Audio\Audio.cpp">
-      <Filter>Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\MeshRenderer3DComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Core\file.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -26,22 +20,7 @@
     <ClCompile Include="Math\Structs.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Font.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\ParticleSystem.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\Renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Text.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Texture.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\TextureFrames.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Resources\Resource.cpp">
@@ -54,15 +33,6 @@
       <Filter>Serialization</Filter>
     </ClCompile>
     <ClCompile Include="StarFallEngine.cpp" />
-    <ClCompile Include="Renderer\TileMap.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Game.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\MeshColliderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\Pipeline.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -81,19 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Audio\Audio.h">
-      <Filter>Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\ColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Components\Component.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\MeshRenderer3DComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\RendererComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Core\Factory.h">
@@ -117,9 +75,6 @@
     <ClInclude Include="Framework\Scene.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Game.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\GameObject.h">
       <Filter>Framework</Filter>
     </ClInclude>
@@ -135,25 +90,7 @@
     <ClInclude Include="Math\Constants.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\TextureFrames.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Font.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Mesh.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\ParticleSystem.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Text.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Texture.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Resources\ResourceManager.h">
@@ -166,12 +103,6 @@
       <Filter>Serialization</Filter>
     </ClInclude>
     <ClInclude Include="StarFallEngine.h" />
-    <ClInclude Include="Renderer\TileMap.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\MeshColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Pipeline.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -189,9 +120,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Audio">
-      <UniqueIdentifier>{7288074c-9e1f-4370-8fbd-9217f0c6eb0a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{e5b1fba4-ed24-4369-8c7b-7f5d1c1e0ce9}</UniqueIdentifier>
     </Filter>
