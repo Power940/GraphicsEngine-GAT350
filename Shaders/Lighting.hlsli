@@ -8,6 +8,9 @@ struct Material
 {
     float2 tiling;
     float2 offset;
+    
+    float shininess;
+    float3 padding1;
 };
 
 struct Light
@@ -16,11 +19,11 @@ struct Light
     uint type;
     
     float3 direction;
-    float padding2;
+    float padding1;
     
     float3 color;
     float intensity;
     
-    float3 ambiant;
-    float padding3;
+    float3 ambient;
+    float padding2;
 };

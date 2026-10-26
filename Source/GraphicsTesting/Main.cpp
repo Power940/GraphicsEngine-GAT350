@@ -19,15 +19,12 @@ using namespace STR_FALL;
 int const WINDOW_WIDTH = 1920;
 int const WINDOW_HEIGHT = 1080;
 
-enum class LightType : uint8_t
+enum class LightType : uint32_t
 {
     LIGHT_DIRECTIONAL,
     LIGHT_POINT,
     LIGHT_SPOT
 };
-
-
-
 struct VertexUniform
 {
     glm::mat4 mvp;
@@ -40,18 +37,21 @@ struct LightUniform
     LightType type;
 
     glm::vec3 direction;
-    float padding2;
+    float padding1;
 
     glm::vec3 color;
     float intensity;
 
-    glm::vec3 ambiant;
-    float padding3;
+    glm::vec3 ambient;
+    float padding2;
 };
 struct MaterialUniform
 {
     glm::vec2 tiling;
     glm::vec2 offset;
+
+    float shininess;
+    glm::vec3 padding1;
 };
 
 
@@ -70,22 +70,24 @@ int main()
 
 
     VertexUniform vertexUniform;
-    LightUniform lightUniform{
+    LightUniform lightUniform {
         .position = glm::vec3(10.0f, 10.0f, 10.0f),
         .type = LightType::LIGHT_POINT,
-        .direction = glm::vec3(0.0f, 0.5f, -0.5f),
-        .color = glm::vec3(0.5f, 0.5f, 0.6f),
+        .direction = glm::normalize(glm::vec3(-0.5f, -0.5f, -0.5f)),
+        .color = glm::vec3(0.5f, 0.5f, 0.5f),
         .intensity = 1.0f,
-        .ambiant = glm::vec3(0.75f)
+        .ambient = glm::vec3(0.5f)
     };
-    MaterialUniform materialUnifrom{
+    MaterialUniform materialUnifrom {
         .tiling = glm::vec2(1.0f),
-        .offset = glm::vec2(0.0f)
+        .offset = glm::vec2(0.0f),
+        .shininess = 20.0f
     };
 
     Transform3D t;
     t.m_scale = glm::vec3(0.1f);
     Color tint = Color();
+
     vertexUniform.camPos = glm::vec3(0, 0, 1);
     glm::vec3 camRot = glm::vec3(0, 0, 0);
     float upRot = 0.0f;
@@ -131,8 +133,6 @@ int main()
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
 
-        //t.m_rot.x += F_HPI * dt;
-
         Vector3 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S).Normalize() * dt;
         float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL) * dt;
 
@@ -140,8 +140,6 @@ int main()
         vertexUniform.camPos.x += dir.m_x * cosf(leftRot) + dir.m_y * sinf(leftRot);
         vertexUniform.camPos.z += -dir.m_x * sinf(leftRot) + dir.m_y * cosf(leftRot);
         vertexUniform.camPos.y += up;
-
-        //materialUnifrom.offset.x += dt;
 
         auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));
         auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 50.0f);
