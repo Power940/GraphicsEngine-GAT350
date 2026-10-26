@@ -35,5 +35,5 @@ void Input::Update()
 	}
 
 	m_mousePrevPos = m_mousePos;
-	m_buttonStates = SDL_GetMouseState(&m_mousePos.m_x, &m_mousePos.m_y);
+	m_buttonStates = SDL_GetMouseState(&m_mousePos.x, &m_mousePos.y);
 }

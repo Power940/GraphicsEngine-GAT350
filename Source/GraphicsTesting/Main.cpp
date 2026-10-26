@@ -19,6 +19,8 @@ using namespace STR_FALL;
 int const WINDOW_WIDTH = 1920;
 int const WINDOW_HEIGHT = 1080;
 
+
+
 enum class LightType : uint32_t
 {
     LIGHT_DIRECTIONAL,
@@ -56,8 +58,6 @@ struct MaterialUniform
 
 
 
-
-
 int main()
 {
     SetWorkingDirectory("Assets");
@@ -86,7 +86,7 @@ int main()
 
     Transform3D t;
     t.m_scale = glm::vec3(0.1f);
-    Color tint = Color();
+    glm::vec4 tint = glm::vec4(1.0f);
 
     vertexUniform.camPos = glm::vec3(0, 0, 1);
     glm::vec3 camRot = glm::vec3(0, 0, 0);
@@ -106,8 +106,6 @@ int main()
     pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
     pipeline->Create(*vshader.get(), *fshader.get(), STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
     
-
-
 
 
     SDL_Event SDLEvent;
@@ -133,12 +131,13 @@ int main()
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
 
-        Vector3 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S).Normalize() * dt;
+        glm::vec2 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S);
+        if (glm::length(dir) > 0.0001f) { dir = glm::normalize(dir) * dt; }
         float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL) * dt;
 
         camRot = glm::vec3(cosf(upRot) * sinf(leftRot), sinf(upRot), cosf(upRot) * cosf(leftRot));
-        vertexUniform.camPos.x += dir.m_x * cosf(leftRot) + dir.m_y * sinf(leftRot);
-        vertexUniform.camPos.z += -dir.m_x * sinf(leftRot) + dir.m_y * cosf(leftRot);
+        vertexUniform.camPos.x += dir.x * cosf(leftRot) + dir.y * sinf(leftRot);
+        vertexUniform.camPos.z += -dir.x * sinf(leftRot) + dir.y * cosf(leftRot);
         vertexUniform.camPos.y += up;
 
         auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));

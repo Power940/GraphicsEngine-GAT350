@@ -257,56 +257,6 @@ namespace STR_FALL::Json
 
         return true;
     }
-    bool Read(const rapidjson::Value& value, const std::string& name, Camera3D& data)
-    {
-        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 12)
-        {
-            std::cerr << "Could not read JSON value (Camera3D): " << name << std::endl;
-            return false;
-        }
-
-        Transform3D t;
-        float fov;
-        Vector2 sd;
-
-        auto& array = value[name.c_str()];
-        if (!array[0].IsNumber() || !array[1].IsNumber() || !array[2].IsNumber()) { std::cerr << "Could not read JSON value (Camera3D): " << name << std::endl; return false; }
-        t.m_pos = glm::vec3(array[0].GetFloat(), array[1].GetFloat(), array[2].GetFloat());
-        if (!array[3].IsNumber() || !array[4].IsNumber() || !array[5].IsNumber()) { std::cerr << "Could not read JSON value (Camera3D): " << name << std::endl; return false; }
-        t.m_scale = glm::vec3(array[3].GetFloat(), array[4].GetFloat(), array[5].GetFloat());
-        if (!array[6].IsNumber() || !array[7].IsNumber() || !array[8].IsNumber()) { std::cerr << "Could not read JSON value (Camera3D): " << name << std::endl; return false; }
-        t.m_rot = glm::vec3(array[6].GetFloat(), array[7].GetFloat(), array[8].GetFloat());
-
-        if (!array[9].IsNumber()) { std::cerr << "Could not read JSON value (Camera3D): " << name << std::endl; return false; }
-        fov = array[9].GetFloat();
-
-        if (!array[10].IsNumber() || !array[11].IsNumber()) { std::cerr << "Could not read JSON value (Camera3D): " << name << std::endl; return false; }
-        sd = Vector2(array[10].GetFloat(), array[11].GetFloat());
-
-        data = Camera3D(t, fov, sd);
-
-        return true;
-    }
-    bool Read(const rapidjson::Value& value, const std::string& name, Color& data)
-    {
-        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 4)
-        {
-            std::cerr << "Could not read JSON value (Color): " << name << std::endl;
-            return false;
-        }
-
-        auto& array = value[name.c_str()];
-        if (!array[0].IsNumber()) { std::cerr << "Could not read JSON value (Color): " << name << std::endl; return false; }
-        data.m_x = array[0].GetFloat();
-        if (!array[1].IsNumber()) { std::cerr << "Could not read JSON value (Color): " << name << std::endl; return false; }
-        data.m_y = array[1].GetFloat();
-        if (!array[2].IsNumber()) { std::cerr << "Could not read JSON value (Color): " << name << std::endl; return false; }
-        data.m_z = array[2].GetFloat();
-        if (!array[3].IsNumber()) { std::cerr << "Could not read JSON value (Color): " << name << std::endl; return false; }
-        data.m_w = array[3].GetFloat();
-
-        return true;
-    }
     bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt& data)
     {
         if (value.HasMember(name.c_str()) && value[name.c_str()].IsNumber())

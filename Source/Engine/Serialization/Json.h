@@ -39,17 +39,6 @@ namespace STR_FALL::Json
 	bool Read(const rapidjson::Value& value, const std::string& name, Transform3D& data);
 
 	/// <summary>
-	/// <para>Index: 0, 1, 2 -> Position</para>
-	/// <para>Index: 3, 4, 5 -> Scale</para>
-	/// <para>Index: 6, 7, 8 -> Rotation</para>
-	/// <para>Index: 9 -> FOV</para>
-	/// <para>Index: 10, 11 -> Screen Size</para>
-	/// </summary>
-	bool Read(const rapidjson::Value& value, const std::string& name, Camera3D& data);
-
-	bool Read(const rapidjson::Value& value, const std::string& name, Color& data);
-
-	/// <summary>
 	/// <para>Options:</para>
 	/// <para>Int -> raw underlying 32 int</para>
 	/// <para>4 unsigned bytes -> raw underlying 32 int | Left to Right -> Big to Small</para>
