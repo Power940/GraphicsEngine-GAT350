@@ -22,6 +22,7 @@ namespace STR_FALL
             return false;
         }
 
+        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan"); // Not needed but figured might as well add it just incase something breaks
         SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
         m_GPUDevice = SDL_CreateGPUDevice(formats, true, nullptr);
         if (!m_GPUDevice)

@@ -19,10 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="lit.frag.hlsl" />
-    <FxCompile Include="lit.vert.hlsl" />
-    <FxCompile Include="unlit.frag.hlsl" />
-    <FxCompile Include="unlit.vert.hlsl" />
+    <FxCompile Include="Gouraud.frag.hlsl" />
+    <FxCompile Include="Gouraud.vert.hlsl" />
+    <FxCompile Include="Unlit.frag.hlsl" />
+    <FxCompile Include="Unlit.vert.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lighting.hlsli" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

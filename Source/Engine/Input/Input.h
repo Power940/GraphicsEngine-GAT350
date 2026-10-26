@@ -18,6 +18,7 @@ namespace STR_FALL
 		uint32_t m_prevButtonStates = 0;
 
 		Vector2 m_mousePos = Vector2();
+        Vector2 m_mousePrevPos = m_mousePos;
 	public:
 		enum MouseButton
 		{
@@ -30,6 +31,9 @@ namespace STR_FALL
 
 		void Update();
 
+        bool LockHideMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, true); }
+        bool UnlockShowMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, false); }
+
 		bool GetKeyDown(int key) const { return m_keyStates.at(key); }
 		bool GetKeyPrevDown(int key) const { return m_prevKeyStates.at(key); }
 		bool GetKeyPressed(int key) const { return !m_prevKeyStates.at(key) && m_keyStates.at(key); }
@@ -40,7 +44,10 @@ namespace STR_FALL
 		bool GetMousePressed(MouseButton button) const { return !(m_prevButtonStates & button) && (m_buttonStates & button); }
 		bool GetMouseReleased(MouseButton button) const { return (m_prevButtonStates & button) && !(m_buttonStates & button); }
 
-		Vector2 GetMousePos() const { return m_mousePos; }
+        Vector2 GetMousePos() const { return m_mousePos; }
+        Vector2 GetPrevMousePos() const { return m_mousePrevPos; }
+
+        Vector2 GetMouseDiff() const { return m_mousePos - m_mousePrevPos; }
         int GetKeyDiff(int pos, int neg) const { return m_keyStates.at(pos) - m_keyStates.at(neg); }
         Vector2 GetKeyDir(int posX, int negX, int posY, int negY) const { return Vector2(static_cast<float>(m_keyStates.at(posX) - m_keyStates.at(negX)), static_cast<float>(m_keyStates.at(posY) - m_keyStates.at(negY))); }
 

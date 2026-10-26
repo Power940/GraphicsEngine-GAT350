@@ -7,17 +7,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="unlit.frag.hlsl">
+    <FxCompile Include="Unlit.frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="unlit.vert.hlsl">
+    <FxCompile Include="Unlit.vert.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="lit.vert.hlsl">
+    <FxCompile Include="Gouraud.vert.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="lit.frag.hlsl">
+    <FxCompile Include="Gouraud.frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lighting.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -34,5 +34,6 @@ void Input::Update()
 		std::copy(keyState, keyState + m_keyStates.size(), m_keyStates.begin());
 	}
 
+	m_mousePrevPos = m_mousePos;
 	m_buttonStates = SDL_GetMouseState(&m_mousePos.m_x, &m_mousePos.m_y);
 }
