@@ -78,19 +78,19 @@ int main()
     VertexUniform vertexUniform;
     LightUniform lightUniform {
         .position = glm::vec3(1.0f, 3.0f, 1.0f),
-        .type = LightType::POINT,
-        .direction = glm::vec3(0.0f, -1.0f, 0.0f),
+        .type = LightType::DIRECTIONAL,
+        .direction = glm::vec3(-1.0f, -1.0f, -1.0f),
         .innerCutoff = glm::cos(glm::radians(30.0f)),
         .color = glm::vec3(0.5f, 0.5f, 0.5f),
         .intensity = 1.0f,
         .ambient = glm::vec3(0.5f),
-        .outerCutoff = glm::cos(glm::radians(50.0f))
+        .outerCutoff = glm::cos(glm::radians(35.0f))
     };
     MaterialUniform materialUnifrom{
         .color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
         .tiling = glm::vec2(1.0f),
         .offset = glm::vec2(0.0f),
-        .shininess = 200.0f
+        .shininess = 20.0f
     };
 
     Transform3D t;
