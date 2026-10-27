@@ -21,6 +21,8 @@
   <ItemGroup>
     <FxCompile Include="Gouraud.frag.hlsl" />
     <FxCompile Include="Gouraud.vert.hlsl" />
+    <FxCompile Include="Phong.frag.hlsl" />
+    <FxCompile Include="Phong.vert.hlsl" />
     <FxCompile Include="Unlit.frag.hlsl" />
     <FxCompile Include="Unlit.vert.hlsl" />
   </ItemGroup>

@@ -39,16 +39,18 @@ struct LightUniform
     LightType type;
 
     glm::vec3 direction;
-    float padding1;
+    float innerCutoff;
 
     glm::vec3 color;
     float intensity;
 
     glm::vec3 ambient;
-    float padding2;
+    float outerCutoff;
 };
 struct MaterialUniform
 {
+    glm::vec4 color;
+
     glm::vec2 tiling;
     glm::vec2 offset;
 
@@ -73,12 +75,15 @@ int main()
     LightUniform lightUniform {
         .position = glm::vec3(10.0f, 10.0f, 10.0f),
         .type = LightType::LIGHT_POINT,
-        .direction = glm::normalize(glm::vec3(-0.5f, -0.5f, -0.5f)),
+        .direction = glm::vec3(0.0f, -1.0f, 0.0f),
+        .innerCutoff = 0.3f,
         .color = glm::vec3(0.5f, 0.5f, 0.5f),
         .intensity = 1.0f,
-        .ambient = glm::vec3(0.5f)
+        .ambient = glm::vec3(0.5f),
+        .outerCutoff = 0.6f
     };
-    MaterialUniform materialUnifrom {
+    MaterialUniform materialUnifrom{
+        .color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
         .tiling = glm::vec2(1.0f),
         .offset = glm::vec2(0.0f),
         .shininess = 20.0f
@@ -134,6 +139,18 @@ int main()
         glm::vec2 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S);
         if (glm::length(dir) > 0.0001f) { dir = glm::normalize(dir) * dt; }
         float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL) * dt;
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_0))
+        {
+            lightUniform.type = LightType::LIGHT_DIRECTIONAL;
+        }
+        else if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_1))
+        {
+            lightUniform.type = LightType::LIGHT_POINT;
+        }
+        else if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_2))
+        {
+            lightUniform.type = LightType::LIGHT_SPOT;
+        }
 
         camRot = glm::vec3(cosf(upRot) * sinf(leftRot), sinf(upRot), cosf(upRot) * cosf(leftRot));
         vertexUniform.camPos.x += dir.x * cosf(leftRot) + dir.y * sinf(leftRot);
@@ -150,7 +167,7 @@ int main()
         STR_Engine::Get().m_renderer.SetVertexUniforms(0, &vertexUniform, sizeof(vertexUniform));
         STR_Engine::Get().m_renderer.SetVertexUniforms(1, &lightUniform, sizeof(lightUniform));
         STR_Engine::Get().m_renderer.SetVertexUniforms(2, &materialUnifrom, sizeof(materialUnifrom));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &tint, sizeof(tint));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &materialUnifrom, sizeof(materialUnifrom));
         STR_Engine::Get().m_renderer.SetFragmentTexture(0, *texture);
         model->Draw(STR_Engine::Get().m_renderer);
         STR_Engine::Get().m_renderer.EndFrame();

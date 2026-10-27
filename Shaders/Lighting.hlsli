@@ -6,6 +6,8 @@
 
 struct Material
 {
+    float4 color;
+    
     float2 tiling;
     float2 offset;
     
@@ -19,11 +21,35 @@ struct Light
     uint type;
     
     float3 direction;
-    float padding1;
+    float innerCutoff;
     
     float3 color;
     float intensity;
     
     float3 ambient;
-    float padding2;
+    float outerCutoff;
+    
 };
+
+float3 getLightVector(Light light, float3 pos, out float attenuation)
+{
+    float3 L;
+    attenuation = 1.0f;
+    
+    if (light.type == LIGHT_DIRECTIONAL)
+    {
+        L = -normalize(light.direction);
+    }
+    else if (light.type == LIGHT_POINT)
+    {
+        L = normalize(light.position - pos);
+    }
+    else if (light.type == LIGHT_SPOT)
+    {
+        L = normalize(light.position - pos);
+        attenuation = smoothstep(light.outerCutoff, light.innerCutoff, dot(-L, light.position));
+
+    }
+    
+    return L;
+}
