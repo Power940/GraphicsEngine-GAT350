@@ -45,8 +45,8 @@ Output main(Input input)
     
     output.position = mul(mvp, float4(input.position, 1.0f));
     output.texcoord = (input.texcoord * material.tiling) + material.offset;
-    output.diffuse = radiance * NdotL + light.ambient * attenuation;
-    output.specular = float3(0.0f, 0.0f, 0.0f);
+    output.diffuse = radiance * NdotL * attenuation + light.ambient;
+    output.specular = 0.0f;
     
     if (NdotL > 0)
     {

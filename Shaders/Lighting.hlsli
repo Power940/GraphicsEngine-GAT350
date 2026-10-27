@@ -47,8 +47,10 @@ float3 getLightVector(Light light, float3 pos, out float attenuation)
     else if (light.type == LIGHT_SPOT)
     {
         L = normalize(light.position - pos);
-        attenuation = smoothstep(light.outerCutoff, light.innerCutoff, dot(-L, light.position));
-
+        attenuation = smoothstep(
+            light.outerCutoff, light.innerCutoff,
+            dot(normalize(light.direction), -L)
+        );
     }
     
     return L;

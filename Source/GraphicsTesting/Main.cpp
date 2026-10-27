@@ -23,15 +23,14 @@ int const WINDOW_HEIGHT = 1080;
 
 enum class LightType : uint32_t
 {
-    LIGHT_DIRECTIONAL,
-    LIGHT_POINT,
-    LIGHT_SPOT
+    DIRECTIONAL,
+    POINT,
+    SPOT
 };
-struct VertexUniform
+struct MatrixUniform
 {
     glm::mat4 mvp;
     glm::mat4 model;
-    glm::vec3 camPos;
 };
 struct LightUniform
 {
@@ -57,6 +56,10 @@ struct MaterialUniform
     float shininess;
     glm::vec3 padding1;
 };
+struct VertexUniform
+{
+    glm::vec3 camPos;
+};
 
 
 
@@ -71,37 +74,37 @@ int main()
 
 
 
+    MatrixUniform matrixUniform;
     VertexUniform vertexUniform;
     LightUniform lightUniform {
-        .position = glm::vec3(10.0f, 10.0f, 10.0f),
-        .type = LightType::LIGHT_POINT,
+        .position = glm::vec3(1.0f, 3.0f, 1.0f),
+        .type = LightType::POINT,
         .direction = glm::vec3(0.0f, -1.0f, 0.0f),
-        .innerCutoff = 0.3f,
+        .innerCutoff = glm::cos(glm::radians(30.0f)),
         .color = glm::vec3(0.5f, 0.5f, 0.5f),
         .intensity = 1.0f,
         .ambient = glm::vec3(0.5f),
-        .outerCutoff = 0.6f
+        .outerCutoff = glm::cos(glm::radians(50.0f))
     };
     MaterialUniform materialUnifrom{
         .color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
         .tiling = glm::vec2(1.0f),
         .offset = glm::vec2(0.0f),
-        .shininess = 20.0f
+        .shininess = 200.0f
     };
 
     Transform3D t;
-    t.m_scale = glm::vec3(0.1f);
     glm::vec4 tint = glm::vec4(1.0f);
 
-    vertexUniform.camPos = glm::vec3(0, 0, 1);
+    vertexUniform.camPos = glm::vec3(0, 0, 2);
     glm::vec3 camRot = glm::vec3(0, 0, 0);
     float upRot = 0.0f;
     float leftRot = F_PI;
 
-    auto model = ResourceManager().Get<Model>("models/BadGuy.obj", STR_Engine::Get().m_renderer);
+    auto model = ResourceManager().Get<Model>("models/sphere.obj", STR_Engine::Get().m_renderer);
     auto texture = ResourceManager().Get<Texture>("textures/BadGuy_Material_BaseColor.png", STR_Engine::Get().m_renderer);
-    auto vshader = ResourceManager().Get<Shader>("shaders/Gouraud.vert", STR_Engine::Get().m_renderer, 3);
-    auto fshader = ResourceManager().Get<Shader>("shaders/Gouraud.frag", STR_Engine::Get().m_renderer, 1, 1);
+    auto vshader = ResourceManager().Get<Shader>("shaders/Phong.vert", STR_Engine::Get().m_renderer, 1);
+    auto fshader = ResourceManager().Get<Shader>("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Model::Vertex));
@@ -141,15 +144,15 @@ int main()
         float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL) * dt;
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_0))
         {
-            lightUniform.type = LightType::LIGHT_DIRECTIONAL;
+            lightUniform.type = LightType::DIRECTIONAL;
         }
         else if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_1))
         {
-            lightUniform.type = LightType::LIGHT_POINT;
+            lightUniform.type = LightType::POINT;
         }
         else if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_2))
         {
-            lightUniform.type = LightType::LIGHT_SPOT;
+            lightUniform.type = LightType::SPOT;
         }
 
         camRot = glm::vec3(cosf(upRot) * sinf(leftRot), sinf(upRot), cosf(upRot) * cosf(leftRot));
@@ -159,15 +162,18 @@ int main()
 
         auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));
         auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 50.0f);
-        vertexUniform.model = t.GetMatrix();
-        vertexUniform.mvp = projection * view * vertexUniform.model;
+        matrixUniform.model = t.GetMatrix();
+        matrixUniform.mvp = projection * view * matrixUniform.model;
 
         STR_Engine::Get().m_renderer.BeginFrame();
         STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
-        STR_Engine::Get().m_renderer.SetVertexUniforms(0, &vertexUniform, sizeof(vertexUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(1, &lightUniform, sizeof(lightUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(2, &materialUnifrom, sizeof(materialUnifrom));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &materialUnifrom, sizeof(materialUnifrom));
+
+        STR_Engine::Get().m_renderer.SetVertexUniforms(0, &matrixUniform, sizeof(matrixUniform));
+
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &vertexUniform, sizeof(vertexUniform));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(1, &lightUniform, sizeof(lightUniform));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(2, &materialUnifrom, sizeof(materialUnifrom));
+
         STR_Engine::Get().m_renderer.SetFragmentTexture(0, *texture);
         model->Draw(STR_Engine::Get().m_renderer);
         STR_Engine::Get().m_renderer.EndFrame();
