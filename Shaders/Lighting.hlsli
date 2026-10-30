@@ -3,6 +3,7 @@
 #define LIGHT_DIRECTIONAL 0
 #define LIGHT_POINT 1
 #define LIGHT_SPOT 2
+#define MAX_LIGHTS 8
 
 struct Material
 {
@@ -17,19 +18,26 @@ struct Material
 
 struct Light
 {
-    float3 position;
     uint type;
-    
-    float3 direction;
-    float innerCutoff;
+    float3 position;
     
     float3 color;
     float intensity;
     
-    float3 ambient;
-    float outerCutoff;
+    float3 direction;
+    float innerCutoff;
     
+    float outerCutoff;
+    float3 ambient;
+    
+    float range;
+    float3 padding1;
 };
+
+float calculateAttenuation(float distance, float range)
+{
+    return pow(saturate(1 - (distance / range)), 2);
+}
 
 float3 getLightVector(Light light, float3 pos, out float attenuation)
 {
@@ -42,15 +50,18 @@ float3 getLightVector(Light light, float3 pos, out float attenuation)
     }
     else if (light.type == LIGHT_POINT)
     {
-        L = normalize(light.position - pos);
+        float LL = length(light.position - pos);
+        L = (light.position - pos) / LL;
+        attenuation = calculateAttenuation(LL, light.range);
     }
     else if (light.type == LIGHT_SPOT)
     {
-        L = normalize(light.position - pos);
+        float LL = length(light.position - pos);
+        L = (light.position - pos) / LL;
         attenuation = smoothstep(
             light.outerCutoff, light.innerCutoff,
             dot(normalize(light.direction), -L)
-        );
+        ) * calculateAttenuation(LL, light.range);;
     }
     
     return L;

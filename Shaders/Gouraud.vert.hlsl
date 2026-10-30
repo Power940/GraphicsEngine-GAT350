@@ -1,20 +1,25 @@
 #include "Lighting.hlsli"
 
-cbuffer VertexUniforms : register(b0, space1)
+
+cbuffer MatrixUniforms : register(b0, space1)
 {
     float4x4 mvp;
     float4x4 model;
+}
+cbuffer VertexUniforms : register(b1, space1)
+{
     float3 camPos;
     float padding;
 }
-cbuffer LightUniforms : register(b1, space1)
+cbuffer LightUniforms : register(b2, space1)
 {
     Light light;
 }
-cbuffer MatrerialUniforms : register(b2, space1)
+cbuffer MatrerialUniforms : register(b3, space1)
 {
     Material material;
 }
+
 
 struct Input
 {
