@@ -39,17 +39,13 @@ struct Light
     LightType type;
     glm::vec3 position;
 
-    glm::vec3 color;
-    float intensity;
+    glm::vec4 color; // xyz -> rgb, w -> intensity
 
-    glm::vec3 direction;
+    glm::vec4 direction; // w -> range
+
     float innerCutoff;
-
     float outerCutoff;
-    glm::vec3 ambient;
-
-    float range;
-    glm::vec3 padding1;
+    glm::vec2 padding1;
 };
 struct LightsUniform
 {
@@ -93,64 +89,50 @@ int main()
 
 
     MatrixUniform matrixUniform;
-    MatrixUniform lMatrixUniform;
     VertexUniform vertexUniform;
-    Light light1{
-        .type = LightType::POINT,
-        .position = glm::vec3(1.0f, 1.0f, 1.0f),
-        .color = glm::vec3(0.5f, 0.5f, 0.5f),
-        .intensity = 1.0f,
-        .direction = glm::vec3(-1.0f, -1.0f, -1.0f),
-        .innerCutoff = glm::cos(glm::radians(30.0f)),
-        .outerCutoff = glm::cos(glm::radians(35.0f)),
-        .ambient = glm::vec3(0.5f),
-        .range = 30.0f
-    };
-    Light light2{
-        .type = LightType::POINT,
-        .position = glm::vec3(1.0f, 1.0f, 1.0f),
-        .color = glm::vec3(1.0f, 0.0f, 0.0f),
-        .intensity = 1.0f,
-        .direction = glm::vec3(1.0f, -1.0f, -1.0f),
-        .innerCutoff = glm::cos(glm::radians(30.0f)),
-        .outerCutoff = glm::cos(glm::radians(35.0f)),
-        .ambient = glm::vec3(0.5f),
-        .range = 30.0f
-    };
-    Light light3{
-        .type = LightType::POINT,
-        .position = glm::vec3(1.0f, 1.0f, 1.0f),
-        .color = glm::vec3(0.0f, 0.0f, 1.0f),
-        .intensity = 1.0f,
-        .direction = glm::vec3(1.0f, -1.0f, 1.0f),
-        .innerCutoff = glm::cos(glm::radians(30.0f)),
-        .outerCutoff = glm::cos(glm::radians(35.0f)),
-        .ambient = glm::vec3(0.5f),
-        .range = 30.0f
-    };
     MaterialUniform materialUnifrom{
         .color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
         .tiling = glm::vec2(1.0f),
         .offset = glm::vec2(0.0f),
-        .shininess = 20.0f
+        .shininess = 50.0f
     };
     LightsUniform lightsUniform {
-        .lights = { light1, light2, light3 },
+        .lights = {
+            Light {
+                .type = LightType::DIRECTIONAL,
+                .position = glm::vec3(0.0f),
+                .color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
+                .direction = glm::vec4(0.0f, -1.0f, -1.0f, 30.0f),
+            },
+            Light {
+                .type = LightType::POINT,
+                .position = glm::vec3(1.0f, 0.0f, 0.0f),
+                .color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
+                .direction = glm::vec4(10.0f),
+            },
+            Light {
+                .type = LightType::SPOT,
+                .position = glm::vec3(-1.0f, 0.0f, 0.0f),
+                .color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+                .direction = glm::vec4(1.0f, 0.0f, 0.0f, 30.0f),
+                .innerCutoff = glm::cos(glm::radians(6.0f)),
+                .outerCutoff = glm::cos(glm::radians(8.0f)),
+            }
+        },
         .num_lights = 3,
         .ambiant = glm::vec3(0.5f)
     };
 
     Transform3D t;
-    t.m_scale = glm::vec3(0.2f);
-    glm::vec4 tint = glm::vec4(1.0f);
+    t.m_rot = glm::vec3(0.0f, F_PI, 0.0f);
 
-    vertexUniform.camPos = glm::vec3(0, 3, 0);
+    vertexUniform.camPos = glm::vec3(0, 0, 2);
     glm::vec3 camRot = glm::vec3(0, 0, 0);
     float upRot = 0.0f;
     float leftRot = F_PI;
     
-    auto model = ResourceManager().Get<Model>("models/BadGuy.obj", STR_Engine::Get().m_renderer);
-    auto texture = ResourceManager().Get<Texture>("textures/BadGuy_Material_BaseColor.png", STR_Engine::Get().m_renderer);
+    auto model = ResourceManager().Get<Model>("models/spot.obj", STR_Engine::Get().m_renderer);
+    auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", STR_Engine::Get().m_renderer);
     auto vshader = ResourceManager().Get<Shader>("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
     auto fshader = ResourceManager().Get<Shader>("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
 
@@ -187,8 +169,7 @@ int main()
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
 
-        lightsUniform.lights[1].position = glm::eulerAngleY(time) * glm::vec4(0, 0, 10, 1);
-        lightsUniform.lights[2].position = glm::eulerAngleX(time * 0.33f) * glm::vec4(0, 0, 10, 1);
+#pragma region CameraMovementAndRotation
 
         glm::vec2 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S);
         if (glm::length(dir) > 0.0001f) { dir = glm::normalize(dir) * dt; }
@@ -199,6 +180,8 @@ int main()
         vertexUniform.camPos.z += -dir.x * sinf(leftRot) + dir.y * cosf(leftRot);
         vertexUniform.camPos.y += up;
 
+#pragma endregion
+
         auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));
         auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 1000.0f);
         matrixUniform.model = t.GetMatrix();
@@ -207,8 +190,10 @@ int main()
         STR_Engine::Get().m_renderer.BeginFrame();
         STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
 
-
         STR_Engine::Get().m_renderer.SetVertexUniforms(0, &matrixUniform, sizeof(matrixUniform));
+        STR_Engine::Get().m_renderer.SetVertexUniforms(1, &vertexUniform, sizeof(vertexUniform));
+        STR_Engine::Get().m_renderer.SetVertexUniforms(2, &lightsUniform, sizeof(lightsUniform));
+        STR_Engine::Get().m_renderer.SetVertexUniforms(3, &materialUnifrom, sizeof(materialUnifrom));
 
         STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &vertexUniform, sizeof(vertexUniform));
         STR_Engine::Get().m_renderer.SetFragmentUniforms(1, &lightsUniform, sizeof(lightsUniform));
@@ -216,7 +201,6 @@ int main()
 
         STR_Engine::Get().m_renderer.SetFragmentTexture(0, *texture);
         model->Draw(STR_Engine::Get().m_renderer);
-
 
         STR_Engine::Get().m_renderer.EndFrame();
     }

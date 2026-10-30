@@ -8,7 +8,7 @@
 
 namespace STR_FALL
 {
-	struct Object
+	class Object
 	{
 	public:
 		bool m_active = true;

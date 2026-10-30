@@ -41,7 +41,7 @@ namespace STR_FALL
 			},
 			.target_info = SDL_GPUGraphicsPipelineTargetInfo{
 				.color_target_descriptions = colorTargetDescriptions.data(),
-				.num_color_targets = colorTargetDescriptions.size(),
+				.num_color_targets = static_cast<uint32_t>(colorTargetDescriptions.size()),
 				.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
 				.has_depth_stencil_target = true
 			}

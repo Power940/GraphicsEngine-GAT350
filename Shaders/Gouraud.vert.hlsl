@@ -13,7 +13,9 @@ cbuffer VertexUniforms : register(b1, space1)
 }
 cbuffer LightUniforms : register(b2, space1)
 {
-    Light light;
+    Light lights[MAX_LIGHTS];
+    uint numLights;
+    float3 ambient;
 }
 cbuffer MatrerialUniforms : register(b3, space1)
 {
@@ -40,25 +42,30 @@ struct Output
 Output main(Input input)
 {
     Output output;
-    float3 radiance = light.color * light.intensity;
-    float3 worldPos = mul(model, float4(input.position, 1.0f)).xyz;
-    float3 N = normalize(mul((float3x3) model, input.normal));
-    float attenuation;
-    float3 L = getLightVector(light, worldPos, attenuation);
-    
-    float NdotL = saturate(dot(N, L));
-    
     output.position = mul(mvp, float4(input.position, 1.0f));
     output.texcoord = (input.texcoord * material.tiling) + material.offset;
-    output.diffuse = radiance * NdotL * attenuation + light.ambient;
+    output.diffuse = ambient;
     output.specular = 0.0f;
     
-    if (NdotL > 0)
+    float3 N = normalize(mul((float3x3) model, input.normal));
+    float3 worldPos = mul(model, float4(input.position, 1.0f)).xyz;
+    float3 V = normalize(camPos - worldPos);
+    
+    for (uint i = 0; i < numLights; i++)
     {
-        float3 V = normalize(camPos - worldPos);
-        float3 H = normalize(V + L);
-        float HdotN = saturate(dot(H, N));
-        output.specular = pow(HdotN, material.shininess) * radiance * attenuation;
+        float3 radiance = lights[i].color.xyz * lights[i].color.w;
+        float attenuation;
+        float3 L = getLightVector(lights[i], worldPos, attenuation);
+        float NdotL = saturate(dot(N, L));
+    
+        output.diffuse += radiance * NdotL * attenuation;
+    
+        if (NdotL > 0)
+        {
+            float3 H = normalize(V + L);
+            float HdotN = saturate(dot(H, input.normal));
+            output.specular += pow(HdotN, material.shininess) * radiance * attenuation;
+        }
     }
     
     return output;

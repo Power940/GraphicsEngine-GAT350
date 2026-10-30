@@ -18,7 +18,7 @@ namespace STR_FALL
 {
 	class Scene;
 
-	struct GameObject : public Object
+	class GameObject : public Object
 	{ friend Scene;
 
 	public:
@@ -53,11 +53,6 @@ namespace STR_FALL
 				{
 					continue;
 				}
-				//RendererComponent* rend = dynamic_cast<RendererComponent*>(component.get());
-				//if (rend)
-				//{
-				//	rend->Draw(r);
-				//}
 			}
 		}
 		virtual void OnCollision(GameObject* other) {}

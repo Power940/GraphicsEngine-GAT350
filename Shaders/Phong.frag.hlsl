@@ -14,7 +14,7 @@ cbuffer LightUniforms : register(b1, space3)
 {
     Light lights[MAX_LIGHTS];
     uint numLights;
-    float3 ambiant;
+    float3 ambient;
 }
 cbuffer MatrerialUniforms : register(b2, space3)
 {
@@ -40,12 +40,12 @@ Output main(Input input)
     input.normal = normalize(input.normal);
     
     float3 V = normalize(camPos - input.worldPos);
-    float3 diffuse = ambiant;
+    float3 diffuse = ambient;
     float3 specular = 0.0f;
     
     for (uint i = 0; i < numLights; i++)
     {
-        float3 radiance = lights[i].color * lights[i].intensity;
+        float3 radiance = lights[i].color.xyz * lights[i].color.w;
         float attenuation;
         float3 L = getLightVector(lights[i], input.worldPos, attenuation);
         float NdotL = saturate(dot(input.normal, L));

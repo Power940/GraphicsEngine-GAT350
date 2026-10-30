@@ -68,7 +68,7 @@ namespace STR_FALL::Json
         }
 
         auto& array = value[name.c_str()];
-        for (int index = 0; index < value[name.c_str()].Size(); index++)
+        for (rapidjson::SizeType index = 0; index < value[name.c_str()].Size(); index++)
         {
             data.push_back(array[index].GetInt());
         }
@@ -120,7 +120,7 @@ namespace STR_FALL::Json
         }
 
         auto& array = value[name.c_str()];
-        for (int index = 0; index < value[name.c_str()].Size(); index++)
+        for (rapidjson::SizeType index = 0; index < value[name.c_str()].Size(); index++)
         {
             data.push_back(array[index].GetString());
         }
@@ -136,7 +136,7 @@ namespace STR_FALL::Json
         }
 
         auto& array = value[name.c_str()];
-        for (int index = 0; index < value[name.c_str()].Size(); index++)
+        for (rapidjson::SizeType index = 0; index < value[name.c_str()].Size(); index++)
         {
             data.insert(array[index].GetString());
         }
