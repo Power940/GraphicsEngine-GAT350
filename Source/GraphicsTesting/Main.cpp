@@ -6,6 +6,8 @@
 #include <Renderer/Shader.h>
 #include <Renderer/Model.h>
 #include <Renderer/Texture.h>
+#include "Core/BatchRunner.h"
+#include <Input/Input.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
@@ -86,7 +88,13 @@ int main()
 
     STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
 
+    RunBatch(
+        SOLUTION_DIR "Tools\\compile_shaders.bat",
+        { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\LOOK_HERE_SHADER_BATCH_FAIL" },
+        false, false
+    );
 
+    
 
     MatrixUniform matrixUniform;
     VertexUniform vertexUniform;
@@ -133,8 +141,8 @@ int main()
     
     auto model = ResourceManager().Get<Model>("models/spot.obj", STR_Engine::Get().m_renderer);
     auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", STR_Engine::Get().m_renderer);
-    auto vshader = ResourceManager().Get<Shader>("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
-    auto fshader = ResourceManager().Get<Shader>("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
+    auto vshader = ResourceManager().Get<Shader>("shaders/Gouraud.vert", STR_Engine::Get().m_renderer, 4);
+    auto fshader = ResourceManager().Get<Shader>("shaders/Gouraud.frag", STR_Engine::Get().m_renderer, 3, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Model::Vertex));

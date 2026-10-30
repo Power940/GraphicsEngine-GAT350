@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\BatchRunner.cpp" />
     <ClCompile Include="Core\file.cpp" />
     <ClCompile Include="Core\StarTime.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
@@ -51,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Core\BatchRunner.h" />
     <ClInclude Include="Core\Factory.h" />
     <ClInclude Include="Core\file.h" />
     <ClInclude Include="Core\Random.h" />
