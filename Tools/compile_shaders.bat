@@ -8,6 +8,7 @@ set OUTPUT=%~2
 if not exist "%OUTPUT%" mkdir "%OUTPUT%"
 
 echo Compiling shaders...
+echo compile_shaders: Current working directory is: %CD%
 
 REM =========================
 REM Vertex Shaders
@@ -16,9 +17,9 @@ REM =========================
 for %%f in ("%INPUT%\*.vert.hlsl") do (
     echo Compiling %%~nxf
 
-    "%SHADERCROSS%" "%%f" -s HLSL -d SPIRV -t vertex -e main -o "%OUTPUT%\%%~nf.spv"
+    "%SHADERCROSS%" "%%f" -s HLSL -d SPIRV -t vertex -e main -I "%INPUT%" -o "%OUTPUT%\%%~nf.spv"
 
-    "%SHADERCROSS%" "%%f" -s HLSL -d DXIL -t vertex -e main -o "%OUTPUT%\%%~nf.dxil"
+    "%SHADERCROSS%" "%%f" -s HLSL -d DXIL -t vertex -e main -I "%INPUT%" -o "%OUTPUT%\%%~nf.dxil"
 )
 
 REM =========================
@@ -28,9 +29,9 @@ REM =========================
 for %%f in ("%INPUT%\*.frag.hlsl") do (
     echo Compiling %%~nxf
 
-    "%SHADERCROSS%" "%%f" -s HLSL -d SPIRV -t fragment -e main -o "%OUTPUT%\%%~nf.spv"
+    "%SHADERCROSS%" "%%f" -s HLSL -d SPIRV -t fragment -e main -I "%INPUT%" -o "%OUTPUT%\%%~nf.spv"
 
-    "%SHADERCROSS%" "%%f" -s HLSL -d DXIL -t fragment -e main -o "%OUTPUT%\%%~nf.dxil"
+    "%SHADERCROSS%" "%%f" -s HLSL -d DXIL -t fragment -e main -I "%INPUT%" -o "%OUTPUT%\%%~nf.dxil"
 )
 
 echo Shader compilation complete.

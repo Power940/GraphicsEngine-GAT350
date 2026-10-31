@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-bool RunBatch(const std::string& batchFilePathAndName, const std::vector<std::string>& args, bool closeTerminalOnFinish = true, bool relativePathing = true) {
+bool RunBatch(const std::string& batchFilePathAndName, const std::vector<std::string>& args, bool closeTerminalOnFinish = true, bool relativePathing = true, const std::string& workingDirectory = "") {
     STARTUPINFOA si;
     PROCESS_INFORMATION pi;
     ZeroMemory(&si, sizeof(si));
@@ -14,25 +14,24 @@ bool RunBatch(const std::string& batchFilePathAndName, const std::vector<std::st
 
     std::string commandLine = "cmd.exe ";
     commandLine += ((closeTerminalOnFinish) ? "/C " : "/K ");
-    commandLine += "\"";
+    commandLine += "\"\"";
     if (!relativePathing) { commandLine += std::filesystem::absolute(batchFilePathAndName).string(); }
     else { commandLine += batchFilePathAndName; }
     commandLine += "\"";
     for (const std::string& arg : args) { commandLine += " \"" + arg + "\""; }
-
-    std::cout << commandLine << std::endl;
+    commandLine += "\"";
 
     if (CreateProcessA(
-        NULL,               // Application name
-        commandLine.data(), // Command line arguments
-        NULL,               // Process handle not inheritable
-        NULL,               // Thread handle not inheritable
-        FALSE,              // Set handle inheritance to FALSE
-        0,                  // No creation flags
-        NULL,               // Use parent's environment block
-        NULL,               // Use parent's starting directory 
-        &si,                // Pointer to STARTUPINFO structure
-        &pi                 // Pointer to PROCESS_INFORMATION structure
+        NULL,                   // Application name
+        commandLine.data(),     // Command line arguments
+        NULL,                   // Process handle not inheritable
+        NULL,                   // Thread handle not inheritable
+        FALSE,                  // Set handle inheritance to FALSE
+        0,                      // No creation flags
+        NULL,                   // Use parent's environment block
+        workingDirectory.empty() ? NULL : workingDirectory.c_str(),         // Use parent's starting directory 
+        &si,                    // Pointer to STARTUPINFO structure
+        &pi                     // Pointer to PROCESS_INFORMATION structure
     ))
     {
         WaitForSingleObject(pi.hProcess, INFINITE);
