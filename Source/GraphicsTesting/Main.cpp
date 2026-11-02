@@ -9,19 +9,19 @@
 #include "Core/BatchRunner.h"
 #include <Input/Input.h>
 
-#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
 #define VERIFY_16_BYTES_BOUDERIES(T) static_assert(sizeof(T) % 16 == 0);
+#define MAX_LIGHTS 8
 
 using namespace STR_FALL;
 
-int const WINDOW_WIDTH = 1920;
-int const WINDOW_HEIGHT = 1080;
-#define MAX_LIGHTS 8
+int constexpr WINDOW_WIDTH = 1920;
+int constexpr WINDOW_HEIGHT = 1080;
 
 
 
@@ -141,8 +141,10 @@ int main()
     
     auto model = ResourceManager().Get<Model>("models/spot.obj", STR_Engine::Get().m_renderer);
     auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", STR_Engine::Get().m_renderer);
-    auto vshader = ResourceManager().Get<Shader>("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
-    auto fshader = ResourceManager().Get<Shader>("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
+    auto vShader = std::make_shared<Shader>();
+    auto fShader = std::make_shared<Shader>();
+    (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
+    (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Model::Vertex));
@@ -150,7 +152,7 @@ int main()
     pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
     pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
     pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
-    pipeline->Create(*vshader.get(), *fshader.get(), STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
+    pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
     
 
 
@@ -177,6 +179,15 @@ int main()
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
 
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_ESCAPE))
+        {
+            STR_Engine::Get().m_input.UnlockShowMouse(STR_Engine::Get().m_renderer.GetWindow());
+        }
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_LALT))
+        {
+            STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
+        }
+
 #pragma region CameraMovementAndRotation
 
         glm::vec2 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S);
@@ -190,10 +201,30 @@ int main()
 
 #pragma endregion
 
+#pragma region MVP calculation
+
         auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));
         auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 1000.0f);
         matrixUniform.model = t.GetMatrix();
         matrixUniform.mvp = projection * view * matrixUniform.model;
+
+#pragma endregion
+
+#pragma region LiveShaderReload
+
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_R))
+        {
+            RunBatch(
+                SOLUTION_DIR "Tools\\compile_shaders.bat",
+                { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
+                true, false
+            );
+            (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
+            (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
+            pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
+        }
+
+#pragma endregion
 
         STR_Engine::Get().m_renderer.BeginFrame();
         STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
