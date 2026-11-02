@@ -3,4 +3,14 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{1fcf8713-61df-4834-a74c-10c42da27d1f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Build\Assets\scenes\scene.json">
+      <Filter>Scenes</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include <Renderer/Texture.h>
 #include "Core/BatchRunner.h"
 #include <Input/Input.h>
+#include <Framework/Scene.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -95,7 +96,8 @@ int main()
     );
     
     
-
+    Scene s;
+    s.Load("scene/scene.json");
     MatrixUniform matrixUniform;
     VertexUniform vertexUniform;
     MaterialUniform materialUnifrom{
@@ -130,6 +132,7 @@ int main()
         .num_lights = 3,
         .ambiant = glm::vec3(0.5f)
     };
+
 
     Transform3D t;
     t.m_rot = glm::vec3(0.0f, F_PI, 0.0f);
