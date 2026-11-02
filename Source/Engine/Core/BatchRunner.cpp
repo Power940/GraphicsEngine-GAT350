@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-bool RunBatch(const std::string& batchFilePathAndName, const std::vector<std::string>& args, bool closeTerminalOnFinish = true, bool relativePathing = true, const std::string& workingDirectory = "") {
+bool RunBatch(const std::string& batchFilePathAndName, const std::vector<std::string>& args, bool closeTerminalOnFinish = true, const std::string& workingDirectory = "") {
     STARTUPINFOA si;
     PROCESS_INFORMATION pi;
     ZeroMemory(&si, sizeof(si));
@@ -14,10 +14,8 @@ bool RunBatch(const std::string& batchFilePathAndName, const std::vector<std::st
 
     std::string commandLine = "cmd.exe ";
     commandLine += ((closeTerminalOnFinish) ? "/C " : "/K ");
-    commandLine += "\"\"";
-    if (!relativePathing) { commandLine += std::filesystem::absolute(batchFilePathAndName).string(); }
-    else { commandLine += batchFilePathAndName; }
     commandLine += "\"";
+    commandLine += "\"" + batchFilePathAndName + "\"";
     for (const std::string& arg : args) { commandLine += " \"" + arg + "\""; }
     commandLine += "\"";
 

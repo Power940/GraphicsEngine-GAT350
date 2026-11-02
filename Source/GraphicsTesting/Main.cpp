@@ -91,7 +91,7 @@ int main()
     RunBatch(
         SOLUTION_DIR "Tools\\compile_shaders.bat",
         { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
-        true, false
+        true
     );
     
     
@@ -217,8 +217,10 @@ int main()
             RunBatch(
                 SOLUTION_DIR "Tools\\compile_shaders.bat",
                 { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
-                true, false
+                true
             );
+            (*vShader).~Shader();
+            (*fShader).~Shader();
             (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
             (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
             pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
