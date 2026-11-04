@@ -18,7 +18,7 @@ namespace STR_FALL
 
 	void CameraComponent::Update(float dt)
 	{
-		m_view = glm::lookAtRH(m_owner->GetTransform().m_pos, m_owner->GetTransform().m_pos + m_owner->GetTransform().Forward(), glm::vec3(0, 1, 0));
+		m_view = glm::lookAtRH(m_owner->GetTransform().m_pos, m_owner->GetTransform().m_pos + m_owner->GetTransform().Forward(), m_owner->GetTransform().Up());
 		m_projection = glm::perspective(glm::radians(m_fov), STR_Engine::Get().m_renderer.GetAspect(), m_nearPlane, m_farPlane);
 	}
 }
