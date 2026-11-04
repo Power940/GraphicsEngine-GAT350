@@ -17,6 +17,9 @@ namespace STR_FALL
 		float m_nearPlane = 0.001f;
 		float m_farPlane = 1000.0f;
 
+		inline const glm::mat4x4& GetView() const { return m_view; }
+		inline const glm::mat4x4& GetProjection() const { return m_projection; }
+
 	private:
 		glm::mat4x4 m_view;
 		glm::mat4x4 m_projection;

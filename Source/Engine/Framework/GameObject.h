@@ -84,6 +84,21 @@ namespace STR_FALL
 		{
 			m_transform.m_rot = rot;
 		}
+		void ClampTransformRotationX(float min, float max)
+		{
+			if (m_transform.m_rot.x < min) { m_transform.m_rot.x = min; }
+			else if (m_transform.m_rot.x > max) { m_transform.m_rot.x = max; }
+		}
+		void ClampTransformRotationY(float min, float max)
+		{
+			if (m_transform.m_rot.y < min) { m_transform.m_rot.y = min; }
+			else if (m_transform.m_rot.y > max) { m_transform.m_rot.y = max; }
+		}
+		void ClampTransformRotationZ(float min, float max)
+		{
+			if (m_transform.m_rot.z < min) { m_transform.m_rot.z = min; }
+			else if (m_transform.m_rot.z > max) { m_transform.m_rot.z = max; }
+		}
 		void IncrementTransformRotation(const glm::vec3& rot)
 		{
 			m_transform.m_rot += rot;

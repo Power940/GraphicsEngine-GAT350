@@ -31,10 +31,28 @@ namespace STR_FALL
 		inline const glm::mat4& GetMatrix()
 		{
 			glm::mat4 mxt = glm::translate(m_pos);
-			glm::mat4 mxr = glm::eulerAngleXYZ(m_rot.x, m_rot.y, m_rot.z);
+			glm::mat4 mxr = glm::eulerAngleYXZ(m_rot.y, m_rot.x, m_rot.z);
 			glm::mat4 mxs = glm::scale(m_scale);
 			m_mat = mxt * mxr * mxs;
 			return m_mat;
+		}
+
+		inline const glm::vec3& Forward() const
+		{
+			glm::mat4 mxr = glm::eulerAngleXYZ(m_rot.x, m_rot.y, m_rot.z);
+			return mxr * glm::vec4(0, 0, -1, 0);
+		}
+
+		inline const glm::vec3& Up() const
+		{
+			glm::mat4 mxr = glm::eulerAngleXYZ(m_rot.x, m_rot.y, m_rot.z);
+			return mxr * glm::vec4(0, 1, 0, 0);
+		}
+
+		inline const glm::vec3& Right() const
+		{
+			glm::mat4 mxr = glm::eulerAngleXYZ(m_rot.x, m_rot.y, m_rot.z);
+			return mxr * glm::vec4(1, 0, 0, 0);
 		}
 	};
 

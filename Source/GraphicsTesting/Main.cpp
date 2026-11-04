@@ -9,11 +9,13 @@
 #include "Core/BatchRunner.h"
 #include <Input/Input.h>
 #include <Framework/Scene.h>
+#include <Components/CameraComponent.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
+#include <Framework/GameObject.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #define VERIFY_16_BYTES_BOUDERIES(T) static_assert(sizeof(T) % 16 == 0);
@@ -97,7 +99,7 @@ int main()
     
     
     Scene s;
-    s.Load("scene/scene.json");
+    s.Load("scenes/scene.json");
     MatrixUniform matrixUniform;
     VertexUniform vertexUniform;
     MaterialUniform materialUnifrom{
@@ -137,7 +139,6 @@ int main()
     Transform3D t;
     t.m_rot = glm::vec3(0.0f, F_PI, 0.0f);
 
-    vertexUniform.camPos = glm::vec3(0, 0, 2);
     glm::vec3 camRot = glm::vec3(0, 0, 0);
     float upRot = 0.0f;
     float leftRot = F_PI;
@@ -170,17 +171,20 @@ int main()
                 break;
             }
             if (SDLEvent.type == SDL_EVENT_MOUSE_MOTION) {
-                leftRot -= SDLEvent.motion.xrel * 0.003f;
-                upRot -= SDLEvent.motion.yrel * 0.003f;
+                //leftRot -= SDLEvent.motion.xrel * 0.003f;
+                //upRot -= SDLEvent.motion.yrel * 0.003f;
 
-                upRot = (upRot < -F_HPI + 0.0001f) ? -F_HPI + 0.0001f : upRot;
-                upRot = (upRot > F_HPI - 0.0001f) ? F_HPI - 0.0001f : upRot;
+                //upRot = (upRot < -F_HPI + 0.0001f) ? -F_HPI + 0.0001f : upRot;
+                //upRot = (upRot > F_HPI - 0.0001f) ? F_HPI - 0.0001f : upRot;
+                //STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
             }
         }
 
         STR_Engine::Get().Update();
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
+
+        s.Update(dt);
 
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_ESCAPE))
         {
@@ -191,25 +195,14 @@ int main()
             STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
         }
 
-#pragma region CameraMovementAndRotation
-
-        glm::vec2 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S);
-        if (glm::length(dir) > 0.0001f) { dir = glm::normalize(dir) * dt; }
-        float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL) * dt;
-
-        camRot = glm::vec3(cosf(upRot) * sinf(leftRot), sinf(upRot), cosf(upRot) * cosf(leftRot));
-        vertexUniform.camPos.x += dir.x * cosf(leftRot) + dir.y * sinf(leftRot);
-        vertexUniform.camPos.z += -dir.x * sinf(leftRot) + dir.y * cosf(leftRot);
-        vertexUniform.camPos.y += up;
-
-#pragma endregion
-
 #pragma region MVP calculation
 
-        auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));
-        auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 1000.0f);
+        auto camera = s.GetObjectName<GameObject>("camera");
+        auto cameraComponent = camera->GetComponent<CameraComponent>();
+        vertexUniform.camPos = camera->GetTransform().m_pos;
+
         matrixUniform.model = t.GetMatrix();
-        matrixUniform.mvp = projection * view * matrixUniform.model;
+        matrixUniform.mvp = cameraComponent->GetProjection() * cameraComponent->GetView() * matrixUniform.model;
 
 #pragma endregion
 

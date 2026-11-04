@@ -12,20 +12,27 @@
       "m_transform": [
         0,
         0,
-        5,
-        0,
-        0,
         0,
         1,
         1,
-        1
+        1,
+        0,
+        0,
+        0
       ],
       "m_components": [
         {
-          "type": "CameraComponent",
-          "fov": 70,
-          "near_plane": 0.001,
-          "far_plane": 200
+          "m_active": true,
+          "m_typeName": "CameraComponent",
+          "m_fov": 80,
+          "m_nearPlane": 0.001,
+          "m_farPlane": 2000
+        },
+        {
+          "m_active": true,
+          "m_typeName": "CameraControllerComponent",
+          "m_sensitivity": 0.001,
+          "m_speed": 5
         }
       ]
     }

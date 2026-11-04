@@ -18,6 +18,7 @@ namespace STR_FALL
 
 		int m_WINDOW_WIDTH = -1;
 		int m_WINDOW_HEIGHT = -1;
+		float m_ASPECT = -1.0f;
 
 	public:
         bool Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT);
@@ -44,6 +45,7 @@ namespace STR_FALL
 
 		inline int GetSreenWidth() const { return m_WINDOW_WIDTH; }
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
+		inline float GetAspect() const { return m_ASPECT; }
 
 		friend struct Text;
 		friend class Texture;

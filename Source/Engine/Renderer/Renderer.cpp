@@ -12,6 +12,7 @@ namespace STR_FALL
     {
         m_WINDOW_WIDTH = WINDOW_WIDTH;
         m_WINDOW_HEIGHT = WINDOW_HEIGHT;
+        m_ASPECT = static_cast<float>(m_WINDOW_WIDTH) / m_WINDOW_HEIGHT;
 
         SDL_Init(SDL_INIT_VIDEO);
 
