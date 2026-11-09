@@ -19,6 +19,9 @@ namespace STR_FALL
 
 		glm::vec2 GetSize() const { return glm::vec2(m_width, m_height); }
 
+		SDL_GPUTexture* GetGPUTexture() const { return m_GPUTexture; }
+		SDL_GPUSampler* GetGPUSampler() const { return m_GPUSampler; }
+
 		friend class Renderer;
 
 	private:

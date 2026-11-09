@@ -31,7 +31,7 @@ namespace STR_FALL
 		void SetRotation(const glm::vec3& eular) { m_rot = glm::quat(eular); }
 		void SetRotation(const glm::quat& quat) { m_rot = glm::normalize(quat); }
 
-		inline glm::mat4 GetMatrix()
+		inline glm::mat4 GetMatrix() const
 		{
 			glm::mat4 mxt = glm::translate(m_pos);
 			glm::mat4 mxr = glm::toMat4(m_rot);

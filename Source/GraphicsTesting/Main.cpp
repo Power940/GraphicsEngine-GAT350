@@ -18,68 +18,11 @@
 #include <glm/gtx/transform.hpp>
 #include <Framework/GameObject.h>
 
-#define MAX_LIGHTS 8
 
 using namespace STR_FALL;
 
 int constexpr WINDOW_WIDTH = 1920;
 int constexpr WINDOW_HEIGHT = 1080;
-
-
-
-enum class LightType : uint32_t
-{
-    DIRECTIONAL,
-    POINT,
-    SPOT
-};
-struct MatrixUniform
-{
-    glm::mat4 mvp;
-    glm::mat4 model;
-};
-struct Light
-{
-    LightType type;
-    glm::vec3 position;
-
-    glm::vec4 color; // xyz -> rgb, w -> intensity
-
-    glm::vec4 direction; // w -> range
-
-    float innerCutoff;
-    float outerCutoff;
-    glm::vec2 padding1;
-};
-struct LightsUniform
-{
-    Light lights[MAX_LIGHTS];
-    uint32_t num_lights;
-    glm::vec3 ambiant;
-};
-struct MaterialUniform
-{
-    glm::vec4 color;
-
-    glm::vec2 tiling;
-    glm::vec2 offset;
-
-    float shininess;
-    glm::vec3 padding1;
-};
-struct VertexUniform
-{
-    glm::vec3 camPos;
-    float padding1;
-};
-
-CHECK_UNIFORM_BOUNDARY(MatrixUniform);
-CHECK_UNIFORM_BOUNDARY(Light);
-CHECK_UNIFORM_BOUNDARY(LightsUniform);
-CHECK_UNIFORM_BOUNDARY(MaterialUniform);
-CHECK_UNIFORM_BOUNDARY(VertexUniform);
-
-
 
 int main()
 {
@@ -87,8 +30,9 @@ int main()
 
     int initCode = STR_Engine::Get().Initialize("Super Epic Graphic Test", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
+    Renderer& renderer = STR_Engine::Get().m_renderer;
 
-    STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
+    STR_Engine::Get().m_input.LockHideMouse(renderer.GetWindow());
 
     RunBatch(
         SOLUTION_DIR "Tools\\compile_shaders.bat",
@@ -99,55 +43,12 @@ int main()
     
     Scene s;
     s.Load("scenes/scene.json");
-    MatrixUniform matrixUniform;
-    VertexUniform vertexUniform;
-    MaterialUniform materialUnifrom{
-        .color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-        .tiling = glm::vec2(1.0f),
-        .offset = glm::vec2(0.0f),
-        .shininess = 50.0f
-    };
-    LightsUniform lightsUniform {
-        .lights = {
-            Light {
-                .type = LightType::DIRECTIONAL,
-                .position = glm::vec3(0.0f),
-                .color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
-                .direction = glm::vec4(0.0f, -1.0f, -1.0f, 30.0f),
-            },
-            Light {
-                .type = LightType::POINT,
-                .position = glm::vec3(1.0f, 0.0f, 0.0f),
-                .color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
-                .direction = glm::vec4(10.0f),
-            },
-            Light {
-                .type = LightType::SPOT,
-                .position = glm::vec3(-1.0f, 0.0f, 0.0f),
-                .color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-                .direction = glm::vec4(1.0f, 0.0f, 0.0f, 30.0f),
-                .innerCutoff = glm::cos(glm::radians(6.0f)),
-                .outerCutoff = glm::cos(glm::radians(8.0f)),
-            }
-        },
-        .num_lights = 3,
-        .ambiant = glm::vec3(0.5f)
-    };
-
-
-    Transform3D t;
-    t.m_rot = glm::vec3(0.0f, F_PI, 0.0f);
-
-    glm::vec3 camRot = glm::vec3(0, 0, 0);
-    float upRot = 0.0f;
-    float leftRot = F_PI;
     
-    auto model = ResourceManager().Get<Model>("models/spot.obj", STR_Engine::Get().m_renderer);
-    auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", STR_Engine::Get().m_renderer);
+    auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", renderer);
     auto vShader = std::make_shared<Shader>();
     auto fShader = std::make_shared<Shader>();
-    (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
-    (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
+    (*vShader).Load("shaders/Phong.vert", renderer, 4);
+    (*fShader).Load("shaders/Phong.frag", renderer, 3, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Model::Vertex));
@@ -155,7 +56,7 @@ int main()
     pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
     pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
     pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
-    pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
+    pipeline->Create(*vShader, *fShader, renderer.GetGPUDevice(), renderer.GetWindow());
     
 
 
@@ -182,7 +83,6 @@ int main()
         STR_Engine::Get().Update();
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
-
         s.Update(dt);
 
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_ESCAPE))
@@ -193,17 +93,6 @@ int main()
         {
             STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
         }
-
-#pragma region MVP calculation
-
-        auto camera = s.GetObjectName<GameObject>("camera");
-        auto cameraComponent = camera->GetComponent<CameraComponent>();
-        vertexUniform.camPos = camera->GetTransform().m_pos;
-
-        matrixUniform.model = t.GetMatrix();
-        matrixUniform.mvp = cameraComponent->GetProjection() * cameraComponent->GetView() * matrixUniform.model;
-
-#pragma endregion
 
 #pragma region LiveShaderReload
 
@@ -216,28 +105,20 @@ int main()
             );
             (*vShader).~Shader();
             (*fShader).~Shader();
-            (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
-            (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
-            pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
+            (*vShader).Load("shaders/Phong.vert", renderer, 4);
+            (*fShader).Load("shaders/Phong.frag", renderer, 3, 1);
+            pipeline->Create(*vShader, *fShader, renderer.GetGPUDevice(), renderer.GetWindow());
         }
 
 #pragma endregion
 
-        STR_Engine::Get().m_renderer.BeginFrame();
-        STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
+        renderer.BeginFrame();
+        renderer.SetPipeline(*pipeline);
 
-        STR_Engine::Get().m_renderer.SetVertexUniforms(UniformSlot::Object, &matrixUniform, sizeof(matrixUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(UniformSlot::Frame, &lightsUniform, sizeof(lightsUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(UniformSlot::Material, &materialUnifrom, sizeof(materialUnifrom));
+        renderer.SetFragmentTexture(0, *texture);
+        s.Draw(renderer);
 
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(UniformSlot::Object, &vertexUniform, sizeof(vertexUniform));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(UniformSlot::Material, &materialUnifrom, sizeof(materialUnifrom));
-
-        STR_Engine::Get().m_renderer.SetFragmentTexture(0, *texture);
-        model->Draw(STR_Engine::Get().m_renderer);
-
-        STR_Engine::Get().m_renderer.EndFrame();
+        renderer.EndFrame();
     }
 
     STR_Engine::Get().Shutdown();

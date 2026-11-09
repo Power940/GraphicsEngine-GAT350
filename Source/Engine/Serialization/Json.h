@@ -27,10 +27,6 @@ namespace STR_FALL::Json
 	bool Read(const rapidjson::Value& value, const std::string& name, glm::vec3& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, glm::vec4& data);
 
-	//bool Read(const rapidjson::Value& value, const std::string& name, glm::mat2& data);
-	//bool Read(const rapidjson::Value& value, const std::string& name, glm::mat3& data);
-
-
 	/// <summary>
 	/// <para>Index: 0, 1, 2 -> Position</para>
 	/// <para>Index: 3, 4, 5 -> Scale</para>

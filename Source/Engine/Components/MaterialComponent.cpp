@@ -8,5 +8,6 @@ namespace STR_FALL
 	
 	void MaterialComponent::Read(const rapidjson::Value& value)
 	{
+		Component::Read(value);
 	}
 }

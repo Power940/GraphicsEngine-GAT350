@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "MaterialInstance.h"
 
 struct aiNode;
 struct aiMesh;
@@ -28,6 +29,7 @@ namespace STR_FALL
 		{
 			std::unique_ptr<VertexBuffer> vertexBuffer;
 			std::unique_ptr<IndexBuffer> indexBuffer;
+			uint32_t materialIndex = 0;
 		};
 
 	public:
@@ -38,7 +40,11 @@ namespace STR_FALL
 		void ProcessNode(aiNode* node, const aiScene* scene, const class Renderer& renderer);
 		void ProcessMesh(aiMesh* mesh, const aiScene* scene, const class Renderer& renderer);
 
+		void LoadMaterials(const aiScene* scene, const std::string& directory, const class Renderer& renderer);
+
 	private:
 		std::vector<Mesh> m_meshes;
+		std::vector<MaterialInstance> m_materials;
+
 	};
 }

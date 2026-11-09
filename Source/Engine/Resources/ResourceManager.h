@@ -25,6 +25,8 @@ namespace STR_FALL
 
 		inline static ResourceManager& ResManager() { return ResourceManager::Instance(); }
 
+		void Clear() { m_resources.clear(); }
+
 	private:
 		std::map<std::string, res_t<Resource>> m_resources;
 	};
@@ -37,7 +39,7 @@ namespace STR_FALL
 		auto iter = m_resources.find(name);
 		if (iter != m_resources.end())
 		{
-			auto base = iter->second;
+			auto& base = iter->second;
 			auto resource = std::dynamic_pointer_cast<T>(base);
 
 			return resource;
@@ -53,7 +55,7 @@ namespace STR_FALL
 		auto iter = m_resources.find(id);
 		if (iter != m_resources.end())
 		{
-			auto base = iter->second;
+			auto& base = iter->second;
 			auto resource = std::dynamic_pointer_cast<T>(base);
 
 			if (resource == nullptr)

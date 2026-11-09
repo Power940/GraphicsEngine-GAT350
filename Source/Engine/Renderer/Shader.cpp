@@ -10,7 +10,7 @@ namespace STR_FALL
 		if (m_GPUDevice && m_GPUShader) { SDL_ReleaseGPUShader(m_GPUDevice, m_GPUShader); }
 	}
 
-	bool Shader::Load(const std::string& filename, Renderer& renderer, uint32_t uniformCount, uint32_t samplerCount)
+	bool Shader::Load(const std::string& filename, const Renderer& renderer, uint32_t uniformCount, uint32_t samplerCount)
 	{
 		m_GPUDevice = renderer.GetGPUDevice();
 

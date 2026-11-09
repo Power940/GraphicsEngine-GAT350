@@ -7,6 +7,9 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{1fcf8713-61df-4834-a74c-10c42da27d1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{910ed1bf-3312-4e8f-b5eb-7b96dc2b5360}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Build\Assets\scenes\scene.json">

@@ -88,6 +88,8 @@ namespace STR_FALL
 		}
 
 		LightsUniform lightsUniform{};
+		lightsUniform.ambiant = glm::vec3(0.2f);
+
 		auto lights = GetObjectsTag<GameObject>("lights");
 		for (auto light : lights)
 		{

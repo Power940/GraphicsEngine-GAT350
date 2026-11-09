@@ -199,46 +199,6 @@ namespace STR_FALL::Json
         return true;
     }
 
-    //bool Read(const rapidjson::Value& value, const std::string& name, glm::mat2& data)
-    //{
-    //    if (value.HasMember(name.c_str()) && value[name.c_str()].IsNumber())
-    //    {
-    //        data = Matrix2::RotationXY(value[name.c_str()].GetFloat());
-    //    }
-    //    else if (value.HasMember(name.c_str()) && value[name.c_str()].IsArray() || value[name.c_str()].Size() == 4)
-    //    {
-    //        auto& array = value[name.c_str()];
-    //        data = Matrix2(array[0].GetFloat(), array[1].GetFloat(), array[2].GetFloat(), array[3].GetFloat());
-    //    }
-
-    //    std::cerr << "Could not read JSON value (Matrix2): " << name << std::endl;
-    //    return false;
-    //}
-    //bool Read(const rapidjson::Value& value, const std::string& name, glm::mat3& data)
-    //{
-    //    if (value.HasMember(name.c_str()) && value[name.c_str()].IsNumber())
-    //    {
-    //        data = Matrix3(value[name.c_str()].GetFloat());
-    //    }
-    //    else if (value.HasMember(name.c_str()) && value[name.c_str()].IsArray() || value[name.c_str()].Size() == 3)
-    //    {
-    //        auto& array = value[name.c_str()];
-    //        data = Matrix3::RotationXYZ(array[0].GetFloat(), array[1].GetFloat(), array[2].GetFloat());
-    //    }
-    //    else if (value.HasMember(name.c_str()) && value[name.c_str()].IsArray() || value[name.c_str()].Size() == 9)
-    //    {
-    //        auto& array = value[name.c_str()];
-    //        data = Matrix3(
-    //            array[0].GetFloat(), array[1].GetFloat(), array[2].GetFloat(),
-    //            array[3].GetFloat(), array[4].GetFloat(), array[5].GetFloat(),
-    //            array[6].GetFloat(), array[7].GetFloat(), array[8].GetFloat()
-    //        );
-    //    }
-
-    //    std::cerr << "Could not read JSON value (Matrix3): " << name << std::endl;
-    //    return false;
-    //}
-
     bool Read(const rapidjson::Value& value, const std::string& name, Transform3D& data)
     {
         if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray() || value[name.c_str()].Size() != 9)
