@@ -24,7 +24,9 @@ namespace STR_FALL
 			if (m_safeToAddObject) { m_objects.push_back(std::move(object)); m_objects.back()->Start(); }
 			else { m_pendingObjects.push_back(std::move(object)); }
 		}
+
 		inline Object* GetObjectIndex(const int element) const { return m_objects[element].get(); }
+
 		template<typename T> inline T* GetObjectName(const std::string& name)
 		{
 			for (auto& object : m_objects)
@@ -35,12 +37,21 @@ namespace STR_FALL
 			return nullptr;
 		}
 
+		template<typename T> inline std::vector<T*> GetObjectsTag(const std::string& name)
+		{
+			std::vector<T*> result;
+			for (auto& object : m_objects)
+			{
+				T* objectT = dynamic_cast<T*>(object.get());
+				if (objectT != nullptr && objectT->m_tags.contains(name)) { result.push_back(objectT); }
+			}
+			return result;
+		}
+
 		bool Load(std::string filePath);
 
 		void Update(float dt);
 		void Draw(Renderer& r);
-
-		void UpdateCollisions();
 
 		void RemoveAllObjects(bool ignorePersistant = false)
 		{

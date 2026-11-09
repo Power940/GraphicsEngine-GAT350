@@ -9,6 +9,9 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <Components/CameraComponent.h>
+#include "Renderer/Light.h"
+#include <Components/LightComponent.h>
 
 
 namespace STR_FALL
@@ -54,8 +57,6 @@ namespace STR_FALL
 		for (auto& object : m_objects) { object->Update(dt); }
 		m_safeToAddObject = true;
 
-		UpdateCollisions();
-
 		std::erase_if(m_objects, [](auto& object) { object->OnDestroy(); return object->m_toBeFreed; });
 
 		for (std::unique_ptr<GameObject>& gameObject : m_pendingObjects)
@@ -68,41 +69,39 @@ namespace STR_FALL
 
 	void Scene::Draw(Renderer& r)
 	{
+		FrameUniform frameUniform{};
+
+		auto camera = GetObjectName<GameObject>("camera");
+		if (camera)
+		{
+			auto cameraComponent = camera->GetComponent<CameraComponent>();
+			if (cameraComponent)
+			{
+				frameUniform.cameraPosition = camera->GetTransform().m_pos;
+				frameUniform.view = cameraComponent->GetView();
+				frameUniform.projection = cameraComponent->GetProjection();
+				frameUniform.viewProjection = frameUniform.projection * frameUniform.view;
+
+				r.SetVertexUniforms(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
+				r.SetFragmentUniforms(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
+			}
+		}
+
+		LightsUniform lightsUniform{};
+		auto lights = GetObjectsTag<GameObject>("lights");
+		for (auto light : lights)
+		{
+			auto lightComponent = light->GetComponent<LightComponent>();
+			if (lightComponent)
+			{
+				lightsUniform.lights[lightsUniform.num_lights++] = lightComponent->GetLightData();
+			}
+		}
+
+		r.SetVertexUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
+		r.SetFragmentUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
+
+
 		for (auto& object : m_objects) { object->Draw(r); }
-	}
-
-	void Scene::UpdateCollisions()
-	{
-		//float dist = -1.0f;
-		//GameObject* ObjectA;
-		//GameObject* ObjectB;
-		//ColliderComponent* colliderA;
-		//ColliderComponent* colliderB;
-
-		//for (int indexA = 0; indexA < m_objects.size(); indexA++)
-		//{
-		//	ObjectA = m_objects[indexA].get();
-		//	if (ObjectA->m_toBeFreed) { continue; }
-		//	colliderA = ObjectA->GetComponent<ColliderComponent>();
-		//	if (!colliderA) { continue; }
-
-		//	for (int indexB = indexA + 1; indexB < m_objects.size(); indexB++)
-		//	{
-		//		ObjectB = m_objects[indexB].get();
-		//		if (ObjectB->m_toBeFreed) { continue; }
-		//		colliderB = ObjectB->GetComponent<ColliderComponent>();
-		//		if (!colliderB) { continue; }
-
-
-		//		if (colliderA->m_collisionMask.AnyMatch(colliderB->m_collisionLayer) && colliderA->CheckCollision(*colliderB))
-		//		{
-		//			ObjectA->OnCollision(ObjectB);
-		//		}
-		//		if (colliderA->m_collisionLayer.AnyMatch(colliderB->m_collisionMask) && colliderB->CheckCollision(*colliderA))
-		//		{
-		//			ObjectB->OnCollision(ObjectA);
-		//		}
-		//	}
-		//}
 	}
 }

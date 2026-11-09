@@ -9,6 +9,8 @@ namespace STR_FALL
 		CLASS_PROTOTYPE(LightComponent)
 
 		void Read(const rapidjson::Value& value) override;
+
+		struct Light GetLightData() const;
 		 
 	private:
 	};

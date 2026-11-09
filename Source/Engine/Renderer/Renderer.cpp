@@ -49,7 +49,7 @@ namespace STR_FALL
     }
 
     void Renderer::SetPipeline(const Pipeline& pipeline) { SDL_BindGPUGraphicsPipeline(m_GPURenderPass, pipeline.m_GPUPipeline); }
-    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer)
+    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer) const
     {
         SDL_GPUBufferBinding binding{
             .buffer = vertexBuffer.m_GPUBuffer,
@@ -57,7 +57,7 @@ namespace STR_FALL
         };
         SDL_BindGPUVertexBuffers(m_GPURenderPass, 0, &binding, 1);
     }
-    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer)
+    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer) const
     {
         SDL_GPUBufferBinding binding{
             .buffer = indexBuffer.m_GPUBuffer,
@@ -131,13 +131,13 @@ namespace STR_FALL
         return true;
     }
 
-    void Renderer::SetVertexUniforms(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetVertexUniforms(UniformSlot slot, const void* data, uint32_t size) const
     {
-        SDL_PushGPUVertexUniformData(m_GPUCommandBuffer, slot, data, size);
+        SDL_PushGPUVertexUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
     }
-    void Renderer::SetFragmentUniforms(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetFragmentUniforms(UniformSlot slot, const void* data, uint32_t size) const
     {
-        SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, slot, data, size);
+        SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
     }
 
     void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)

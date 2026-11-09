@@ -3,6 +3,7 @@
 #include "Core/Factory.h"
 #include "StarFallEngine.h"
 #include <glm/gtx/norm.hpp>
+#include <glm/glm.hpp>
 
 namespace STR_FALL
 {
@@ -14,12 +15,14 @@ namespace STR_FALL
 		{
 			glm::vec2 axis = STR_Engine::Get().m_input.GetMouseDiff() * m_sensitivity;
 
-			m_owner->IncrementTransformRotation(glm::vec3(-axis.y, -axis.x, 0.0f));
-			m_owner->ClampTransformRotationX(-F_HPI + 0.01f, F_HPI - 0.01f);
+			m_yaw -= axis.x;
+			m_pitch -= axis.y;
+			if (m_pitch < (-F_HPI + 0.01f)) { m_pitch = -F_HPI + 0.01f; }
+			if (m_pitch < (F_HPI - 0.01f)) { m_pitch = F_HPI - 0.01f; }
 		}
 
-		//glm::quat q = glm::quat_cast(glm::eulerAngleYXZ(glm::radians(yaw), glm::radians(pitch), 0.0f));
-		//owner->transform.SetRotationQuat(q);
+		glm::quat q = glm::quat_cast(glm::eulerAngleYXZ(m_yaw, m_pitch, 0.0f));
+		m_owner->SetTransformRotation(q);
 
 		glm::vec3 dir = glm::vec3();
 		dir += m_owner->GetTransform().Right() * static_cast<float>(STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_D, Input::KeyCodes::VK_A));

@@ -82,7 +82,11 @@ namespace STR_FALL
 		}
 		void SetTransformRotation(const glm::vec3& rot)
 		{
-			m_transform.m_rot = rot;
+			m_transform.SetRotation(rot);
+		}
+		void SetTransformRotation(const glm::quat& rot)
+		{
+			m_transform.SetRotation(rot);
 		}
 		void ClampTransformRotationX(float min, float max)
 		{
@@ -98,10 +102,6 @@ namespace STR_FALL
 		{
 			if (m_transform.m_rot.z < min) { m_transform.m_rot.z = min; }
 			else if (m_transform.m_rot.z > max) { m_transform.m_rot.z = max; }
-		}
-		void IncrementTransformRotation(const glm::vec3& rot)
-		{
-			m_transform.m_rot += rot;
 		}
 
 		template<std::derived_from<Component> T>

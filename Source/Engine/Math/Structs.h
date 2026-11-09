@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 
 namespace STR_FALL
@@ -20,40 +21,27 @@ namespace STR_FALL
 	public:
 		glm::vec3 m_pos;
 		glm::vec3 m_scale;
-		glm::vec3 m_rot;
-		glm::mat4 m_mat;
+		glm::quat m_rot = glm::identity<glm::quat>();
 
 		inline Transform3D(const glm::vec3& pos = glm::vec3(), const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f), const glm::vec3& rot = glm::vec3()) :
 			m_pos(pos), m_scale(scale), m_rot(rot) {
 			GetMatrix();
 		}
 
-		inline const glm::mat4& GetMatrix()
+		void SetRotation(const glm::vec3& eular) { m_rot = glm::quat(eular); }
+		void SetRotation(const glm::quat& quat) { m_rot = glm::normalize(quat); }
+
+		inline glm::mat4 GetMatrix()
 		{
 			glm::mat4 mxt = glm::translate(m_pos);
-			glm::mat4 mxr = glm::eulerAngleXYZ(m_rot.x, m_rot.y, m_rot.z);
+			glm::mat4 mxr = glm::toMat4(m_rot);
 			glm::mat4 mxs = glm::scale(m_scale);
-			m_mat = mxt * mxr * mxs;
-			return m_mat;
+			return mxt * mxr * mxs;
 		}
 
-		inline glm::vec3 Forward() const
-		{
-			glm::mat4 mxr = glm::eulerAngleYXZ(m_rot.y, m_rot.x, m_rot.z);
-			return glm::normalize(glm::vec3(mxr * glm::vec4(0, 0, -1, 0)));
-		}
-
-		inline glm::vec3 Up() const
-		{
-			glm::mat4 mxr = glm::eulerAngleYXZ(m_rot.y, m_rot.x, m_rot.z);
-			return glm::normalize(glm::vec3(mxr * glm::vec4(0, 1, 0, 0)));
-		}
-
-		inline glm::vec3 Right() const
-		{
-			glm::mat4 mxr = glm::eulerAngleYXZ(m_rot.y, m_rot.x, m_rot.z);
-			return glm::normalize(glm::vec3(mxr * glm::vec4(1, 0, 0, 0)));
-		}
+		inline glm::vec3 Forward() const { return m_rot * glm::vec3(0, 0, -1); }
+		inline glm::vec3 Up() const { return m_rot * glm::vec3(0, 1, 0); }
+		inline glm::vec3 Right() const { return m_rot * glm::vec3(1, 0, 0); }
 	};
 
 	struct BitMaskInt

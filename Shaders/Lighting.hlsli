@@ -31,6 +31,13 @@ struct Light
     float2 padding1;
 };
 
+struct Lights
+{
+    Light lights[MAX_LIGHTS];
+    uint numLights;
+    float3 ambient;
+};
+
 float calculateAttenuation(float distance, float range)
 {
     return pow(saturate(1 - (distance / range)), 2);

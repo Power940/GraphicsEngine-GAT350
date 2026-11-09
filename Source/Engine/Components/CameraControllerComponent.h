@@ -15,5 +15,7 @@ namespace STR_FALL
 	private:
 		float m_speed = 1.0f;
 		float m_sensitivity = 1.0f;
+		float m_yaw = 0.0f;
+		float m_pitch = 0.0f;
 	};
 }

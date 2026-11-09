@@ -11,14 +11,13 @@
 #include <Framework/Scene.h>
 #include <Components/CameraComponent.h>
 
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
 #include <Framework/GameObject.h>
 
-#define GLM_ENABLE_EXPERIMENTAL
-#define VERIFY_16_BYTES_BOUDERIES(T) static_assert(sizeof(T) % 16 == 0);
 #define MAX_LIGHTS 8
 
 using namespace STR_FALL;
@@ -74,11 +73,11 @@ struct VertexUniform
     float padding1;
 };
 
-VERIFY_16_BYTES_BOUDERIES(MatrixUniform)
-VERIFY_16_BYTES_BOUDERIES(Light)
-VERIFY_16_BYTES_BOUDERIES(LightsUniform)
-VERIFY_16_BYTES_BOUDERIES(MaterialUniform)
-VERIFY_16_BYTES_BOUDERIES(VertexUniform)
+CHECK_UNIFORM_BOUNDARY(MatrixUniform);
+CHECK_UNIFORM_BOUNDARY(Light);
+CHECK_UNIFORM_BOUNDARY(LightsUniform);
+CHECK_UNIFORM_BOUNDARY(MaterialUniform);
+CHECK_UNIFORM_BOUNDARY(VertexUniform);
 
 
 
@@ -170,13 +169,13 @@ int main()
                 quit = true;
                 break;
             }
-            if (SDLEvent.type == SDL_EVENT_MOUSE_MOTION) {
-                //leftRot -= SDLEvent.motion.xrel * 0.003f;
-                //upRot -= SDLEvent.motion.yrel * 0.003f;
-
-                //upRot = (upRot < -F_HPI + 0.0001f) ? -F_HPI + 0.0001f : upRot;
-                //upRot = (upRot > F_HPI - 0.0001f) ? F_HPI - 0.0001f : upRot;
-                //STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
+            if (SDLEvent.type == SDL_EVENT_MOUSE_MOTION)
+            {
+                STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
+            }
+            if (SDLEvent.type != SDL_EVENT_MOUSE_MOTION)
+            {
+                STR_Engine::Get().m_input.SetMouseRelative(0.0f, 0.0f);
             }
         }
 
@@ -227,14 +226,13 @@ int main()
         STR_Engine::Get().m_renderer.BeginFrame();
         STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
 
-        STR_Engine::Get().m_renderer.SetVertexUniforms(0, &matrixUniform, sizeof(matrixUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(1, &vertexUniform, sizeof(vertexUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(2, &lightsUniform, sizeof(lightsUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(3, &materialUnifrom, sizeof(materialUnifrom));
+        STR_Engine::Get().m_renderer.SetVertexUniforms(UniformSlot::Object, &matrixUniform, sizeof(matrixUniform));
+        STR_Engine::Get().m_renderer.SetVertexUniforms(UniformSlot::Frame, &lightsUniform, sizeof(lightsUniform));
+        STR_Engine::Get().m_renderer.SetVertexUniforms(UniformSlot::Material, &materialUnifrom, sizeof(materialUnifrom));
 
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &vertexUniform, sizeof(vertexUniform));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(1, &lightsUniform, sizeof(lightsUniform));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(2, &materialUnifrom, sizeof(materialUnifrom));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(UniformSlot::Object, &vertexUniform, sizeof(vertexUniform));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
+        STR_Engine::Get().m_renderer.SetFragmentUniforms(UniformSlot::Material, &materialUnifrom, sizeof(materialUnifrom));
 
         STR_Engine::Get().m_renderer.SetFragmentTexture(0, *texture);
         model->Draw(STR_Engine::Get().m_renderer);

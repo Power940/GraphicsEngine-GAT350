@@ -40,7 +40,7 @@ namespace STR_FALL
         bool UnlockShowMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, false); }
 
         void SetMouseRelative(float x, float y) { mouseXRelative = x; mouseYRelative = y; }
-        glm::vec2 GetMouseRelative() { glm::vec2(mouseXRelative, mouseYRelative); }
+        glm::vec2 GetMouseRelative() { return glm::vec2(mouseXRelative, mouseYRelative); }
 
 		bool GetKeyDown(int key) const { return m_keyStates.at(key); }
 		bool GetKeyPrevDown(int key) const { return m_prevKeyStates.at(key); }

@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+#include "Uniforms.h"
 
 
 namespace STR_FALL
@@ -28,16 +29,16 @@ namespace STR_FALL
 		SDL_Window* GetWindow() const { return m_window; }
 
 		void SetPipeline(const class Pipeline& pipeline);
-		void SetVertexBuffer(const class VertexBuffer& vertexBuffer);
-		void SetIndexBuffer(const class IndexBuffer& indexBuffer);
+		void SetVertexBuffer(const class VertexBuffer& vertexBuffer) const;
+		void SetIndexBuffer(const class IndexBuffer& indexBuffer) const;
 		void Draw(uint32_t vertexCount);
 		void DrawIndex(const class IndexBuffer& indexBuffer);
 
 		bool BeginFrame();
 		bool EndFrame();
 
-		void SetVertexUniforms(uint32_t slot, const void* data, uint32_t size);
-		void SetFragmentUniforms(uint32_t slot, const void* data, uint32_t size);
+		void SetVertexUniforms(UniformSlot slot, const void* data, uint32_t size) const;
+		void SetFragmentUniforms(UniformSlot slot, const void* data, uint32_t size) const;
 
 		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
 
