@@ -103,7 +103,6 @@ namespace STR_FALL
 		r.SetVertexUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
 		r.SetFragmentUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
 
-
 		for (auto& object : m_objects) { object->Draw(r); }
 	}
 }

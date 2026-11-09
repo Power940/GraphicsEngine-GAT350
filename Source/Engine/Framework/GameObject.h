@@ -12,6 +12,7 @@
 #include <Core/Factory.h>
 #include <Renderer/Renderer.h>
 #include <utility>
+#include <Components/RendererComponent.h>
 
 
 namespace STR_FALL
@@ -53,6 +54,11 @@ namespace STR_FALL
 				{
 					continue;
 				}
+
+				auto rendererComponent = dynamic_cast<RendererComponent*>(component.get());
+				if (rendererComponent) {
+					rendererComponent->Draw(r);
+				}
 			}
 		}
 		virtual void OnCollision(GameObject* other) {}
@@ -87,21 +93,6 @@ namespace STR_FALL
 		void SetTransformRotation(const glm::quat& rot)
 		{
 			m_transform.SetRotation(rot);
-		}
-		void ClampTransformRotationX(float min, float max)
-		{
-			if (m_transform.m_rot.x < min) { m_transform.m_rot.x = min; }
-			else if (m_transform.m_rot.x > max) { m_transform.m_rot.x = max; }
-		}
-		void ClampTransformRotationY(float min, float max)
-		{
-			if (m_transform.m_rot.y < min) { m_transform.m_rot.y = min; }
-			else if (m_transform.m_rot.y > max) { m_transform.m_rot.y = max; }
-		}
-		void ClampTransformRotationZ(float min, float max)
-		{
-			if (m_transform.m_rot.z < min) { m_transform.m_rot.z = min; }
-			else if (m_transform.m_rot.z > max) { m_transform.m_rot.z = max; }
 		}
 
 		template<std::derived_from<Component> T>
