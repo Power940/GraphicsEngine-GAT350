@@ -115,7 +115,7 @@ int main()
         renderer.BeginFrame();
         renderer.SetPipeline(*pipeline);
 
-        renderer.SetFragmentTexture(0, *texture);
+        //renderer.SetFragmentTexture(0, *texture);
         s.Draw(renderer);
 
         renderer.EndFrame();

@@ -24,6 +24,7 @@ namespace STR_FALL
 		}
 
 		ProcessNode(scene->mRootNode, scene, renderer);
+		LoadMaterials(scene, filename, renderer);
 
 		return true;
 	}
@@ -32,6 +33,16 @@ namespace STR_FALL
 	{
 		for (const auto& mesh : m_meshes)
 		{
+			// my best guess at what goes here (doesn't work)
+			MaterialInstance mat = m_materials.at(mesh.materialIndex);
+
+			MaterialData data = mat.GetData();
+			renderer.SetVertexUniforms(UniformSlot::Material, &data, sizeof(data));
+			renderer.SetFragmentUniforms(UniformSlot::Material, &data, sizeof(data));
+
+			renderer.SetFragmentTexture(0, *mat.GetMaterial().GetDefaultTexture());
+			// end of my best guess
+
 			renderer.SetVertexBuffer(*mesh.vertexBuffer);
 			renderer.SetIndexBuffer(*mesh.indexBuffer);
 			renderer.DrawIndex(*mesh.indexBuffer);
