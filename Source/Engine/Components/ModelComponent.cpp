@@ -20,7 +20,7 @@ namespace STR_FALL
 		r.SetVertexUniforms(UniformSlot::Object, &objectUniform, sizeof(objectUniform));
 		r.SetFragmentUniforms(UniformSlot::Object, &objectUniform, sizeof(objectUniform));
 
-		m_model->Draw(r);
+		m_model->Draw(r, m_materials);
 	}
 
 	void ModelComponent::Read(const rapidjson::Value& value)
@@ -31,5 +31,24 @@ namespace STR_FALL
 		JSON_READ(value, m_modelName);
 
 		m_model = ResourceManager().Get<Model>(m_modelName, STR_Engine::Get().m_renderer);
+		 //"materials": [ "materials/brick.instance.json", null ] - one entry per slot, null keeps the model's material
+
+		if (JSON_HAS(value, "materials"))
+		{
+			for (const auto& entry : JSON_GET(value, "materials").GetArray())
+			{
+				if (entry.IsString())
+				{
+					auto material = ResourceManager().Get<MaterialInstance>(entry.GetString(), STR_Engine::Get().m_renderer);
+					if (!material) { std::cerr << "Could not load material: " << entry.GetString() << std::endl; }
+					m_materials.push_back(material);
+				}
+				else
+				{
+					m_materials.push_back(nullptr);
+				}
+			}
+		}
+
 	}
 }

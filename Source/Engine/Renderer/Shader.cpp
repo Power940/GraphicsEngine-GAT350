@@ -10,7 +10,7 @@ namespace STR_FALL
 		if (m_GPUDevice && m_GPUShader) { SDL_ReleaseGPUShader(m_GPUDevice, m_GPUShader); }
 	}
 
-	bool Shader::Load(const std::string& filename, const Renderer& renderer, uint32_t uniformCount, uint32_t samplerCount)
+	bool Shader::Load(const std::string& filename, const Renderer& renderer)
 	{
 		m_GPUDevice = renderer.GetGPUDevice();
 
@@ -32,14 +32,19 @@ namespace STR_FALL
 		std::vector<uint8_t> bytes = ReadBinaryFile(shaderFilename);
 		if (bytes.empty()) { std::cerr << "ERROR: Shader::Load could not ReadBinaryFile on file: " << shaderFilename << std::endl; return false; }
 
+		rapidjson::Document metadata;
+		if (!Json::Load(filename + ".json", metadata)) { std::cerr << "Could not load shader metadata: " << filename << ".json" << std::endl; return false; }
+		unsigned int samplers = 0;
+		JSON_READ(metadata, samplers);
+
 		SDL_GPUShaderCreateInfo shaderInfo{
 			.code_size = bytes.size(),
 			.code = bytes.data(),
 			.entrypoint = entrypoint,
 			.format = format,
 			.stage = stage,
-			.num_samplers = samplerCount,
-			.num_uniform_buffers = uniformCount
+			.num_samplers = samplers,
+			.num_uniform_buffers = 4
 		};
 
 		m_GPUShader = SDL_CreateGPUShader(m_GPUDevice, &shaderInfo);

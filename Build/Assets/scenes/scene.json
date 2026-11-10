@@ -4,7 +4,6 @@
       "m_active": true,
       "m_typeName": "GameObject",
       "m_name": "camera",
-
       "m_prototype": false,
       "m_tags": [
         "camera"
@@ -40,6 +39,7 @@
       "m_active": true,
       "m_typeName": "GameObject",
       "m_name": "light1",
+      "m_prototype": false,
       "m_tags": [
         "light"
       ],
@@ -67,6 +67,7 @@
       "m_active": true,
       "m_typeName": "GameObject",
       "m_name": "light2",
+      "m_prototype": false,
       "m_tags": [
         "light"
       ],
@@ -96,6 +97,7 @@
       "m_active": true,
       "m_typeName": "GameObject",
       "m_name": "Ogre",
+      "m_prototype": false,
       "m_tags": [
         "ogre"
       ],

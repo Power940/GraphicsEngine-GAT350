@@ -28,7 +28,7 @@ namespace STR_FALL
 		SDL_GPUDevice* GetGPUDevice() const { return m_GPUDevice; }
 		SDL_Window* GetWindow() const { return m_window; }
 
-		void SetPipeline(const class Pipeline& pipeline);
+		void SetPipeline(const class Pipeline& pipeline) const;
 		void SetVertexBuffer(const class VertexBuffer& vertexBuffer) const;
 		void SetIndexBuffer(const class IndexBuffer& indexBuffer) const;
 		void Draw(uint32_t vertexCount);
@@ -41,6 +41,7 @@ namespace STR_FALL
 		void SetFragmentUniforms(UniformSlot slot, const void* data, uint32_t size) const;
 
 		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
+		void SetMaterial(const class MaterialInstance& instance) const;
 
 		void CreateDepthBuffer();
 

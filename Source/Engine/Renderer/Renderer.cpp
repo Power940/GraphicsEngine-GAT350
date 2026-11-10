@@ -4,6 +4,7 @@
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
 #include "Renderer/Texture.h"
+#include "MaterialInstance.h"
 
 
 namespace STR_FALL
@@ -48,7 +49,7 @@ namespace STR_FALL
         SDL_Quit();
     }
 
-    void Renderer::SetPipeline(const Pipeline& pipeline) { SDL_BindGPUGraphicsPipeline(m_GPURenderPass, pipeline.m_GPUPipeline); }
+    void Renderer::SetPipeline(const Pipeline& pipeline) const { SDL_BindGPUGraphicsPipeline(m_GPURenderPass, pipeline.m_GPUPipeline); }
     void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer) const
     {
         SDL_GPUBufferBinding binding{
@@ -149,6 +150,12 @@ namespace STR_FALL
         };
 
         SDL_BindGPUFragmentSamplers(m_GPURenderPass, slot, &binding, 1);
+    }
+
+    void Renderer::SetMaterial(const MaterialInstance& instance) const
+    {
+        SetPipeline(instance.GetMaterial().GetPipeline());
+        instance.Bind(m_GPUCommandBuffer, m_GPURenderPass);
     }
 
     void Renderer::CreateDepthBuffer()

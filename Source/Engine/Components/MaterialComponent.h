@@ -11,5 +11,6 @@ namespace STR_FALL
 		void Read(const rapidjson::Value& value) override;
 
 	private:
+		res_t<class Model> m_model;
 	};
 }

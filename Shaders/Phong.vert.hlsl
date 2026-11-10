@@ -10,6 +10,10 @@ cbuffer FrameUniforms : register(FRAME_SLOT, VERTEX_UNIFORM_SPACE)
 {
     Frame frame;
 }
+cbuffer LightUniforms : register(LIGHT_SLOT, VERTEX_UNIFORM_SPACE)
+{
+    Lights lights;
+}
 cbuffer MatrerialUniforms : register(MATERIAL_SLOT, VERTEX_UNIFORM_SPACE)
 {
     Material material;

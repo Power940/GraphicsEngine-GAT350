@@ -23,25 +23,21 @@ namespace STR_FALL
 			return false;
 		}
 
+		std::string dir = ""; //GetParentDirectory(filename) + "/";
+		LoadMaterials(scene, dir, renderer);
 		ProcessNode(scene->mRootNode, scene, renderer);
-		LoadMaterials(scene, filename, renderer);
 
 		return true;
 	}
 
-	void Model::Draw(Renderer& renderer) const
+	void Model::Draw(Renderer& renderer, const std::vector<res_t<MaterialInstance>>& overrides) const
 	{
 		for (const auto& mesh : m_meshes)
 		{
-			// my best guess at what goes here (doesn't work)
-			MaterialInstance mat = m_materials.at(mesh.materialIndex);
+			uint32_t slot = mesh.materialIndex;
+			MaterialInstance material = (slot < overrides.size() && overrides[slot]) ? *overrides[slot] : m_materials[slot];
 
-			MaterialData data = mat.GetData();
-			renderer.SetVertexUniforms(UniformSlot::Material, &data, sizeof(data));
-			renderer.SetFragmentUniforms(UniformSlot::Material, &data, sizeof(data));
-
-			renderer.SetFragmentTexture(0, *mat.GetMaterial().GetDefaultTexture());
-			// end of my best guess
+			renderer.SetMaterial(material);
 
 			renderer.SetVertexBuffer(*mesh.vertexBuffer);
 			renderer.SetIndexBuffer(*mesh.indexBuffer);
@@ -101,6 +97,8 @@ namespace STR_FALL
 			std::cerr << "Could not create index buffer for mesh " << mesh->mName.C_Str() << std::endl;
 			return;
 		}
+
+		newMesh.materialIndex = mesh->mMaterialIndex;
 
 		m_meshes.push_back(std::move(newMesh));
 	}

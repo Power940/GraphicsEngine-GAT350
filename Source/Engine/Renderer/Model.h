@@ -34,7 +34,7 @@ namespace STR_FALL
 
 	public:
 		bool Load(const std::string& filename, const class Renderer& renderer);
-		void Draw(class Renderer& renderer) const;
+		void Draw(class Renderer& renderer, const std::vector<res_t<MaterialInstance>>& overrides = {}) const;
 
 	private:
 		void ProcessNode(aiNode* node, const aiScene* scene, const class Renderer& renderer);
@@ -45,6 +45,5 @@ namespace STR_FALL
 	private:
 		std::vector<Mesh> m_meshes;
 		std::vector<MaterialInstance> m_materials;
-
 	};
 }
