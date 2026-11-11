@@ -50,6 +50,9 @@ int main()
     
     while (!quit) {
         while (SDL_PollEvent(&SDLEvent)) {
+
+            STR_Engine::Get().m_editor.ProcessEvent(SDLEvent);
+
             if (SDLEvent.type == SDL_EVENT_QUIT)
             {
                 quit = true;
@@ -93,9 +96,15 @@ int main()
 
 #pragma endregion
 
+        STR_Engine::Get().m_editor.BeginFrame();
+        STR_Engine::Get().m_editor.Update();
+
         renderer.BeginFrame();
 
         s.Draw(renderer);
+
+        STR_Engine::Get().m_renderer.EndRenderPass();
+        STR_Engine::Get().m_editor.Draw(renderer);
 
         renderer.EndFrame();
 

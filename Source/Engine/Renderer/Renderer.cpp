@@ -44,7 +44,6 @@ namespace STR_FALL
     }
     void Renderer::ShutDown()
     {
-        SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
         SDL_Quit();
     }
@@ -66,6 +65,31 @@ namespace STR_FALL
         };
         SDL_BindGPUIndexBuffer(m_GPURenderPass, &binding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
     }
+
+    void Renderer::SetVertexUniforms(UniformSlot slot, const void* data, uint32_t size) const
+    {
+        SDL_PushGPUVertexUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
+    }
+    void Renderer::SetFragmentUniforms(UniformSlot slot, const void* data, uint32_t size) const
+    {
+        SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
+    }
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture) const
+    {
+        SDL_GPUTextureSamplerBinding binding
+        {
+            .texture = texture.m_GPUTexture,
+            .sampler = texture.m_GPUSampler
+        };
+
+        SDL_BindGPUFragmentSamplers(m_GPURenderPass, slot, &binding, 1);
+    }
+    void Renderer::SetMaterial(const MaterialInstance& instance) const
+    {
+        SetPipeline(instance.GetMaterial().GetPipeline());
+        instance.Bind(m_GPUCommandBuffer, m_GPURenderPass);
+    }
+
     void Renderer::Draw(uint32_t vertexCount) { SDL_DrawGPUPrimitives(m_GPURenderPass, vertexCount, 1, 0, 0); }
     void Renderer::DrawIndex(const IndexBuffer& indexBuffer)
     {
@@ -82,18 +106,18 @@ namespace STR_FALL
         }
 
 
-        SDL_GPUTexture* swapchainTexture = nullptr;
-        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_GPUCommandBuffer, m_window, &swapchainTexture, nullptr, nullptr))
+        m_GPUSwapchainTexture = nullptr;
+        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_GPUCommandBuffer, m_window, &m_GPUSwapchainTexture, nullptr, nullptr))
         {
             std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;
             return false;
         }
 
-        if (swapchainTexture != nullptr)
+        if (m_GPUSwapchainTexture != nullptr)
         {
             // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{
-                .texture = swapchainTexture,
+                .texture = m_GPUSwapchainTexture,
                 .clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f },
                 .load_op = SDL_GPU_LOADOP_CLEAR,
                 .store_op = SDL_GPU_STOREOP_STORE,
@@ -115,47 +139,23 @@ namespace STR_FALL
     }
     bool Renderer::EndFrame()
     {
-        if (m_GPURenderPass)
-        {
-            SDL_EndGPURenderPass(m_GPURenderPass);
-            m_GPURenderPass = nullptr;
-        }
-
+        EndRenderPass();
         if (!SDL_SubmitGPUCommandBuffer(m_GPUCommandBuffer))
         {
             std::cerr << "Could not submit command buffer: " << SDL_GetError() << std::endl;
             return false;
         }
-
         m_GPUCommandBuffer = nullptr;
-
+        m_GPUSwapchainTexture = nullptr;
         return true;
     }
-
-    void Renderer::SetVertexUniforms(UniformSlot slot, const void* data, uint32_t size) const
+    void Renderer::EndRenderPass()
     {
-        SDL_PushGPUVertexUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
-    }
-    void Renderer::SetFragmentUniforms(UniformSlot slot, const void* data, uint32_t size) const
-    {
-        SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
-    }
-
-    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture) const
-    {
-        SDL_GPUTextureSamplerBinding binding
+        if (m_GPURenderPass)
         {
-            .texture = texture.m_GPUTexture,
-            .sampler = texture.m_GPUSampler
-        };
-
-        SDL_BindGPUFragmentSamplers(m_GPURenderPass, slot, &binding, 1);
-    }
-
-    void Renderer::SetMaterial(const MaterialInstance& instance) const
-    {
-        SetPipeline(instance.GetMaterial().GetPipeline());
-        instance.Bind(m_GPUCommandBuffer, m_GPURenderPass);
+            SDL_EndGPURenderPass(m_GPURenderPass);
+            m_GPURenderPass = nullptr;
+        }
     }
 
     void Renderer::CreateDepthBuffer()

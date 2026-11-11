@@ -16,7 +16,7 @@ namespace STR_FALL
 		m_yaw -= axis.x;
 		m_pitch -= axis.y;
 		if (m_pitch < (-F_HPI + 0.01f)) { m_pitch = -F_HPI + 0.01f; }
-		if (m_pitch < (F_HPI - 0.01f)) { m_pitch = F_HPI - 0.01f; }
+		if (m_pitch > (F_HPI - 0.01f)) { m_pitch = F_HPI - 0.01f; }
 
 		glm::quat q = glm::quat_cast(glm::eulerAngleYXZ(m_yaw, m_pitch, 0.0f));
 		m_owner->SetTransformRotation(q);
@@ -26,7 +26,7 @@ namespace STR_FALL
 		dir += m_owner->GetTransform().Up() * static_cast<float>(STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL));
 		dir += m_owner->GetTransform().Forward() * static_cast<float>(STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_W, Input::KeyCodes::VK_S));
 
-		if (glm::length2(dir) > 0.0f) { dir = glm::normalize(dir); }
+		if (glm::length2(dir) > 0.01f) { dir = glm::normalize(dir); }
 		m_owner->IncrementTransformPos(dir * (m_speed * dt));
 	}
 

@@ -96,18 +96,18 @@
     {
       "m_active": true,
       "m_typeName": "GameObject",
-      "m_name": "Ogre",
+      "m_name": "object1",
       "m_prototype": false,
       "m_tags": [
-        "ogre"
+        "object"
       ],
       "m_transform": [
         0,
         0,
         0,
-        1,
-        1,
-        1,
+        0.2,
+        0.2,
+        0.2,
         0,
         0,
         0
@@ -116,8 +116,8 @@
         {
           "m_active": true,
           "m_typeName": "ModelComponent",
-          "m_modelName": "models/ogre.obj",
-          "m_materials": [ "materials/ogre.instance.json" ]
+          "m_modelName": "models/BadGuy.obj",
+          "m_materials": [ "materials/badguy.instance.json" ]
         }
       ]
     },
@@ -145,6 +145,33 @@
           "m_active": true,
           "m_typeName": "ModelComponent",
           "m_modelName": "flight-helmet/FlightHelmet.gltf"
+        }
+      ]
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "object3",
+      "m_prototype": false,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        -2,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/cubone.glb"
         }
       ]
     }
