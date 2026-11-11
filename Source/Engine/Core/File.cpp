@@ -121,6 +121,11 @@ namespace STR_FALL
 		return true;
 	}
 
+	std::string GetParentDirectory(const std::string& path)
+	{
+		return std::filesystem::path(path).parent_path().string();
+	}
+
 	std::vector<uint8_t> ReadBinaryFile(const std::string& path)
 	{
 		std::ifstream file(path, std::ios::binary | std::ios::ate);

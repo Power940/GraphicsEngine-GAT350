@@ -29,6 +29,6 @@ namespace STR_FALL
     {
         Light lights[MAX_LIGHTS];
         uint32_t num_lights;
-        glm::vec3 ambiant;
+        glm::vec3 ambient;
     };
 }

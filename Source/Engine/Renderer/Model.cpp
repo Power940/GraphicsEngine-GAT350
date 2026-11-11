@@ -23,7 +23,7 @@ namespace STR_FALL
 			return false;
 		}
 
-		std::string dir = "textures/";
+		std::string dir = GetParentDirectory(filename) + "/";
 		LoadMaterials(scene, dir, renderer);
 		ProcessNode(scene->mRootNode, scene, renderer);
 
@@ -55,7 +55,7 @@ namespace STR_FALL
 
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
 		{
-			ProcessNode(*node->mChildren, scene, renderer);
+			ProcessNode(node->mChildren[i], scene, renderer);
 		}
 	}
 

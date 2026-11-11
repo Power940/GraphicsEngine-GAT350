@@ -11,6 +11,12 @@ namespace STR_FALL
 
 	void ModelComponent::Draw(Renderer& r)
 	{
+		if (!m_model)
+		{
+			std::cerr << "ModelComponent::Draw ERROR: m_model is nullptr, owner name: " << m_owner->m_name << std::endl;
+			return;
+		}
+
 		ObjectUniform objectUniform
 		{
 			.model = m_owner->GetTransform().GetMatrix(),

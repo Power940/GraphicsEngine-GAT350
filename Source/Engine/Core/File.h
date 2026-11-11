@@ -20,5 +20,7 @@ namespace STR_FALL
     bool ReadTextFile(const std::string& path, std::string& data);
     bool WriteTextFile(const std::string& path, const std::string& data, bool append = false);
 
+    std::string GetParentDirectory(const std::string& path);
+
     std::vector<uint8_t> ReadBinaryFile(const std::string& path);
 }
