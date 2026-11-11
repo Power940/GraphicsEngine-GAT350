@@ -33,9 +33,9 @@ namespace STR_FALL
 		m_model = ResourceManager().Get<Model>(m_modelName, STR_Engine::Get().m_renderer);
 		 //"materials": [ "materials/brick.instance.json", null ] - one entry per slot, null keeps the model's material
 
-		if (JSON_HAS(value, "materials"))
+		if (JSON_HAS(value, "m_materials"))
 		{
-			for (const auto& entry : JSON_GET(value, "materials").GetArray())
+			for (const auto& entry : JSON_GET(value, "m_materials").GetArray())
 			{
 				if (entry.IsString())
 				{

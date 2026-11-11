@@ -141,7 +141,7 @@ namespace STR_FALL
         SDL_PushGPUFragmentUniformData(m_GPUCommandBuffer, static_cast<uint32_t>(slot), data, size);
     }
 
-    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture) const
     {
         SDL_GPUTextureSamplerBinding binding
         {

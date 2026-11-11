@@ -30,7 +30,7 @@
         {
           "m_active": true,
           "m_typeName": "CameraControllerComponent",
-          "m_sensitivity": 0.001,
+          "m_sensitivity": 0.004,
           "m_speed": 5
         }
       ]
@@ -116,8 +116,8 @@
         {
           "m_active": true,
           "m_typeName": "ModelComponent",
-          "m_modelName": "models/ogre.obj",
-          "m_materials": [ "materials/ogre.instance.json" ]
+          "m_modelName": "models/BadGuy.obj",
+          "m_materials": [ "materials/badguy.instance.json" ]
         }
       ]
     }

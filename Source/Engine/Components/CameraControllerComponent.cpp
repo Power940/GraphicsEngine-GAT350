@@ -11,15 +11,12 @@ namespace STR_FALL
 	
 	void CameraControllerComponent::Update(float dt)
 	{
-		if (STR_Engine::Get().m_input.GetMouseDown(Input::RIGHT))
-		{
-			glm::vec2 axis = STR_Engine::Get().m_input.GetMouseDiff() * m_sensitivity;
+		glm::vec2 axis = STR_Engine::Get().m_input.GetMouseRelative() * m_sensitivity;
 
-			m_yaw -= axis.x;
-			m_pitch -= axis.y;
-			if (m_pitch < (-F_HPI + 0.01f)) { m_pitch = -F_HPI + 0.01f; }
-			if (m_pitch < (F_HPI - 0.01f)) { m_pitch = F_HPI - 0.01f; }
-		}
+		m_yaw -= axis.x;
+		m_pitch -= axis.y;
+		if (m_pitch < (-F_HPI + 0.01f)) { m_pitch = -F_HPI + 0.01f; }
+		if (m_pitch < (F_HPI - 0.01f)) { m_pitch = F_HPI - 0.01f; }
 
 		glm::quat q = glm::quat_cast(glm::eulerAngleYXZ(m_yaw, m_pitch, 0.0f));
 		m_owner->SetTransformRotation(q);

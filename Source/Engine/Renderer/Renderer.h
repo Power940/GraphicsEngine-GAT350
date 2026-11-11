@@ -40,7 +40,7 @@ namespace STR_FALL
 		void SetVertexUniforms(UniformSlot slot, const void* data, uint32_t size) const;
 		void SetFragmentUniforms(UniformSlot slot, const void* data, uint32_t size) const;
 
-		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
+		void SetFragmentTexture(uint32_t slot, const class Texture& texture) const;
 		void SetMaterial(const class MaterialInstance& instance) const;
 
 		void CreateDepthBuffer();

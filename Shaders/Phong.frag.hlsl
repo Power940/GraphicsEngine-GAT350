@@ -5,19 +5,19 @@
 Texture2D<float4> u_texture : register(t0, space2);
 SamplerState u_sampler : register(s0, space2);
 
-cbuffer ObjectUniforms : register(OBJECT_SLOT, VERTEX_UNIFORM_SPACE)
+cbuffer ObjectUniforms : register(OBJECT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Object object;
 }
-cbuffer FrameUniforms : register(FRAME_SLOT, VERTEX_UNIFORM_SPACE)
+cbuffer FrameUniforms : register(FRAME_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Frame frame;
 }
-cbuffer LightUniforms : register(LIGHT_SLOT, VERTEX_UNIFORM_SPACE)
+cbuffer LightUniforms : register(LIGHT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Lights lights;
 }
-cbuffer MatrerialUniforms : register(MATERIAL_SLOT, VERTEX_UNIFORM_SPACE)
+cbuffer MatrerialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Material material;
 }

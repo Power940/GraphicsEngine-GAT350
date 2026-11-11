@@ -15,7 +15,7 @@ namespace STR_FALL
 	bool Model::Load(const std::string& filename, const Renderer& renderer)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		const aiScene* scene = importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_RemoveRedundantMaterials | aiProcess_OptimizeMeshes);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -23,7 +23,7 @@ namespace STR_FALL
 			return false;
 		}
 
-		std::string dir = ""; //GetParentDirectory(filename) + "/";
+		std::string dir = "textures/";
 		LoadMaterials(scene, dir, renderer);
 		ProcessNode(scene->mRootNode, scene, renderer);
 

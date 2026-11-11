@@ -59,10 +59,6 @@ int main()
             {
                 STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
             }
-            if (SDLEvent.type != SDL_EVENT_MOUSE_MOTION)
-            {
-                STR_Engine::Get().m_input.SetMouseRelative(0.0f, 0.0f);
-            }
         }
 
         STR_Engine::Get().Update();
@@ -102,6 +98,8 @@ int main()
         s.Draw(renderer);
 
         renderer.EndFrame();
+
+        STR_Engine::Get().m_input.SetMouseRelative(0.0f, 0.0f);
     }
 
     STR_Engine::Get().Shutdown();
