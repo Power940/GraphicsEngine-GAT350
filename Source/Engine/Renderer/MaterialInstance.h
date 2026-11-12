@@ -25,6 +25,8 @@ namespace STR_FALL
 
 		const Material& GetMaterial() const { return *m_material; }
 
+		std::string m_materialName = "";
+
 	private:
 		res_t<Material> m_material;
 		MaterialData m_data;

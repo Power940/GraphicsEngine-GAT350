@@ -1,21 +1,9 @@
 #include "StarFallEngine.h"
-#include <memory>
-#include <Renderer/Pipeline.h>
-#include <Renderer/VertexBuffer.h>
-#include <Renderer/IndexBuffer.h>
-#include <Renderer/Shader.h>
-#include <Renderer/Model.h>
-#include <Renderer/Texture.h>
 #include "Core/BatchRunner.h"
 #include <Input/Input.h>
 #include <Framework/Scene.h>
-#include <Components/CameraComponent.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/euler_angles.hpp>
-#include <glm/gtx/transform.hpp>
 #include <Framework/GameObject.h>
 
 
@@ -77,24 +65,6 @@ int main()
         {
             STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
         }
-
-#pragma region LiveShaderReload
-
-        //if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_R))
-        //{
-        //    RunBatch(
-        //        SOLUTION_DIR "Tools\\compile_shaders.bat",
-        //        { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
-        //        true
-        //    );
-        //    (*vShader).~Shader();
-        //    (*fShader).~Shader();
-        //    (*vShader).Load("shaders/Phong.vert", renderer, 4);
-        //    (*fShader).Load("shaders/Phong.frag", renderer, 3, 1);
-        //    pipeline->Create(*vShader, *fShader, renderer.GetGPUDevice(), renderer.GetWindow());
-        //}
-
-#pragma endregion
 
         STR_Engine::Get().m_editor.BeginFrame();
         STR_Engine::Get().m_editor.Update();

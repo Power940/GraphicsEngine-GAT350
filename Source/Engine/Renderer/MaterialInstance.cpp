@@ -38,12 +38,11 @@ namespace STR_FALL
 		}
 
 		// the material comes first, all values start from its defaults
-		std::string materialName;
-		JSON_READ_NAME(document, "material", materialName);
-		auto material = ResourceManager().Get<Material>(materialName, renderer);
+		JSON_READ_NAME(document, "material", m_materialName);
+		auto material = ResourceManager().Get<Material>(m_materialName, renderer);
 		if (!material)
 		{
-			std::cerr << "Could not load Material \"" << materialName << "\" for instance: " << filename << std::endl;
+			std::cerr << "Could not load Material \"" << m_materialName << "\" for instance: " << filename << std::endl;
 			return false;
 		}
 		Initialize(material);

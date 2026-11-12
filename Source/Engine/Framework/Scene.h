@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <ranges>
 
 
 namespace STR_FALL
@@ -46,6 +47,12 @@ namespace STR_FALL
 				if (objectT != nullptr && objectT->m_tags.contains(name)) { result.push_back(objectT); }
 			}
 			return result;
+		}
+
+		inline std::vector<GameObject*> GetObjectPtrs()
+		{
+			auto view = m_objects | std::views::transform([](const auto& ptr) { return ptr.get(); });
+			return { view.begin(), view.end() };
 		}
 
 		bool Load(std::string filePath);

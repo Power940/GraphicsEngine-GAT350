@@ -131,6 +131,7 @@ namespace STR_FALL
 					auto component = Factory::Instance().Create<Component>(m_typeName);
 					if (component)
 					{
+						component->m_owner = this;
 						component->Read(componentValue);
 						AddComponent(std::move(component));
 					}
