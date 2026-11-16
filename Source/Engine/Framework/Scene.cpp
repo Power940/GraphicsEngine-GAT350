@@ -25,6 +25,11 @@ namespace STR_FALL
 			{
 				for (auto& gameObjectValue : JSON_GET(doc, "GameObjects").GetArray())
 				{
+					if (JSON_HAS(gameObjectValue, "COMMENT"))
+					{
+						continue;
+					}
+
 					std::string m_typeName;
 					JSON_READ(gameObjectValue, m_typeName);
 

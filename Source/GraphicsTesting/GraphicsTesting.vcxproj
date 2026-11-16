@@ -196,9 +196,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\Assets\materials\badguy.instance.json" />
-    <None Include="..\..\Build\Assets\materials\ogre.instance.json" />
+    <None Include="..\..\Build\Assets\materials\fox.instance.json" />
+    <None Include="..\..\Build\Assets\materials\ground.instance.json" />
+    <None Include="..\..\Build\Assets\materials\moon.instance.json" />
     <None Include="..\..\Build\Assets\materials\phong.material.json" />
+    <None Include="..\..\Build\Assets\materials\space.instance.json" />
+    <None Include="..\..\Build\Assets\materials\unlit.material.json" />
     <None Include="..\..\Build\Assets\scenes\scene.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

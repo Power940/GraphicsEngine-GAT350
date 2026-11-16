@@ -18,10 +18,19 @@
     <None Include="..\..\Build\Assets\materials\phong.material.json">
       <Filter>Materials</Filter>
     </None>
-    <None Include="..\..\Build\Assets\materials\ogre.instance.json">
+    <None Include="..\..\Build\Assets\materials\moon.instance.json">
       <Filter>Materials</Filter>
     </None>
-    <None Include="..\..\Build\Assets\materials\badguy.instance.json">
+    <None Include="..\..\Build\Assets\materials\unlit.material.json">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\materials\ground.instance.json">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\materials\space.instance.json">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\materials\fox.instance.json">
       <Filter>Materials</Filter>
     </None>
   </ItemGroup>

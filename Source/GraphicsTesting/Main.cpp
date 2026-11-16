@@ -2,6 +2,7 @@
 #include "Core/BatchRunner.h"
 #include <Input/Input.h>
 #include <Framework/Scene.h>
+#include "Core/Helper.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <Framework/GameObject.h>
@@ -64,6 +65,12 @@ int main()
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_LALT))
         {
             STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
+        }
+
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_P))
+        {
+            glm::vec3 cam = s.GetObjectName<GameObject>("camera")->m_transform.m_pos;
+            MultiPrintln(" | ", cam.x, cam.y, cam.z);
         }
 
         STR_Engine::Get().m_editor.BeginFrame();
