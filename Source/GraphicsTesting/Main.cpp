@@ -76,7 +76,10 @@ int main()
             }
             if (SDLEvent.type == SDL_EVENT_MOUSE_MOTION)
             {
-                STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
+                if (STR_Engine::Get().m_input.IsMouseLocked())
+                {
+                    STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
+                }
             }
         }
 
@@ -101,7 +104,7 @@ int main()
         }
 
         STR_Engine::Get().m_editor.BeginFrame();
-        STR_Engine::Get().m_editor.Update();
+        STR_Engine::Get().m_editor.Update(s);
 
         renderer.BeginFrame();
 

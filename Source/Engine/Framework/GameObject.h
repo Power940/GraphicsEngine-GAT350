@@ -46,21 +46,7 @@ namespace STR_FALL
 
 		virtual void Start();
 		virtual void Update(float dt);
-		virtual void Draw(Renderer& r)
-		{
-			for (std::unique_ptr<Component>& component : m_components)
-			{
-				if (!component->m_active)
-				{
-					continue;
-				}
-
-				auto rendererComponent = dynamic_cast<RendererComponent*>(component.get());
-				if (rendererComponent) {
-					rendererComponent->Draw(r);
-				}
-			}
-		}
+		virtual void Draw(Renderer& r);
 		virtual void OnCollision(GameObject* other) {}
 		virtual void OnDestroy();
 
@@ -136,6 +122,37 @@ namespace STR_FALL
 						AddComponent(std::move(component));
 					}
 				}
+			}
+		}
+
+		void UpdateGui() override
+		{
+			ImGui::Checkbox("##active", &m_active);
+			ImGui::SameLine();
+			Object::UpdateGui();
+
+			ImGui::Text("Tags: %s", m_tags);
+
+			ImGui::Separator();
+
+			if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_transform.UpdateGui();
+			}
+
+			for (auto& component : m_components)
+			{
+				ImGui::PushID(component.get());
+				ImGui::Separator();
+
+				if (ImGui::Checkbox("##active", &component->m_active));
+				ImGui::SameLine();
+
+				if (ImGui::CollapsingHeader(component->GetClassName(), ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					component->UpdateGui();
+				}
+				ImGui::PopID();
 			}
 		}
 	};

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <ostream>
+#include <Editor/Editor.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
@@ -12,11 +13,12 @@
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 namespace STR_FALL
 {
-	struct Transform3D
+	struct Transform3D : public IGUI
 	{
 	public:
 		glm::vec3 m_pos;
@@ -30,6 +32,7 @@ namespace STR_FALL
 
 		void SetRotation(const glm::vec3& eular) { m_rot = glm::quat(eular); }
 		void SetRotation(const glm::quat& quat) { m_rot = glm::normalize(quat); }
+		glm::vec3 GetRotation() const { return glm::eulerAngles(m_rot); }
 
 		inline glm::mat4 GetMatrix() const
 		{
@@ -42,6 +45,17 @@ namespace STR_FALL
 		inline glm::vec3 Forward() const { return m_rot * glm::vec3(0, 0, -1); }
 		inline glm::vec3 Up() const { return m_rot * glm::vec3(0, 1, 0); }
 		inline glm::vec3 Right() const { return m_rot * glm::vec3(1, 0, 0); }
+
+		void UpdateGui() override
+		{
+			ImGui::DragFloat3("Position", glm::value_ptr(m_pos), 0.1f);
+			glm::vec3 euler = GetRotation();
+			if (ImGui::DragFloat3("Rotation", glm::value_ptr(euler), 0.1f))
+			{
+				SetRotation(euler);
+			}
+			ImGui::DragFloat3("Scale", glm::value_ptr(m_scale), 0.1f);
+		}
 	};
 
 	struct BitMaskInt

@@ -26,6 +26,21 @@ namespace STR_FALL
 		}
 	}
 
+	void GameObject::Draw(Renderer& r)
+	{
+		if (!m_active) { return; }
+
+		for (std::unique_ptr<Component>& component : m_components)
+		{
+			if (!component->m_active) { continue; }
+
+			auto rendererComponent = dynamic_cast<RendererComponent*>(component.get());
+			if (rendererComponent) {
+				rendererComponent->Draw(r);
+			}
+		}
+	}
+
 	void GameObject::OnDestroy()
 	{
 		for (std::unique_ptr<Component>& component : m_components)

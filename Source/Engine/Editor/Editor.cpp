@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Editor.h"
 #include "Renderer/Renderer.h"
+#include <Framework/Scene.h>
+#include <Framework/Object.h>
 
 namespace STR_FALL
 {
@@ -48,13 +50,15 @@ namespace STR_FALL
 		ImGui_ImplSDL3_ProcessEvent(&event);
 	}
 
-	void Editor::Update()
+	void Editor::Update(Scene& scene)
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_GraveAccent)) 
 			m_active = !m_active;
 		if (!m_active) return;
-		
-		ImGui::ShowDemoWindow();
+
+		UpdateHierarchy(scene);
+		UpdateInspector();
+		UpdateAssets();
 	}
 
 	void Editor::BeginFrame()
@@ -88,5 +92,42 @@ namespace STR_FALL
 		SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(commandBuffer, &target, 1, nullptr);
 		ImGui_ImplSDLGPU3_RenderDrawData(drawData, commandBuffer, renderPass);
 		SDL_EndGPURenderPass(renderPass);
+	}
+
+	void Editor::UpdateHierarchy(Scene& scene)
+	{
+		ImGui::Begin("Hierarchy");
+
+		scene.UpdateGui();
+
+		ImGui::Separator();
+
+		for (auto& gameObject : scene.GetObjects())
+		{
+			ImGui::PushID(gameObject.get());
+			if (ImGui::Selectable(gameObject.get()->m_name.c_str(), m_selected == gameObject.get()))
+			{
+				m_selected = gameObject.get();
+			}
+			ImGui::PopID();
+		}
+
+		ImGui::End();
+	}
+
+	void Editor::UpdateInspector()
+	{
+		ImGui::Begin("Inspector");
+
+		if (!m_selected) { ImGui::End(); return; }
+
+		m_selected->UpdateGui();
+
+		ImGui::End();
+	}
+
+	void Editor::UpdateAssets()
+	{
+
 	}
 }

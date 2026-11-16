@@ -24,6 +24,8 @@ namespace STR_FALL
         float mouseXRelative = 0.0f;
         float mouseYRelative = 0.0f;
 
+        bool m_mouseLocked = false;
+
 	public:
 		enum MouseButton
 		{
@@ -36,8 +38,10 @@ namespace STR_FALL
 
 		void Update();
 
-        bool LockHideMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, true); }
-        bool UnlockShowMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, false); }
+        bool IsMouseLocked() { return m_mouseLocked; }
+
+        bool LockHideMouse(SDL_Window* window) { m_mouseLocked = true; return SDL_SetWindowRelativeMouseMode(window, true); }
+        bool UnlockShowMouse(SDL_Window* window) { m_mouseLocked = false; return SDL_SetWindowRelativeMouseMode(window, false); }
 
         void SetMouseRelative(float x, float y) { mouseXRelative = x; mouseYRelative = y; }
         glm::vec2 GetMouseRelative() { return glm::vec2(mouseXRelative, mouseYRelative); }

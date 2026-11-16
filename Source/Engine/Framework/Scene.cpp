@@ -12,6 +12,7 @@
 #include <Components/CameraComponent.h>
 #include "Renderer/Light.h"
 #include <Components/LightComponent.h>
+#include "StarFallEngine.h"
 
 
 namespace STR_FALL
@@ -93,13 +94,15 @@ namespace STR_FALL
 		}
 
 		LightsUniform lightsUniform{};
-		lightsUniform.ambient = glm::vec3(0.2f);
+		lightsUniform.ambient = m_ambient;
 
 		auto lights = GetObjectsTag<GameObject>("light");
 		for (auto light : lights)
 		{
+			if (!light->m_active) { continue; }
+
 			auto lightComponent = light->GetComponent<LightComponent>();
-			if (lightComponent)
+			if (lightComponent && lightComponent->m_active)
 			{
 				lightsUniform.lights[lightsUniform.num_lights++] = lightComponent->GetLightData();
 			}
@@ -109,5 +112,13 @@ namespace STR_FALL
 		r.SetFragmentUniforms(UniformSlot::Light, &lightsUniform, sizeof(lightsUniform));
 
 		for (auto& object : m_objects) { object->Draw(r); }
+	}
+
+	void Scene::UpdateGui()
+	{
+		glm::vec3 clearColor = STR_Engine::Get().m_renderer.GetClearColor();
+		ImGui::ColorEdit3("clear light", glm::value_ptr(clearColor));
+		STR_Engine::Get().m_renderer.SetClearColor(clearColor);
+		ImGui::ColorEdit3("ambient light", glm::value_ptr(m_ambient));
 	}
 }

@@ -118,7 +118,7 @@ namespace STR_FALL
             // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{
                 .texture = m_GPUSwapchainTexture,
-                .clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f },
+                .clear_color = SDL_FColor{ m_clearColor.x, m_clearColor.y, m_clearColor.z, 1.0f },
                 .load_op = SDL_GPU_LOADOP_CLEAR,
                 .store_op = SDL_GPU_STOREOP_STORE,
             };

@@ -15,6 +15,7 @@ namespace STR_FALL
 		SDL_GPURenderPass* m_GPURenderPass = nullptr;
 		SDL_GPUTexture* m_GPUDepthTexture = nullptr;
 		SDL_GPUTexture* m_GPUSwapchainTexture = nullptr;
+		glm::vec3 m_clearColor = glm::vec3(0.0f);
 
 		int m_WINDOW_WIDTH = -1;
 		int m_WINDOW_HEIGHT = -1;
@@ -49,6 +50,9 @@ namespace STR_FALL
 		void EndRenderPass();
 
 		void CreateDepthBuffer();
+
+		void SetClearColor(const glm::vec3& color) { m_clearColor = color; }
+		glm::vec3 GetClearColor() { return m_clearColor; }
 
 		friend struct Text;
 		friend class Texture;

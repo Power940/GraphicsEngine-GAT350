@@ -19,7 +19,7 @@ namespace STR_FALL
 		bool Initialize(Renderer& renderer);
 		void Shutdown();
 
-		void Update();
+		void Update(class Scene& s);
 		void ProcessEvent(const SDL_Event& event);
 
 		void BeginFrame();
@@ -29,6 +29,11 @@ namespace STR_FALL
 		bool GetActive() { return m_active; }
 
 	private:
+		void UpdateHierarchy(class Scene& scene);
+		void UpdateInspector();
+		void UpdateAssets();
+
 		bool m_active = true;
+		class Object* m_selected = nullptr;
 	};
 }
