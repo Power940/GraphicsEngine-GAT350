@@ -20,6 +20,7 @@ int main()
     int initCode = STR_Engine::Get().Initialize("Super Epic Graphic Test", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
     Renderer& renderer = STR_Engine::Get().m_renderer;
+    SeedRandom();
 
     STR_Engine::Get().m_input.LockHideMouse(renderer.GetWindow());
 
@@ -32,6 +33,32 @@ int main()
     
     Scene s;
     s.Load("scenes/scene.json");
+
+    for (int i = 0; i < 20; i++)
+    {
+        std::unique_ptr<GameObject> temp1 = Factory::Instance().Create<GameObject>("protoTree");
+        temp1->IncrementTransformPos(glm::vec3(RandomFloat(50.0f, -50.0f), 0, RandomFloat(50.0f, -50.0f)));
+        s.AddObject(std::move(temp1));
+
+        std::unique_ptr<GameObject> temp2 = Factory::Instance().Create<GameObject>("protoVineTree");
+        temp2->IncrementTransformPos(glm::vec3(RandomFloat(50.0f, -50.0f), 0, RandomFloat(50.0f, -50.0f)));
+        s.AddObject(std::move(temp2));
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        std::unique_ptr<GameObject> temp1 = Factory::Instance().Create<GameObject>("protoFox");
+        temp1->IncrementTransformPos(glm::vec3(RandomFloat(50.0f, -50.0f), 0, RandomFloat(50.0f, -50.0f)));
+        temp1->SetTransformRotation(glm::vec3(0, RandomFloat(F_PI2, 0.0f), 0));
+        s.AddObject(std::move(temp1));
+    }
+
+    std::unique_ptr<GameObject> moon1 = Factory::Instance().Create<GameObject>("protoMoon");
+    std::unique_ptr<GameObject> moon2 = Factory::Instance().Create<GameObject>("protoMoon");
+    moon1->SetTransform(glm::vec3(-17.817, 25.7734, 22.0311));
+    moon2->SetTransform(glm::vec3(6.90852, 22.5598, 21.043));
+    s.AddObject(std::move(moon1));
+    s.AddObject(std::move(moon2));
 
 
     SDL_Event SDLEvent;

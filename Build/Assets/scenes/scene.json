@@ -68,40 +68,7 @@
           "m_active": true,
           "m_typeName": "LightComponent",
           "m_lightTypeName": "directional",
-          "m_color": [ 0.5, 0.5, 0.5, 1.0 ]
-        }
-      ]
-    },
-
-
-
-    {
-      "m_active": true,
-      "m_typeName": "GameObject",
-      "m_name": "light2",
-      "m_prototype": false,
-      "m_tags": [
-        "light"
-      ],
-
-      "m_transform": [
-        5,
-        5,
-        0,
-        1,
-        1,
-        1,
-        0,
-        0,
-        0
-      ],
-      "components": [
-        {
-          "m_active": true,
-          "m_typeName": "LightComponent",
-          "m_lightTypeName": "point",
-          "m_color": [ 1, 1, 1, 1 ],
-          "m_range": 40.0
+          "m_color": [ 0.235294118, 0.0784313725, 1.0, 0.2 ]
         }
       ]
     },
@@ -123,9 +90,9 @@
         0,
         0,
         0,
-        50,
+        100,
         1,
-        50,
+        100,
         0,
         0,
         0
@@ -216,14 +183,14 @@
         "object"
       ],
       "m_transform": [
+        21.0969,
         0,
+        34.3211,
+        1.5,
+        1.5,
+        1.5,
         0,
-        0,
-        0.8,
-        0.8,
-        0.8,
-        0,
-        0,
+        0.645772,
         0
       ],
       "m_components": [
