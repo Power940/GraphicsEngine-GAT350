@@ -12,6 +12,8 @@ namespace STR_FALL
 		void Read(const rapidjson::Value& value) override;
 
 		struct Light GetLightData() const;
+		
+		void UpdateGui() override;
 		 
 	private:
 		LightType m_lightType = LightType::POINT;

@@ -40,8 +40,26 @@ namespace STR_FALL
 
         bool IsMouseLocked() { return m_mouseLocked; }
 
-        bool LockHideMouse(SDL_Window* window) { m_mouseLocked = true; return SDL_SetWindowRelativeMouseMode(window, true); }
-        bool UnlockShowMouse(SDL_Window* window) { m_mouseLocked = false; return SDL_SetWindowRelativeMouseMode(window, false); }
+        bool LockHideMouse(SDL_Window* window)
+        {
+            if (SDL_SetWindowRelativeMouseMode(window, true))
+            {
+                m_mouseLocked = true;
+                ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+                return true;
+            }
+            return false;
+        }
+        bool UnlockShowMouse(SDL_Window* window)
+        {
+            if (SDL_SetWindowRelativeMouseMode(window, false))
+            {
+                m_mouseLocked = false;
+                ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+                return true;
+            }
+            return false;
+        }
 
         void SetMouseRelative(float x, float y) { mouseXRelative = x; mouseYRelative = y; }
         glm::vec2 GetMouseRelative() { return glm::vec2(mouseXRelative, mouseYRelative); }

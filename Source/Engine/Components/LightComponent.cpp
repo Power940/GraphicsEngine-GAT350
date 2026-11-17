@@ -37,4 +37,15 @@ namespace STR_FALL
             .outerCutoff = glm::cos(m_outerCutoff)
         };
 	}
+
+	void LightComponent::UpdateGui()
+	{
+		const char* types[3] = {"DIRECTIONAL", "POINT", "SPOT"};
+		ImGui::ColorEdit4("color & intensity", glm::value_ptr(m_color));
+		ImGui::Combo("Type", (int*)(&m_lightType), types, 3);
+		if (m_lightType != LightType::DIRECTIONAL)
+		{
+			ImGui::SliderFloat("range", &m_range, 0.0f, 100.0f);
+		}
+	}
 }

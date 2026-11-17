@@ -36,4 +36,10 @@ namespace STR_FALL
 		JSON_READ(value, m_speed);
 		JSON_READ(value, m_sensitivity);
 	}
+
+	void CameraControllerComponent::UpdateGui()
+	{
+		ImGui::DragFloat("speed", &m_speed, 0.1f);
+		ImGui::DragFloat("sensitivity", &m_sensitivity, 0.1f);
+	}
 }

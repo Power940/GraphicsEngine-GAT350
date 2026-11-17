@@ -12,6 +12,8 @@ namespace STR_FALL
 		void Update(float dt) override;
 		void Read(const rapidjson::Value& value) override;
 
+		void UpdateGui() override;
+
 	private:
 		float m_speed = 1.0f;
 		float m_sensitivity = 1.0f;

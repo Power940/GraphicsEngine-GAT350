@@ -64,7 +64,6 @@
     <ClCompile Include="Components\CameraComponent.cpp" />
     <ClCompile Include="Components\CameraControllerComponent.cpp" />
     <ClCompile Include="Components\LightComponent.cpp" />
-    <ClCompile Include="Components\MaterialComponent.cpp" />
     <ClCompile Include="Components\ModelComponent.cpp" />
     <ClCompile Include="Core\BatchRunner.cpp" />
     <ClCompile Include="Core\file.cpp" />
@@ -114,7 +113,6 @@
     <ClInclude Include="Components\CameraControllerComponent.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\LightComponent.h" />
-    <ClInclude Include="Components\MaterialComponent.h" />
     <ClInclude Include="Components\ModelComponent.h" />
     <ClInclude Include="Components\RendererComponent.h" />
     <ClInclude Include="Core\BatchRunner.h" />

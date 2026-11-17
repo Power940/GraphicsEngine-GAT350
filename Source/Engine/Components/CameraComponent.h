@@ -20,6 +20,8 @@ namespace STR_FALL
 		inline const glm::mat4x4& GetView() const { return m_view; }
 		inline const glm::mat4x4& GetProjection() const { return m_projection; }
 
+		void UpdateGui() override;
+
 	private:
 		glm::mat4x4 m_view;
 		glm::mat4x4 m_projection;

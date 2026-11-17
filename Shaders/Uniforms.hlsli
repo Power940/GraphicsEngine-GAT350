@@ -7,6 +7,8 @@
 
 #define VERTEX_UNIFORM_SPACE    space1
 #define FRAGMENT_UNIFORM_SPACE  space3
+#define VERTEX_TEXTURE_SPACE    space0
+#define FRAGMENT_TEXTURE_SPACE  space2
 
 struct Object
 {

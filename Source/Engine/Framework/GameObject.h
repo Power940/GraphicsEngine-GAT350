@@ -23,7 +23,7 @@ namespace STR_FALL
 	{ friend Scene;
 
 	public:
-		std::unordered_set<std::string> m_tags;
+		std::vector<std::string> m_tags;
 		Transform3D m_transform = Transform3D();
 		std::vector<std::unique_ptr<Component>> m_components;
 		Scene* m_scene = nullptr;
@@ -131,7 +131,8 @@ namespace STR_FALL
 			ImGui::SameLine();
 			Object::UpdateGui();
 
-			ImGui::Text("Tags: %s", m_tags);
+			//ImGui::Text("Tags:");
+			// TODO: fix later
 
 			ImGui::Separator();
 

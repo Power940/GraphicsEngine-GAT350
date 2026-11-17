@@ -2,8 +2,8 @@
 #include "Uniforms.hlsli"
 
 
-Texture2D<float4> u_texture : register(t0, space2);
-SamplerState u_sampler : register(s0, space2);
+Texture2D<float4> base_texture : register(t0, FRAGMENT_TEXTURE_SPACE);
+SamplerState base_sampler : register(s0, FRAGMENT_TEXTURE_SPACE);
 
 cbuffer ObjectUniforms : register(OBJECT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
@@ -60,7 +60,7 @@ Output main(Input input)
         }
     }
     
-    float4 albedo = u_texture.Sample(u_sampler, input.texcoord) * material.baseColor;
+    float4 albedo = base_texture.Sample(base_sampler, input.texcoord) * material.baseColor;
     output.color = float4(albedo.rgb * diffuse + specular, albedo.a);
     
     return output;

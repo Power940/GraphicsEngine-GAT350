@@ -7,6 +7,7 @@
 #include <vector>
 #include <ranges>
 #include <Editor/Editor.h>
+#include <algorithm>
 
 
 namespace STR_FALL
@@ -48,7 +49,7 @@ namespace STR_FALL
 			for (auto& object : m_objects)
 			{
 				T* objectT = dynamic_cast<T*>(object.get());
-				if (objectT != nullptr && objectT->m_tags.contains(name)) { result.push_back(objectT); }
+				if (objectT != nullptr && std::find(objectT->m_tags.begin(), objectT->m_tags.end(), name) != objectT->m_tags.end()) { result.push_back(objectT); }
 			}
 			return result;
 		}
