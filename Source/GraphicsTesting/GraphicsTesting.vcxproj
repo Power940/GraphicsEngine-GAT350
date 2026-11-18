@@ -198,7 +198,7 @@
   <ItemGroup>
     <None Include="..\..\Build\Assets\materials\fox.instance.json" />
     <None Include="..\..\Build\Assets\materials\ground.instance.json" />
-    <None Include="..\..\Build\Assets\materials\ground2.instance.json" />
+    <None Include="..\..\Build\Assets\materials\MoonArrowGrass.instance.json" />
     <None Include="..\..\Build\Assets\materials\moon.instance.json" />
     <None Include="..\..\Build\Assets\materials\multiphong.material.json" />
     <None Include="..\..\Build\Assets\materials\phong.material.json" />

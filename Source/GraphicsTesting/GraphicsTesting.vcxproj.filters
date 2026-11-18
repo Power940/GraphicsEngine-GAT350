@@ -36,7 +36,7 @@
     <None Include="..\..\Build\Assets\materials\multiphong.material.json">
       <Filter>Materials</Filter>
     </None>
-    <None Include="..\..\Build\Assets\materials\ground2.instance.json">
+    <None Include="..\..\Build\Assets\materials\MoonArrowGrass.instance.json">
       <Filter>Materials</Filter>
     </None>
   </ItemGroup>

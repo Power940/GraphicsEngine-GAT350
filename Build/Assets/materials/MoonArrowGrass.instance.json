@@ -4,7 +4,7 @@
 	"tiling": [ 1, 1 ],
 	"textures": {
 		"base1_map": "textures/moon_diffuse.png",
-		"base2_map": "textures/lava_diffuse.png",
-		"base3_map": "textures/lava_diffuse.png"
+		"base2_map": "textures/grass.png",
+		"base3_map": "textures/arrow.png"
 	}
 }
