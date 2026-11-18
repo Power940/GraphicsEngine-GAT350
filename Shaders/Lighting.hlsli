@@ -10,11 +10,14 @@ struct Material
 {
     float4 baseColor;
     
+    float3 specularColor;
+    float shininess;
+    
+    float3 emissiveColor;
+    float padding1;
+    
     float2 tiling;
     float2 offset;
-    
-    float shininess;
-    float3 padding;
 };
 
 struct Light

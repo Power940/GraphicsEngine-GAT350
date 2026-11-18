@@ -51,6 +51,8 @@ namespace STR_FALL
 
 		// only values present in the file override the defaults
 		JSON_READ_NAME(document, "base_color", m_data.baseColor);
+		JSON_READ_NAME(document, "specular_color", m_data.specularColor);
+		JSON_READ_NAME(document, "emissive_color", m_data.emissiveColor);
 		JSON_READ_NAME(document, "tiling", m_data.tiling);
 		JSON_READ_NAME(document, "offset", m_data.offset);
 		JSON_READ_NAME(document, "shininess", m_data.shininess);

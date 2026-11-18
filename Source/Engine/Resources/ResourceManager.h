@@ -26,12 +26,9 @@ namespace STR_FALL
 		inline static ResourceManager& ResManager() { return ResourceManager::Instance(); }
 
 		void Clear() { m_resources.clear(); }
-		inline std::vector<res_t<>> GetAllResources()
+		inline const std::map<std::string, res_t<>>& GetAllResources() const
 		{
-			std::vector<res_t<Resource>> values;
-			values.reserve(m_resources.size());
-			for (auto& [key, val] : m_resources) { values.push_back(val); }
-			return values;
+			return m_resources;
 		} 
 
 	private:

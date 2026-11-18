@@ -133,7 +133,7 @@
           "m_active": true,
           "m_typeName": "ModelComponent",
           "m_modelName": "models/moon.glb",
-          "m_materials": [ "materials/MoonArrowGrass.instance.json" ]
+          "m_materials": [ "materials/Lava.instance.json" ]
         }
       ]
     },

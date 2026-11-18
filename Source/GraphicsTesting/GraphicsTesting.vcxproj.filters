@@ -39,5 +39,8 @@
     <None Include="..\..\Build\Assets\materials\MoonArrowGrass.instance.json">
       <Filter>Materials</Filter>
     </None>
+    <None Include="..\..\Build\Assets\materials\Lava.instance.json">
+      <Filter>Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>

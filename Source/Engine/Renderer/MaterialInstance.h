@@ -28,32 +28,16 @@ namespace STR_FALL
 
 		std::string m_materialName = "";
 
-		void UpdateGui()
+		void UpdateGui() override
 		{
-			std::string nameString = "Material Name: " + m_materialName;
-			ImGui::Text(nameString.c_str());
+			ImGui::Text("Material Name: %s", m_materialName.c_str());
 
-			if (ImGui::CollapsingHeader("Data", ImGuiTreeNodeFlags_CollapsingHeader))
-			{
-				m_data.UpdateGui();
-			}
-
-			if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_CollapsingHeader))
-			{
-				m_material->UpdateGui();
-			}
-
-			if (ImGui::CollapsingHeader("Textures", ImGuiTreeNodeFlags_CollapsingHeader))
-			{
-				for (res_t<Texture> texture : m_textures)
-				{
-					ImGui::PushID(texture.get());
-
-					if (texture) { texture->UpdateGui(); }
-
-					ImGui::PopID();
-				}
-			}
+			ImGui::ColorEdit4("Base Color", glm::value_ptr(m_data.baseColor));
+			ImGui::ColorEdit3("Specular Color", glm::value_ptr(m_data.specularColor));
+			ImGui::ColorEdit3("Emissive Color", glm::value_ptr(m_data.emissiveColor));
+			ImGui::SliderFloat("Shininess", &m_data.shininess, 0, 256);
+			ImGui::DragFloat2("Tiling", glm::value_ptr(m_data.tiling), 0.1);
+			ImGui::DragFloat2("Offset", glm::value_ptr(m_data.offset), 0.1);
 		}
 
 	private:

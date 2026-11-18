@@ -120,14 +120,16 @@ namespace STR_FALL
 	{
 		ImGui::Begin("Assets");
 
-		for (res_t resource : ResourceManager::ResManager().GetAllResources())
+		for (auto& resource : ResourceManager::ResManager().GetAllResources())
 		{
-			ImGui::PushID(resource.get());
-			if (ImGui::Selectable(resource.get()->m_name.c_str(), m_selectedResource == resource.get()))
+			ImGui::PushID(resource.second.get());
+
+			if (ImGui::Selectable(resource.second.get()->m_name.c_str(), m_selectedResource == resource.second.get()))
 			{
 				m_selectedObject = nullptr;
-				m_selectedResource = resource.get();
+				m_selectedResource = resource.second.get();
 			}
+
 			ImGui::PopID();
 		}
 

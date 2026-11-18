@@ -10,17 +10,24 @@ namespace STR_FALL
 	struct MaterialData
 	{
 		glm::vec4 baseColor = glm::vec4(1.0f);
+
+		glm::vec3 specularColor = glm::vec3(1.0f);
+		float shininess = 32.0f;
+
+		glm::vec3 emissiveColor = glm::vec3(0.0f);
+		float padding1;
+
 		glm::vec2 tiling = glm::vec2(1.0f);
 		glm::vec2 offset = glm::vec2(0.0f);
-		float shininess = 32.0f;
-		glm::vec3 padding = glm::vec3(0.0f);
 
 		void UpdateGui()
 		{
 			ImGui::DragFloat4("Base Color", glm::value_ptr(baseColor));
+			ImGui::DragFloat3("Specular Color", glm::value_ptr(specularColor));
+			ImGui::DragFloat3("Emissive Color", glm::value_ptr(emissiveColor));
+			ImGui::DragFloat("Shininess", &shininess);
 			ImGui::DragFloat2("Tiling", glm::value_ptr(tiling));
 			ImGui::DragFloat2("Offset", glm::value_ptr(offset));
-			ImGui::DragFloat("Shininess", &shininess);
 		}
 	};
 
