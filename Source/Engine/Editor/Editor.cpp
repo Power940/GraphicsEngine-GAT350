@@ -57,8 +57,8 @@ namespace STR_FALL
 		if (!m_active) return;
 
 		UpdateHierarchy(scene);
-		UpdateInspector();
 		UpdateAssets();
+		UpdateInspector();
 	}
 
 	void Editor::BeginFrame()
@@ -105,9 +105,28 @@ namespace STR_FALL
 		for (auto& gameObject : scene.GetObjects())
 		{
 			ImGui::PushID(gameObject.get());
-			if (ImGui::Selectable(gameObject.get()->m_name.c_str(), m_selected == gameObject.get()))
+			if (ImGui::Selectable(gameObject.get()->m_name.c_str(), m_selectedObject == gameObject.get()))
 			{
-				m_selected = gameObject.get();
+				m_selectedResource = nullptr;
+				m_selectedObject = gameObject.get();
+			}
+			ImGui::PopID();
+		}
+
+		ImGui::End();
+	}
+
+	void Editor::UpdateAssets()
+	{
+		ImGui::Begin("Assets");
+
+		for (res_t resource : ResourceManager::ResManager().GetAllResources())
+		{
+			ImGui::PushID(resource.get());
+			if (ImGui::Selectable(resource.get()->m_name.c_str(), m_selectedResource == resource.get()))
+			{
+				m_selectedObject = nullptr;
+				m_selectedResource = resource.get();
 			}
 			ImGui::PopID();
 		}
@@ -119,15 +138,9 @@ namespace STR_FALL
 	{
 		ImGui::Begin("Inspector");
 
-		if (!m_selected) { ImGui::End(); return; }
-
-		m_selected->UpdateGui();
+		if (m_selectedObject) { m_selectedObject->UpdateGui(); }
+		if (m_selectedResource) { m_selectedResource->UpdateGui(); }
 
 		ImGui::End();
-	}
-
-	void Editor::UpdateAssets()
-	{
-
 	}
 }

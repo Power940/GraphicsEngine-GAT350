@@ -1,6 +1,7 @@
 #pragma once
 #include "Resources/Resource.h"
 #include "Material.h"
+#include "Texture.h"
 
 namespace STR_FALL
 {
@@ -27,9 +28,37 @@ namespace STR_FALL
 
 		std::string m_materialName = "";
 
+		void UpdateGui()
+		{
+			std::string nameString = "Material Name: " + m_materialName;
+			ImGui::Text(nameString.c_str());
+
+			if (ImGui::CollapsingHeader("Data", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_data.UpdateGui();
+			}
+
+			if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_material->UpdateGui();
+			}
+
+			if (ImGui::CollapsingHeader("Textures", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				for (res_t<Texture> texture : m_textures)
+				{
+					ImGui::PushID(texture.get());
+
+					if (texture) { texture->UpdateGui(); }
+
+					ImGui::PopID();
+				}
+			}
+		}
+
 	private:
 		res_t<Material> m_material;
 		MaterialData m_data;
-		std::vector<res_t<class Texture>> m_textures;
+		std::vector<res_t<Texture>> m_textures;
 	};
 }

@@ -40,5 +40,5 @@ namespace STR_FALL::Json
 	/// <para>4 unsigned bytes -> raw underlying 32 int | Left to Right -> Big to Small</para>
 	/// <para>32 ones and zeros -> raw underlying 32 int | Left to Right -> Big to Small</para>
 	/// </summary>
-	bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt& data);
+	bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt32& data);
 }

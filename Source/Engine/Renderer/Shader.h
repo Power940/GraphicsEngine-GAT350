@@ -14,6 +14,12 @@ namespace STR_FALL
 
 		friend class Pipeline;
 
+		void UpdateGui()
+		{
+			std::string nameString = "Name: " + m_name;
+			ImGui::Text(nameString.c_str());
+		}
+
 	private:
 		SDL_GPUShader* m_GPUShader = nullptr;
 		SDL_GPUDevice* m_GPUDevice = nullptr;

@@ -12,6 +12,8 @@ namespace STR_FALL
 {
 	bool Material::Load(const std::string& filename, const Renderer& renderer)
 	{
+		m_name = filename;
+
 		rapidjson::Document document;
 		if (!Json::Load(filename, document)) { std::cerr << "Could not load Material: " << filename << std::endl; return false; }
 
@@ -33,7 +35,7 @@ namespace STR_FALL
 		JSON_READ_NAME(document, "textures", m_textureSlots);
 
 		
-		m_defaultTexture = ResourceManager().Get<Texture>("textures/default.png", renderer);
+		m_defaultTexture = ResourceManager::ResManager().Get<Texture>("textures/default.png", renderer);
 		if (!m_defaultTexture)
 		{
 			std::cerr << "Could not load default texture for Material: " << filename << std::endl;
@@ -45,14 +47,14 @@ namespace STR_FALL
 		JSON_READ_NAME(document, "vertex_shader", vertexShaderName);
 		if (!vertexShaderName.empty())
 		{
-			m_vertexShader = ResourceManager().Get<Shader>(vertexShaderName, renderer);
+			m_vertexShader = ResourceManager::ResManager().Get<Shader>(vertexShaderName, renderer);
 		}
 
 		std::string fragmentShaderName;
 		JSON_READ_NAME(document, "fragment_shader", fragmentShaderName);
 		if (!fragmentShaderName.empty())
 		{
-			m_fragmentShader = ResourceManager().Get<Shader>(fragmentShaderName, renderer);
+			m_fragmentShader = ResourceManager::ResManager().Get<Shader>(fragmentShaderName, renderer);
 		}
 
 		if (!m_vertexShader || !m_fragmentShader)

@@ -131,8 +131,12 @@ namespace STR_FALL
 			ImGui::SameLine();
 			Object::UpdateGui();
 
-			//ImGui::Text("Tags:");
-			// TODO: fix later
+			ImGui::Text("Tags: ");
+			for (const std::string& tag : m_tags)
+			{
+				std::string tagString = "- " + tag + "\n";
+				ImGui::Text(tagString.c_str());
+			}
 
 			ImGui::Separator();
 

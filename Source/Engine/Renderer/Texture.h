@@ -24,6 +24,16 @@ namespace STR_FALL
 
 		friend class Renderer;
 
+		void UpdateGui()
+		{
+			std::string widthText = "Width: " + std::to_string(m_width);
+			std::string heightText = "Height: " + std::to_string(m_height);
+			ImGui::Text(widthText.c_str());
+			ImGui::Text(heightText.c_str());
+
+			ImGui::Image((ImTextureID)(intptr_t)m_GPUTexture, ImVec2(256, 256));
+		}
+
 	private:
 		uint32_t m_width = 0;
 		uint32_t m_height = 0;

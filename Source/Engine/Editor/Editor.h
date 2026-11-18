@@ -26,14 +26,15 @@ namespace STR_FALL
 		void Draw(Renderer& renderer);
 
 		void SetActive(bool active = true) { m_active = active; }
-		bool GetActive() { return m_active; }
+		bool GetActive() const { return m_active; }
 
 	private:
 		void UpdateHierarchy(class Scene& scene);
-		void UpdateInspector();
 		void UpdateAssets();
+		void UpdateInspector();
 
 		bool m_active = true;
-		class Object* m_selected = nullptr;
+		class Object* m_selectedObject = nullptr;
+		class Resource* m_selectedResource = nullptr;
 	};
 }

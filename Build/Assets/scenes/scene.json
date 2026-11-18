@@ -133,7 +133,7 @@
           "m_active": true,
           "m_typeName": "ModelComponent",
           "m_modelName": "models/moon.glb",
-          "m_materials": [ "materials/ground2.instance.json" ]
+          "m_materials": [ "materials/moon.instance.json" ]
         }
       ]
     },

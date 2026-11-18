@@ -36,7 +36,7 @@ namespace STR_FALL
 		std::string m_modelName;
 		JSON_READ(value, m_modelName);
 
-		m_model = ResourceManager().Get<Model>(m_modelName, STR_Engine::Get().m_renderer);
+		m_model = ResourceManager::ResManager().Get<Model>(m_modelName, STR_Engine::Get().m_renderer);
 		 //"materials": [ "materials/brick.instance.json", null ] - one entry per slot, null keeps the model's material
 
 		if (JSON_HAS(value, "m_materials"))
@@ -45,7 +45,7 @@ namespace STR_FALL
 			{
 				if (entry.IsString())
 				{
-					auto material = ResourceManager().Get<MaterialInstance>(entry.GetString(), STR_Engine::Get().m_renderer);
+					auto material = ResourceManager::ResManager().Get<MaterialInstance>(entry.GetString(), STR_Engine::Get().m_renderer);
 					if (!material) { std::cerr << "Could not load material: " << entry.GetString() << std::endl; }
 					m_materials.push_back(material);
 				}
@@ -56,5 +56,25 @@ namespace STR_FALL
 			}
 		}
 
+	}
+
+	void ModelComponent::UpdateGui()
+	{
+		if (ImGui::CollapsingHeader("Model", ImGuiTreeNodeFlags_CollapsingHeader))
+		{
+			m_model->UpdateGui();
+		}
+
+		if (ImGui::CollapsingHeader("Materials", ImGuiTreeNodeFlags_CollapsingHeader))
+		{
+			for (res_t<MaterialInstance>& mat : m_materials)
+			{
+				ImGui::PushID(mat.get());
+
+				mat->UpdateGui();
+
+				ImGui::PopID();
+			}
+		}
 	}
 }

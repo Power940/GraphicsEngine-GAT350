@@ -25,6 +25,12 @@ namespace STR_FALL
 
         friend class Renderer;
 
+        void UpdateGui()
+        {
+            std::string nameString = "Name: " + m_name;
+            ImGui::Text(nameString.c_str());
+        }
+
     private:
         SDL_GPUDevice* m_GPUDevice = nullptr;
         SDL_GPUGraphicsPipeline* m_GPUPipeline = nullptr;

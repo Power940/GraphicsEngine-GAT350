@@ -18,6 +18,12 @@ namespace STR_FALL
 
 		friend class Renderer;
 
+		void UpdateGui()
+		{
+			std::string countString = "Index Count: " + std::to_string(m_vertexCount);
+			ImGui::Text(countString.c_str());
+		}
+
 	private:
 		uint32_t m_vertexCount = 0;
 

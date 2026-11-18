@@ -16,6 +16,8 @@ namespace STR_FALL
 
 	bool Texture::Load(const std::string& filename, const Renderer& renderer)
 	{
+		m_name = filename;
+
 		m_GPUDevice = renderer.GetGPUDevice();
 
 		SDL_Surface* loadedSurface = IMG_Load(filename.c_str());

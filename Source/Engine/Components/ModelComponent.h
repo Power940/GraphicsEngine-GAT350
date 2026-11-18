@@ -13,6 +13,8 @@ namespace STR_FALL
 
 		void Read(const rapidjson::Value& value) override;
 
+		void UpdateGui() override;
+
 		std::vector<res_t<class MaterialInstance>> m_materials;
 
 	private:

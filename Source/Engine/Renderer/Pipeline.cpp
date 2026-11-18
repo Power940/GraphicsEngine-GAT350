@@ -12,6 +12,7 @@ namespace STR_FALL
 	bool Pipeline::Create(const Shader& vertexShader, const Shader& fragmentShader, SDL_GPUDevice* gpuDevice, SDL_Window* window)
 	{
 		m_GPUDevice = gpuDevice;
+		m_name = vertexShader.m_name + " " + fragmentShader.m_name;
 
 		std::array colorTargetDescriptions{
 			SDL_GPUColorTargetDescription{

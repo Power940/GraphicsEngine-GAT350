@@ -36,6 +36,39 @@ namespace STR_FALL
 		bool Load(const std::string& filename, const class Renderer& renderer);
 		void Draw(class Renderer& renderer, const std::vector<res_t<MaterialInstance>>& overrides = {}) const;
 
+		void UpdateGui()
+		{
+			if (ImGui::CollapsingHeader("Meshes", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				for (Mesh& mesh : m_meshes)
+				{
+					ImGui::PushID(&mesh);
+
+					int i = mesh.materialIndex;
+					ImGui::InputInt("Material Index", &i);
+					if (i < 0) { i = 0; }
+					mesh.materialIndex = i;
+
+					mesh.vertexBuffer->UpdateGui();
+					mesh.indexBuffer->UpdateGui();
+
+					ImGui::PopID();
+				}
+			}
+
+			if (ImGui::CollapsingHeader("Materials", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				for (MaterialInstance& mat : m_materials)
+				{
+					ImGui::PushID(&mat);
+
+					mat.UpdateGui();
+
+					ImGui::PopID();
+				}
+			}
+		}
+
 	private:
 		void ProcessNode(aiNode* node, const aiScene* scene, const class Renderer& renderer);
 		void ProcessMesh(aiMesh* mesh, const aiScene* scene, const class Renderer& renderer);

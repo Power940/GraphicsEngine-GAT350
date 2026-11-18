@@ -21,6 +21,8 @@ namespace STR_FALL
 
 	bool MaterialInstance::Load(const std::string& filename, const Renderer& renderer)
 	{
+		m_name = filename;
+
 		rapidjson::Document document;
 		if (!Json::Load(filename, document))
 		{
@@ -39,7 +41,7 @@ namespace STR_FALL
 
 		// the material comes first, all values start from its defaults
 		JSON_READ_NAME(document, "material", m_materialName);
-		auto material = ResourceManager().Get<Material>(m_materialName, renderer);
+		auto material = ResourceManager::ResManager().Get<Material>(m_materialName, renderer);
 		if (!material)
 		{
 			std::cerr << "Could not load Material \"" << m_materialName << "\" for instance: " << filename << std::endl;
@@ -61,7 +63,7 @@ namespace STR_FALL
 				std::string slot = entry.name.GetString();
 				std::string path = entry.value.GetString();
 
-				auto texture = ResourceManager().Get<Texture>(path, renderer);
+				auto texture = ResourceManager::ResManager().Get<Texture>(path, renderer);
 				if (!texture)
 				{
 					std::cerr << "Could not load texture \"" << path << "\" for instance: " << filename << std::endl;

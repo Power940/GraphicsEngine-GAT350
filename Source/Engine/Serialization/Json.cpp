@@ -217,23 +217,23 @@ namespace STR_FALL::Json
 
         return true;
     }
-    bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt& data)
+    bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt32& data)
     {
         if (value.HasMember(name.c_str()) && value[name.c_str()].IsNumber())
         {
-            data = BitMaskInt(value[name.c_str()].GetUint());
+            data = BitMaskInt32(value[name.c_str()].GetUint());
             return true;
         }
         else if (value.HasMember(name.c_str()) && value[name.c_str()].IsArray() || value[name.c_str()].Size() == 4)
         {
             auto& array = value[name.c_str()];
-            data = BitMaskInt(array[0].GetUint(), array[1].GetUint(), array[2].GetUint(), array[3].GetUint());
+            data = BitMaskInt32(array[0].GetUint(), array[1].GetUint(), array[2].GetUint(), array[3].GetUint());
             return true;
         }
         else if (value.HasMember(name.c_str()) && value[name.c_str()].IsArray() || value[name.c_str()].Size() == 32)
         {
             auto& array = value[name.c_str()];
-            data = BitMaskInt(
+            data = BitMaskInt32(
                 array[0].GetUint(), array[1].GetUint(), array[2].GetUint(), array[3].GetUint(), array[4].GetUint(), array[5].GetUint(), array[6].GetUint(), array[7].GetUint(),
                 array[8].GetUint(), array[9].GetUint(), array[10].GetUint(), array[11].GetUint(), array[12].GetUint(), array[13].GetUint(), array[14].GetUint(), array[15].GetUint(),
                 array[16].GetUint(), array[17].GetUint(), array[18].GetUint(), array[19].GetUint(), array[20].GetUint(), array[21].GetUint(), array[22].GetUint(), array[23].GetUint(),

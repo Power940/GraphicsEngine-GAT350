@@ -117,7 +117,7 @@ namespace STR_FALL
 	void Scene::UpdateGui()
 	{
 		glm::vec3 clearColor = STR_Engine::Get().m_renderer.GetClearColor();
-		ImGui::ColorEdit3("clear light", glm::value_ptr(clearColor));
+		ImGui::ColorEdit3("clear color", glm::value_ptr(clearColor));
 		STR_Engine::Get().m_renderer.SetClearColor(clearColor);
 		ImGui::ColorEdit3("ambient light", glm::value_ptr(m_ambient));
 	}

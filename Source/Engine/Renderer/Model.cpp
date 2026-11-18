@@ -14,6 +14,8 @@ namespace STR_FALL
 {
 	bool Model::Load(const std::string& filename, const Renderer& renderer)
 	{
+		m_name = filename;
+
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(filename, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_RemoveRedundantMaterials | aiProcess_OptimizeMeshes);
 
@@ -106,7 +108,7 @@ namespace STR_FALL
 	void Model::LoadMaterials(const aiScene* scene, const std::string& directory, const Renderer& renderer)
 	{
 		// every imported material starts from the standard phong material
-		auto material = ResourceManager().Get<Material>(DEFAULT_MATERIAL, renderer);
+		auto material = ResourceManager::ResManager().Get<Material>(DEFAULT_MATERIAL, renderer);
 
 		std::cout << "Loading " << scene->mNumMaterials << " material(s)" << std::endl;
 
@@ -143,7 +145,7 @@ namespace STR_FALL
 				}
 				else
 				{
-					auto texture = ResourceManager().Get<Texture>(directory + path.C_Str(), renderer);
+					auto texture = ResourceManager::ResManager().Get<Texture>(directory + path.C_Str(), renderer);
 					if (!instance.SetTexture("base_map", texture))
 					{
 						std::cerr << "Material has no base_map slot for texture: " << path.C_Str() << std::endl;

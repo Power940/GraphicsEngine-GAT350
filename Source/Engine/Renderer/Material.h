@@ -3,18 +3,25 @@
 #include "Shader.h"
 #include "Pipeline.h"
 #include <glm/glm.hpp>
+#include "Texture.h"
 
 namespace STR_FALL
 {
-	class Texture;
-
 	struct MaterialData
 	{
-		glm::vec4 baseColor{ 1.0f };
-		glm::vec2 tiling{ 1.0f };
-		glm::vec2 offset{ 0.0f };
+		glm::vec4 baseColor = glm::vec4(1.0f);
+		glm::vec2 tiling = glm::vec2(1.0f);
+		glm::vec2 offset = glm::vec2(0.0f);
 		float shininess = 32.0f;
-		glm::vec3 padding{ 0.0f };
+		glm::vec3 padding = glm::vec3(0.0f);
+
+		void UpdateGui()
+		{
+			ImGui::DragFloat4("Base Color", glm::value_ptr(baseColor));
+			ImGui::DragFloat2("Tiling", glm::value_ptr(tiling));
+			ImGui::DragFloat2("Offset", glm::value_ptr(offset));
+			ImGui::DragFloat("Shininess", &shininess);
+		}
 	};
 
 	class Material : public Resource
@@ -29,6 +36,42 @@ namespace STR_FALL
 
 		const Pipeline& GetPipeline() const { return m_pipeline; }
 		const res_t<Texture>& GetDefaultTexture() const { return m_defaultTexture; }
+
+		void UpdateGui()
+		{
+			if (ImGui::CollapsingHeader("Vertex Shader", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_vertexShader->UpdateGui();
+			}
+
+			if (ImGui::CollapsingHeader("Fragment Shader", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_fragmentShader->UpdateGui();
+			}
+
+			if (ImGui::CollapsingHeader("Pipeline", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_pipeline.UpdateGui();
+			}
+
+			if (ImGui::CollapsingHeader("Texture Slots", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				for (std::string& textureSlot : m_textureSlots)
+				{
+					ImGui::Text(textureSlot.c_str());
+				}
+			}
+
+			if (ImGui::CollapsingHeader("Defaults", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_defaults.UpdateGui();
+			}
+
+			if (ImGui::CollapsingHeader("Default Texture", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_defaultTexture->UpdateGui();
+			}
+		}
 
 	private:
 		res_t<Shader> m_vertexShader;
