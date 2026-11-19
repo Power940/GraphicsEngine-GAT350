@@ -202,7 +202,9 @@
     <None Include="..\..\Build\Assets\materials\MoonArrowGrass.instance.json" />
     <None Include="..\..\Build\Assets\materials\moon.instance.json" />
     <None Include="..\..\Build\Assets\materials\multiphong.material.json" />
+    <None Include="..\..\Build\Assets\materials\Ogre.instance.json" />
     <None Include="..\..\Build\Assets\materials\phong.material.json" />
+    <None Include="..\..\Build\Assets\materials\PhongNormal.material.json" />
     <None Include="..\..\Build\Assets\materials\space.instance.json" />
     <None Include="..\..\Build\Assets\materials\unlit.material.json" />
     <None Include="..\..\Build\Assets\scenes\scene.json" />
