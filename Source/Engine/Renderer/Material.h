@@ -44,6 +44,8 @@ namespace STR_FALL
 		const Pipeline& GetPipeline() const { return m_pipeline; }
 		const res_t<Texture>& GetDefaultTexture() const { return m_defaultTexture; }
 
+		bool RecreatePipeline(SDL_Window* window);
+
 		void UpdateGui()
 		{
 			if (ImGui::CollapsingHeader("Vertex Shader", ImGuiTreeNodeFlags_CollapsingHeader))

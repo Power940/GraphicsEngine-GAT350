@@ -6,6 +6,8 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <Framework/GameObject.h>
+#include <Renderer/Shader.h>
+#include <Renderer/Material.h>
 
 
 using namespace STR_FALL;
@@ -96,11 +98,26 @@ int main()
         {
             STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
         }
-
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_P))
         {
             glm::vec3 cam = s.GetObjectName<GameObject>("camera")->m_transform.m_pos;
             MultiPrintln(" | ", cam.x, cam.y, cam.z);
+        }
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_R))
+        {
+            RunBatch(
+                SOLUTION_DIR "Tools\\compile_shaders.bat",
+                { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
+                true
+            );
+            for (Shader* shader : ResourceManager::ResManager().GetAllOfType<Shader>())
+            {
+                shader->Reload();
+            }
+            for (Material* shader : ResourceManager::ResManager().GetAllOfType<Material>())
+            {
+                shader->RecreatePipeline(renderer.GetWindow());
+            }
         }
 
         STR_Engine::Get().m_editor.BeginFrame();

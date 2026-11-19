@@ -37,7 +37,7 @@ namespace STR_FALL
 		JSON_READ_NAME(document, "textures", m_textureSlots);
 
 		
-		m_defaultTexture = ResourceManager::ResManager().Get<Texture>("textures/default.png", renderer);
+		m_defaultTexture = ResourceManager::ResManager().Get<Texture>("textures/basic/white.png", renderer);
 		if (!m_defaultTexture)
 		{
 			std::cerr << "Could not load default texture for Material: " << filename << std::endl;
@@ -84,5 +84,10 @@ namespace STR_FALL
 	{
 		auto it = std::find(m_textureSlots.begin(), m_textureSlots.end(), name);
 		return (it != m_textureSlots.end()) ? (int)std::distance(m_textureSlots.begin(), it) : -1;
+	}
+
+	bool Material::RecreatePipeline(SDL_Window* window)
+	{
+		return m_pipeline.Recreate(*m_vertexShader, *m_fragmentShader, window);
 	}
 }

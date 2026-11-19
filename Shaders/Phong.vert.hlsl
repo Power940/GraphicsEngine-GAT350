@@ -34,14 +34,20 @@ struct Output
     float2 texcoord : TEXCOORD0;
     float3 worldPos : TEXCOORD1;
     float3 normal : TEXCOORD2;
+    float3 tangent : TEXCOORD3;
 };
 
 Output main(Input input)
 {
     Output output;
+    
     output.texcoord = (input.texcoord * material.tiling) + material.offset;
+    
     output.worldPos = mul(object.model, float4(input.position, 1.0f)).xyz;
     output.position = mul(frame.viewProjection, float4(output.worldPos, 1.0));
+    
     output.normal = mul((float3x3) object.normalMatrix, input.normal);
+    output.tangent = mul((float3x3) object.model, input.tangent);
+    
     return output;
 }

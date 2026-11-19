@@ -24,6 +24,7 @@
     <FxCompile Include="MultiPhong.frag.hlsl" />
     <FxCompile Include="Phong.frag.hlsl" />
     <FxCompile Include="Phong.vert.hlsl" />
+    <FxCompile Include="PhongNormal.frag.hlsl" />
     <FxCompile Include="Unlit.frag.hlsl" />
     <FxCompile Include="Unlit.vert.hlsl" />
   </ItemGroup>

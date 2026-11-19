@@ -26,12 +26,11 @@ namespace STR_FALL
 
 		void UpdateGui()
 		{
-			std::string widthText = "Width: " + std::to_string(m_width);
-			std::string heightText = "Height: " + std::to_string(m_height);
-			ImGui::Text(widthText.c_str());
-			ImGui::Text(heightText.c_str());
+			ImGui::Text("%d x %d", m_width, m_height);
 
-			ImGui::Image((ImTextureID)(intptr_t)m_GPUTexture, ImVec2(256, 256));
+			float width = ImGui::GetContentRegionAvail().x * 0.8f;
+
+			ImGui::Image(m_GPUTexture, ImVec2(width, width * (static_cast<float>(m_height) / m_width)));
 		}
 
 	private:

@@ -38,34 +38,18 @@ namespace STR_FALL
 
 		void UpdateGui()
 		{
-			if (ImGui::CollapsingHeader("Meshes", ImGuiTreeNodeFlags_CollapsingHeader))
+			ImGui::Text("Meshes");
+			ImGui::Separator();
+			for (size_t i = 0; i < m_meshes.size(); i++)
 			{
-				for (Mesh& mesh : m_meshes)
-				{
-					ImGui::PushID(&mesh);
-
-					int i = mesh.materialIndex;
-					ImGui::InputInt("Material Index", &i);
-					if (i < 0) { i = 0; }
-					mesh.materialIndex = i;
-
-					mesh.vertexBuffer->UpdateGui();
-					mesh.indexBuffer->UpdateGui();
-
-					ImGui::PopID();
-				}
+				ImGui::Text("Mesh [%d]: Material [%d]", i, m_meshes[i].materialIndex);
 			}
 
-			if (ImGui::CollapsingHeader("Materials", ImGuiTreeNodeFlags_CollapsingHeader))
+			ImGui::Text("Materials");
+			ImGui::Separator();
+			for (size_t i = 0; i < m_materials.size(); i++)
 			{
-				for (MaterialInstance& mat : m_materials)
-				{
-					ImGui::PushID(&mat);
-
-					mat.UpdateGui();
-
-					ImGui::PopID();
-				}
+				ImGui::Text("Material [%d]: %s", i, m_materials[i].m_name.c_str());
 			}
 		}
 

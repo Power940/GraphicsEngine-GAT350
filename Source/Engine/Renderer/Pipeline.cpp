@@ -54,6 +54,12 @@ namespace STR_FALL
 		return true;
 	}
 
+	bool Pipeline::Recreate(const Shader& vertexShader, const Shader& fragmentShader, SDL_Window* window)
+	{
+		if (m_GPUDevice && m_GPUPipeline) { SDL_ReleaseGPUGraphicsPipeline(m_GPUDevice, m_GPUPipeline); }
+		return Create(vertexShader, fragmentShader, m_GPUDevice, window);
+	}
+
 	void Pipeline::AddVertexBuffer(uint32_t pitch)
 	{
 		SDL_GPUVertexBufferDescription description{

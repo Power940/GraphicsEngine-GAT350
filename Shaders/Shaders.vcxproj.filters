@@ -28,6 +28,9 @@
     <FxCompile Include="MultiPhong.frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="PhongNormal.frag.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Lighting.hlsli">

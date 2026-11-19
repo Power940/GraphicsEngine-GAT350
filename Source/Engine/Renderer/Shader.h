@@ -11,6 +11,7 @@ namespace STR_FALL
 		virtual ~Shader();
 
 		bool Load(const std::string& filename, const class Renderer& renderer);
+		bool Reload();
 
 		friend class Pipeline;
 

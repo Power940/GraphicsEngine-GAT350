@@ -157,6 +157,8 @@ namespace STR_FALL
 			aiString name;
 			source->Get(AI_MATKEY_NAME, name);
 
+			instance.m_name = name.C_Str();
+
 			const MaterialData& data = instance.GetData();
 			std::cout << "  [" << i << "] " << name.C_Str()
 				<< " | color: " << data.baseColor.r << ", " << data.baseColor.g << ", " << data.baseColor.b << ", " << data.baseColor.a

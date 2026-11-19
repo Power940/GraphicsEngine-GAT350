@@ -23,7 +23,6 @@ namespace STR_FALL
 
 		MaterialData& GetData() { return m_data; }
 		const MaterialData& GetData() const { return m_data; }
-
 		const Material& GetMaterial() const { return *m_material; }
 
 		std::string m_materialName = "";
@@ -36,8 +35,13 @@ namespace STR_FALL
 			ImGui::ColorEdit3("Specular Color", glm::value_ptr(m_data.specularColor));
 			ImGui::ColorEdit3("Emissive Color", glm::value_ptr(m_data.emissiveColor));
 			ImGui::SliderFloat("Shininess", &m_data.shininess, 0, 256);
-			ImGui::DragFloat2("Tiling", glm::value_ptr(m_data.tiling), 0.1);
-			ImGui::DragFloat2("Offset", glm::value_ptr(m_data.offset), 0.1);
+			ImGui::DragFloat2("Tiling", glm::value_ptr(m_data.tiling), 0.1f);
+			ImGui::DragFloat2("Offset", glm::value_ptr(m_data.offset), 0.1f);
+
+			for (auto& Texture : m_textures)
+			{
+				if (Texture) { Texture->UpdateGui(); }
+			}
 		}
 
 	private:

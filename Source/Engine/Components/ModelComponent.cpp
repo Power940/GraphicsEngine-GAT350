@@ -60,7 +60,7 @@ namespace STR_FALL
 
 	void ModelComponent::UpdateGui()
 	{
-		if (ImGui::CollapsingHeader("Model", ImGuiTreeNodeFlags_CollapsingHeader))
+		if (m_model && ImGui::CollapsingHeader("Model", ImGuiTreeNodeFlags_CollapsingHeader))
 		{
 			m_model->UpdateGui();
 		}
