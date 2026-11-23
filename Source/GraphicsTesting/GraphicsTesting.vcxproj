@@ -199,6 +199,8 @@
     <None Include="..\..\Build\Assets\materials\fox.instance.json" />
     <None Include="..\..\Build\Assets\materials\ground.instance.json" />
     <None Include="..\..\Build\Assets\materials\Lava.instance.json" />
+    <None Include="..\..\Build\Assets\materials\MarthClothesArmor.instance.json" />
+    <None Include="..\..\Build\Assets\materials\MarthSkinHair.instance.json" />
     <None Include="..\..\Build\Assets\materials\MoonArrowGrass.instance.json" />
     <None Include="..\..\Build\Assets\materials\moon.instance.json" />
     <None Include="..\..\Build\Assets\materials\multiphong.material.json" />

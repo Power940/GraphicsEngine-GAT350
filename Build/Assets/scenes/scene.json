@@ -81,7 +81,7 @@
     {
       "m_active": true,
       "m_typeName": "GameObject",
-      "m_name": "ogre",
+      "m_name": "test",
       "m_prototype": false,
       "m_tags": [
         "object"
@@ -101,8 +101,8 @@
         {
           "m_active": true,
           "m_typeName": "ModelComponent",
-          "m_modelName": "models/Ogre.obj",
-          "m_materials": [ "materials/Ogre.instance.json" ]
+          "m_modelName": "models/Marth.obj",
+          "m_materials": [ "materials/MarthClothesArmor.instance.json", "materials/MarthSkinHair.instance.json" ]
         }
       ]
     },
@@ -164,7 +164,7 @@
           "m_active": true,
           "m_typeName": "ModelComponent",
           "m_modelName": "models/moon.glb",
-          "m_materials": [ "materials/Lava.instance.json" ]
+          "m_materials": [ "materials/moon.instance.json" ]
         }
       ]
     },

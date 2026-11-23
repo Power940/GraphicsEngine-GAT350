@@ -48,5 +48,11 @@
     <None Include="..\..\Build\Assets\materials\Ogre.instance.json">
       <Filter>Materials</Filter>
     </None>
+    <None Include="..\..\Build\Assets\materials\MarthClothesArmor.instance.json">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\materials\MarthSkinHair.instance.json">
+      <Filter>Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>
