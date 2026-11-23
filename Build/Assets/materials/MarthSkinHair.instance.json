@@ -1,0 +1,9 @@
+{
+	"type": "material_instance",
+	"material": "materials/PhongNormal.material.json",
+	"tiling": [ 1, 1 ],
+	"textures": {
+		"base_map": "textures/Marth_SkinHair_BaseColor.png",
+		"normal_map": "textures/basic/normal.png"
+	}
+}

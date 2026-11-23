@@ -12,6 +12,7 @@ namespace STR_FALL
 	bool Pipeline::Create(const Shader& vertexShader, const Shader& fragmentShader, SDL_GPUDevice* gpuDevice, SDL_Window* window)
 	{
 		m_GPUDevice = gpuDevice;
+		m_name = vertexShader.m_name + " " + fragmentShader.m_name;
 
 		std::array colorTargetDescriptions{
 			SDL_GPUColorTargetDescription{
@@ -51,6 +52,12 @@ namespace STR_FALL
 		if (!m_GPUPipeline) { std::cerr << "ERROR: Pipeline::Create SDL_CreateGPUGraphicsPipeline failed: " << SDL_GetError() << std::endl; }
 
 		return true;
+	}
+
+	bool Pipeline::Recreate(const Shader& vertexShader, const Shader& fragmentShader, SDL_Window* window)
+	{
+		if (m_GPUDevice && m_GPUPipeline) { SDL_ReleaseGPUGraphicsPipeline(m_GPUDevice, m_GPUPipeline); }
+		return Create(vertexShader, fragmentShader, m_GPUDevice, window);
 	}
 
 	void Pipeline::AddVertexBuffer(uint32_t pitch)

@@ -11,12 +11,16 @@ namespace STR_FALL
         m_input = Input();
         if (!m_input.Initialize()) { return 2; }
 
+        m_editor = Editor();
+        if (!m_editor.Initialize(m_renderer)) { return 3; }
+
         m_time = Time();
 
         return 0;
     }
     void STR_Engine::Shutdown()
     {
+        m_editor.Shutdown();
         m_renderer.ShutDown();
     }
     void STR_Engine::Update()

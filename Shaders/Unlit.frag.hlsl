@@ -1,14 +1,33 @@
+#include "Lighting.hlsli"
+#include "Uniforms.hlsli"
+
+
 Texture2D<float4> u_texture : register(t0, space2);
 SamplerState u_sampler : register(s0, space2);
 
-cbuffer Uniforms : register(b0, space3)
+cbuffer ObjectUniforms : register(OBJECT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
-    float4 color;
-};
+    Object object;
+}
+cbuffer FrameUniforms : register(FRAME_SLOT, FRAGMENT_UNIFORM_SPACE)
+{
+    Frame frame;
+}
+cbuffer LightUniforms : register(LIGHT_SLOT, FRAGMENT_UNIFORM_SPACE)
+{
+    Lights lights;
+}
+cbuffer MatrerialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
+{
+    Material material;
+}
+
 
 struct Input
 {
     float2 texcoord : TEXCOORD0;
+    float3 worldPos : TEXCOORD1;
+    float3 normal : TEXCOORD2;
 };
 
 struct Output
@@ -19,6 +38,6 @@ struct Output
 Output main(Input input)
 {
     Output output;
-    output.color = u_texture.Sample(u_sampler, input.texcoord) * color;
+    output.color = u_texture.Sample(u_sampler, input.texcoord) * material.baseColor;
     return output;
 }

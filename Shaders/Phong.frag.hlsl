@@ -1,22 +1,30 @@
 #include "Lighting.hlsli"
+#include "Uniforms.hlsli"
 
 
-Texture2D<float4> u_texture : register(t0, space2);
-SamplerState u_sampler : register(s0, space2);
+Texture2D<float4> base_texture : register(t0, FRAGMENT_TEXTURE_SPACE);
+SamplerState base_sampler : register(s0, FRAGMENT_TEXTURE_SPACE);
+
+Texture2D<float4> specular_texture : register(t1, FRAGMENT_TEXTURE_SPACE);
+SamplerState specular_sampler : register(s1, FRAGMENT_TEXTURE_SPACE);
+
+Texture2D<float4> emissive_texture : register(t2, FRAGMENT_TEXTURE_SPACE);
+SamplerState emissive_sampler : register(s2, FRAGMENT_TEXTURE_SPACE);
 
 
-cbuffer VertexUniforms : register(b0, space3)
+cbuffer ObjectUniforms : register(OBJECT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
-    float3 camPos;
-    float padding1;
-};
-cbuffer LightUniforms : register(b1, space3)
-{
-    Light lights[MAX_LIGHTS];
-    uint numLights;
-    float3 ambient;
+    Object object;
 }
-cbuffer MatrerialUniforms : register(b2, space3)
+cbuffer FrameUniforms : register(FRAME_SLOT, FRAGMENT_UNIFORM_SPACE)
+{
+    Frame frame;
+}
+cbuffer LightUniforms : register(LIGHT_SLOT, FRAGMENT_UNIFORM_SPACE)
+{
+    Lights lights;
+}
+cbuffer MatrerialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Material material;
 }
@@ -39,15 +47,20 @@ Output main(Input input)
     Output output;
     input.normal = normalize(input.normal);
     
-    float3 V = normalize(camPos - input.worldPos);
-    float3 diffuse = ambient;
-    float3 specular = 0.0f;
+    float specularMask = specular_texture.Sample(specular_sampler, input.texcoord).r;
+    float3 emissive = emissive_texture.Sample(emissive_sampler, input.texcoord).rgb * material.emissiveColor;
     
-    for (uint i = 0; i < numLights; i++)
+    float3 V = normalize(frame.cameraPosition - input.worldPos);
+    float3 diffuse = lights.ambient;
+    float3 specular = 0.0f;
+    float4 albedo = base_texture.Sample(base_sampler, input.texcoord) * material.baseColor;
+    
+    
+    for (uint i = 0; i < lights.numLights; i++)
     {
-        float3 radiance = lights[i].color.xyz * lights[i].color.w;
+        float3 radiance = lights.lights[i].color.xyz * lights.lights[i].color.w;
         float attenuation;
-        float3 L = getLightVector(lights[i], input.worldPos, attenuation);
+        float3 L = getLightVector(lights.lights[i], input.worldPos, attenuation);
         float NdotL = saturate(dot(input.normal, L));
         diffuse += radiance * NdotL * attenuation;
     
@@ -59,8 +72,7 @@ Output main(Input input)
         }
     }
     
-    float4 albedo = u_texture.Sample(u_sampler, (input.texcoord * material.tiling) + material.offset) * material.color;
-    output.color = float4(albedo.rgb * diffuse + specular, albedo.a);
+    output.color = float4((albedo.rgb * diffuse) + (specular * specularMask * material.specularColor) + emissive, albedo.a);
     
     return output;
 }

@@ -19,7 +19,19 @@ namespace STR_FALL
 
 		glm::vec2 GetSize() const { return glm::vec2(m_width, m_height); }
 
+		SDL_GPUTexture* GetGPUTexture() const { return m_GPUTexture; }
+		SDL_GPUSampler* GetGPUSampler() const { return m_GPUSampler; }
+
 		friend class Renderer;
+
+		void UpdateGui()
+		{
+			ImGui::Text("%d x %d", m_width, m_height);
+
+			float width = ImGui::GetContentRegionAvail().x * 0.8f;
+
+			ImGui::Image(m_GPUTexture, ImVec2(width, width * (static_cast<float>(m_height) / m_width)));
+		}
 
 	private:
 		uint32_t m_width = 0;

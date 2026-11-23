@@ -15,6 +15,10 @@ namespace STR_FALL
 	class ResourceManager : public Singleton<ResourceManager>
 	{
 	public:
+		inline static ResourceManager& ResManager() { return ResourceManager::Instance(); }
+		void Clear() { m_resources.clear(); }
+		inline const std::map<std::string, res_t<>>& GetAllResources() const { return m_resources; }
+
 		template <typename T, typename ... Args>
 		requires std::derived_from<T, Resource>
 		res_t<T> Get(const std::string& name, Args&& ... args);
@@ -23,10 +27,12 @@ namespace STR_FALL
 		requires std::derived_from<T, Resource>
 		res_t<T> GetWithID(const std::string& id, const std::string& name, Args && ...args);
 
-		inline static ResourceManager& ResManager() { return ResourceManager::Instance(); }
+		template<typename T>
+		requires std::derived_from<T, Resource>
+		std::vector<T*> GetAllOfType();
 
 	private:
-		std::map<std::string, res_t<Resource>> m_resources;
+		std::map<std::string, res_t<>> m_resources;
 	};
 
 
@@ -37,7 +43,7 @@ namespace STR_FALL
 		auto iter = m_resources.find(name);
 		if (iter != m_resources.end())
 		{
-			auto base = iter->second;
+			auto& base = iter->second;
 			auto resource = std::dynamic_pointer_cast<T>(base);
 
 			return resource;
@@ -53,7 +59,7 @@ namespace STR_FALL
 		auto iter = m_resources.find(id);
 		if (iter != m_resources.end())
 		{
-			auto base = iter->second;
+			auto& base = iter->second;
 			auto resource = std::dynamic_pointer_cast<T>(base);
 
 			if (resource == nullptr)
@@ -76,5 +82,23 @@ namespace STR_FALL
 		m_resources[id] = resource;
 
 		return resource;
+	}
+
+
+	template<typename T>
+	requires std::derived_from<T, Resource>
+	inline std::vector<T*> ResourceManager::GetAllOfType()
+	{
+		std::vector<T*> validResources;
+
+		for (auto& res : m_resources)
+		{
+			if (dynamic_cast<T*>(res.second.get()))
+			{
+				validResources.push_back(dynamic_cast<T*>(res.second.get()));
+			}
+		}
+
+		return validResources;
 	}
 }

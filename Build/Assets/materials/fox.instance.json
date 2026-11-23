@@ -1,0 +1,7 @@
+{
+	"type": "material_instance",
+	"material": "materials/phong.material.json",
+	"tiling": [ 1, 1 ],
+	"shininess": 1.0,
+	"textures": { "base_map": "textures/Fox_BaseColor.png" }
+}

@@ -1,83 +1,19 @@
 #include "StarFallEngine.h"
-#include <memory>
-#include <Renderer/Pipeline.h>
-#include <Renderer/VertexBuffer.h>
-#include <Renderer/IndexBuffer.h>
-#include <Renderer/Shader.h>
-#include <Renderer/Model.h>
-#include <Renderer/Texture.h>
 #include "Core/BatchRunner.h"
 #include <Input/Input.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/euler_angles.hpp>
-#include <glm/gtx/transform.hpp>
+#include <Framework/Scene.h>
+#include "Core/Helper.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
-#define VERIFY_16_BYTES_BOUDERIES(T) static_assert(sizeof(T) % 16 == 0);
-#define MAX_LIGHTS 8
+#include <Framework/GameObject.h>
+#include <Renderer/Shader.h>
+#include <Renderer/Material.h>
+
 
 using namespace STR_FALL;
 
 int constexpr WINDOW_WIDTH = 1920;
 int constexpr WINDOW_HEIGHT = 1080;
-
-
-
-enum class LightType : uint32_t
-{
-    DIRECTIONAL,
-    POINT,
-    SPOT
-};
-struct MatrixUniform
-{
-    glm::mat4 mvp;
-    glm::mat4 model;
-};
-struct Light
-{
-    LightType type;
-    glm::vec3 position;
-
-    glm::vec4 color; // xyz -> rgb, w -> intensity
-
-    glm::vec4 direction; // w -> range
-
-    float innerCutoff;
-    float outerCutoff;
-    glm::vec2 padding1;
-};
-struct LightsUniform
-{
-    Light lights[MAX_LIGHTS];
-    uint32_t num_lights;
-    glm::vec3 ambiant;
-};
-struct MaterialUniform
-{
-    glm::vec4 color;
-
-    glm::vec2 tiling;
-    glm::vec2 offset;
-
-    float shininess;
-    glm::vec3 padding1;
-};
-struct VertexUniform
-{
-    glm::vec3 camPos;
-    float padding1;
-};
-
-VERIFY_16_BYTES_BOUDERIES(MatrixUniform)
-VERIFY_16_BYTES_BOUDERIES(Light)
-VERIFY_16_BYTES_BOUDERIES(LightsUniform)
-VERIFY_16_BYTES_BOUDERIES(MaterialUniform)
-VERIFY_16_BYTES_BOUDERIES(VertexUniform)
-
-
 
 int main()
 {
@@ -85,8 +21,10 @@ int main()
 
     int initCode = STR_Engine::Get().Initialize("Super Epic Graphic Test", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
+    Renderer& renderer = STR_Engine::Get().m_renderer;
+    SeedRandom();
 
-    STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
+    STR_Engine::Get().m_input.LockHideMouse(renderer.GetWindow());
 
     RunBatch(
         SOLUTION_DIR "Tools\\compile_shaders.bat",
@@ -95,65 +33,34 @@ int main()
     );
     
     
+    Scene s;
+    s.Load("scenes/scene.json");
 
-    MatrixUniform matrixUniform;
-    VertexUniform vertexUniform;
-    MaterialUniform materialUnifrom{
-        .color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-        .tiling = glm::vec2(1.0f),
-        .offset = glm::vec2(0.0f),
-        .shininess = 50.0f
-    };
-    LightsUniform lightsUniform {
-        .lights = {
-            Light {
-                .type = LightType::DIRECTIONAL,
-                .position = glm::vec3(0.0f),
-                .color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
-                .direction = glm::vec4(0.0f, -1.0f, -1.0f, 30.0f),
-            },
-            Light {
-                .type = LightType::POINT,
-                .position = glm::vec3(1.0f, 0.0f, 0.0f),
-                .color = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f),
-                .direction = glm::vec4(10.0f),
-            },
-            Light {
-                .type = LightType::SPOT,
-                .position = glm::vec3(-1.0f, 0.0f, 0.0f),
-                .color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-                .direction = glm::vec4(1.0f, 0.0f, 0.0f, 30.0f),
-                .innerCutoff = glm::cos(glm::radians(6.0f)),
-                .outerCutoff = glm::cos(glm::radians(8.0f)),
-            }
-        },
-        .num_lights = 3,
-        .ambiant = glm::vec3(0.5f)
-    };
+    for (int i = 0; i < 20; i++)
+    {
+        std::unique_ptr<GameObject> temp1 = Factory::Instance().Create<GameObject>("protoTree");
+        temp1->IncrementTransformPos(glm::vec3(RandomFloat(50.0f, -50.0f), 0, RandomFloat(50.0f, -50.0f)));
+        s.AddObject(std::move(temp1));
 
-    Transform3D t;
-    t.m_rot = glm::vec3(0.0f, F_PI, 0.0f);
+        std::unique_ptr<GameObject> temp2 = Factory::Instance().Create<GameObject>("protoVineTree");
+        temp2->IncrementTransformPos(glm::vec3(RandomFloat(50.0f, -50.0f), 0, RandomFloat(50.0f, -50.0f)));
+        s.AddObject(std::move(temp2));
+    }
 
-    vertexUniform.camPos = glm::vec3(0, 0, 2);
-    glm::vec3 camRot = glm::vec3(0, 0, 0);
-    float upRot = 0.0f;
-    float leftRot = F_PI;
-    
-    auto model = ResourceManager().Get<Model>("models/spot.obj", STR_Engine::Get().m_renderer);
-    auto texture = ResourceManager().Get<Texture>("textures/spot_diffuse.png", STR_Engine::Get().m_renderer);
-    auto vShader = std::make_shared<Shader>();
-    auto fShader = std::make_shared<Shader>();
-    (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
-    (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
+    for (int i = 0; i < 10; i++)
+    {
+        std::unique_ptr<GameObject> temp1 = Factory::Instance().Create<GameObject>("protoFox");
+        temp1->IncrementTransformPos(glm::vec3(RandomFloat(50.0f, -50.0f), 0, RandomFloat(50.0f, -50.0f)));
+        temp1->SetTransformRotation(glm::vec3(0, RandomFloat(F_PI2, 0.0f), 0));
+        s.AddObject(std::move(temp1));
+    }
 
-    auto pipeline = std::make_shared<Pipeline>();
-    pipeline->AddVertexBuffer(sizeof(Model::Vertex));
-    pipeline->AddVertexAttribute(0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, position));
-    pipeline->AddVertexAttribute(1, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, offsetof(Model::Vertex, texcoord));
-    pipeline->AddVertexAttribute(2, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, normal));
-    pipeline->AddVertexAttribute(3, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(Model::Vertex, tangent));
-    pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
-    
+    std::unique_ptr<GameObject> moon1 = Factory::Instance().Create<GameObject>("protoMoon");
+    std::unique_ptr<GameObject> moon2 = Factory::Instance().Create<GameObject>("protoMoon");
+    moon1->SetTransform(glm::vec3(-17.817, 25.7734, 22.0311));
+    moon2->SetTransform(glm::vec3(6.90852, 22.5598, 21.043));
+    s.AddObject(std::move(moon1));
+    s.AddObject(std::move(moon2));
 
 
     SDL_Event SDLEvent;
@@ -161,23 +68,27 @@ int main()
     
     while (!quit) {
         while (SDL_PollEvent(&SDLEvent)) {
+
+            STR_Engine::Get().m_editor.ProcessEvent(SDLEvent);
+
             if (SDLEvent.type == SDL_EVENT_QUIT)
             {
                 quit = true;
                 break;
             }
-            if (SDLEvent.type == SDL_EVENT_MOUSE_MOTION) {
-                leftRot -= SDLEvent.motion.xrel * 0.003f;
-                upRot -= SDLEvent.motion.yrel * 0.003f;
-
-                upRot = (upRot < -F_HPI + 0.0001f) ? -F_HPI + 0.0001f : upRot;
-                upRot = (upRot > F_HPI - 0.0001f) ? F_HPI - 0.0001f : upRot;
+            if (SDLEvent.type == SDL_EVENT_MOUSE_MOTION)
+            {
+                if (STR_Engine::Get().m_input.IsMouseLocked())
+                {
+                    STR_Engine::Get().m_input.SetMouseRelative(SDLEvent.motion.xrel, SDLEvent.motion.yrel);
+                }
             }
         }
 
         STR_Engine::Get().Update();
         float time = STR_Engine::Get().m_time.GetTime();
         float dt = STR_Engine::Get().m_time.GetDeltaTime();
+        s.Update(dt);
 
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_ESCAPE))
         {
@@ -187,31 +98,11 @@ int main()
         {
             STR_Engine::Get().m_input.LockHideMouse(STR_Engine::Get().m_renderer.GetWindow());
         }
-
-#pragma region CameraMovementAndRotation
-
-        glm::vec2 dir = STR_Engine::Get().m_input.GetKeyDir(Input::KeyCodes::VK_A, Input::KeyCodes::VK_D, Input::KeyCodes::VK_W, Input::KeyCodes::VK_S);
-        if (glm::length(dir) > 0.0001f) { dir = glm::normalize(dir) * dt; }
-        float up = STR_Engine::Get().m_input.GetKeyDiff(Input::KeyCodes::VK_SPACE, Input::KeyCodes::VK_LCTRL) * dt;
-
-        camRot = glm::vec3(cosf(upRot) * sinf(leftRot), sinf(upRot), cosf(upRot) * cosf(leftRot));
-        vertexUniform.camPos.x += dir.x * cosf(leftRot) + dir.y * sinf(leftRot);
-        vertexUniform.camPos.z += -dir.x * sinf(leftRot) + dir.y * cosf(leftRot);
-        vertexUniform.camPos.y += up;
-
-#pragma endregion
-
-#pragma region MVP calculation
-
-        auto view = glm::lookAtRH(vertexUniform.camPos, vertexUniform.camPos + camRot, glm::vec3(0, 1, 0));
-        auto projection = glm::perspective(glm::radians(70.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.01f, 1000.0f);
-        matrixUniform.model = t.GetMatrix();
-        matrixUniform.mvp = projection * view * matrixUniform.model;
-
-#pragma endregion
-
-#pragma region LiveShaderReload
-
+        if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_P))
+        {
+            glm::vec3 cam = s.GetObjectName<GameObject>("camera")->m_transform.m_pos;
+            MultiPrintln(" | ", cam.x, cam.y, cam.z);
+        }
         if (STR_Engine::Get().m_input.GetKeyPressed(Input::KeyCodes::VK_R))
         {
             RunBatch(
@@ -219,31 +110,29 @@ int main()
                 { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
                 true
             );
-            (*vShader).~Shader();
-            (*fShader).~Shader();
-            (*vShader).Load("shaders/Phong.vert", STR_Engine::Get().m_renderer, 4);
-            (*fShader).Load("shaders/Phong.frag", STR_Engine::Get().m_renderer, 3, 1);
-            pipeline->Create(*vShader, *fShader, STR_Engine::Get().m_renderer.GetGPUDevice(), STR_Engine::Get().m_renderer.GetWindow());
+            for (Shader* shader : ResourceManager::ResManager().GetAllOfType<Shader>())
+            {
+                shader->Reload();
+            }
+            for (Material* shader : ResourceManager::ResManager().GetAllOfType<Material>())
+            {
+                shader->RecreatePipeline(renderer.GetWindow());
+            }
         }
 
-#pragma endregion
+        STR_Engine::Get().m_editor.BeginFrame();
+        STR_Engine::Get().m_editor.Update(s);
 
-        STR_Engine::Get().m_renderer.BeginFrame();
-        STR_Engine::Get().m_renderer.SetPipeline(*pipeline);
+        renderer.BeginFrame();
 
-        STR_Engine::Get().m_renderer.SetVertexUniforms(0, &matrixUniform, sizeof(matrixUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(1, &vertexUniform, sizeof(vertexUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(2, &lightsUniform, sizeof(lightsUniform));
-        STR_Engine::Get().m_renderer.SetVertexUniforms(3, &materialUnifrom, sizeof(materialUnifrom));
+        s.Draw(renderer);
 
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(0, &vertexUniform, sizeof(vertexUniform));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(1, &lightsUniform, sizeof(lightsUniform));
-        STR_Engine::Get().m_renderer.SetFragmentUniforms(2, &materialUnifrom, sizeof(materialUnifrom));
+        STR_Engine::Get().m_renderer.EndRenderPass();
+        STR_Engine::Get().m_editor.Draw(renderer);
 
-        STR_Engine::Get().m_renderer.SetFragmentTexture(0, *texture);
-        model->Draw(STR_Engine::Get().m_renderer);
+        renderer.EndFrame();
 
-        STR_Engine::Get().m_renderer.EndFrame();
+        STR_Engine::Get().m_input.SetMouseRelative(0.0f, 0.0f);
     }
 
     STR_Engine::Get().Shutdown();

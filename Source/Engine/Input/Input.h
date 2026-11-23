@@ -1,7 +1,8 @@
 #pragma once
-#include <Math/Structs.h>
+#include "Math/Structs.h"
 #include <cstdint>
 #include <vector>
+#include <SDL3/SDL_video.h>
 
 
 namespace STR_FALL
@@ -19,6 +20,12 @@ namespace STR_FALL
 
 		glm::vec2 m_mousePos = glm::vec2();
         glm::vec2 m_mousePrevPos = m_mousePos;
+
+        float mouseXRelative = 0.0f;
+        float mouseYRelative = 0.0f;
+
+        bool m_mouseLocked = false;
+
 	public:
 		enum MouseButton
 		{
@@ -31,8 +38,31 @@ namespace STR_FALL
 
 		void Update();
 
-        bool LockHideMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, true); }
-        bool UnlockShowMouse(SDL_Window* window) { return SDL_SetWindowRelativeMouseMode(window, false); }
+        bool IsMouseLocked() { return m_mouseLocked; }
+
+        bool LockHideMouse(SDL_Window* window)
+        {
+            if (SDL_SetWindowRelativeMouseMode(window, true))
+            {
+                m_mouseLocked = true;
+                ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+                return true;
+            }
+            return false;
+        }
+        bool UnlockShowMouse(SDL_Window* window)
+        {
+            if (SDL_SetWindowRelativeMouseMode(window, false))
+            {
+                m_mouseLocked = false;
+                ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+                return true;
+            }
+            return false;
+        }
+
+        void SetMouseRelative(float x, float y) { mouseXRelative = x; mouseYRelative = y; }
+        glm::vec2 GetMouseRelative() { return glm::vec2(mouseXRelative, mouseYRelative); }
 
 		bool GetKeyDown(int key) const { return m_keyStates.at(key); }
 		bool GetKeyPrevDown(int key) const { return m_prevKeyStates.at(key); }

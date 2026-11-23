@@ -2,13 +2,14 @@
 #include <memory>
 #include <string>
 #include <Serialization/Json.h>
+#include <Editor/Editor.h>
 
 
-#define CLASS_PROTOTYPE(classname) virtual std::unique_ptr<Object> Clone() const { return std::make_unique<classname>(*this); }
+#define CLASS_PROTOTYPE(classname) virtual std::unique_ptr<Object> Clone() const { return std::make_unique<classname>(*this); } virtual const char* GetClassName() const { return #classname; }
 
 namespace STR_FALL
 {
-	class Object
+	class Object : public IGUI
 	{
 	public:
 		bool m_active = true;
@@ -23,6 +24,11 @@ namespace STR_FALL
 		{
 			JSON_READ(value, m_name);
 			JSON_READ(value, m_active);
+		}
+
+		void UpdateGui() override
+		{
+			ImGui::Text("%s", m_name.c_str());
 		}
 	};
 }

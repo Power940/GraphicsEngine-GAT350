@@ -14,16 +14,19 @@ namespace STR_FALL
     public:
         ~Pipeline();
 
-        bool Create(
-            const Shader& vertexShader,
-            const Shader& fragmentShader,
-            SDL_GPUDevice* gpuDevice,
-            SDL_Window* window);
+        bool Create(const Shader& vertexShader, const Shader& fragmentShader, SDL_GPUDevice* gpuDevice, SDL_Window* window);
+        bool Recreate(const Shader& vertexShader, const Shader& fragmentShader, SDL_Window* window);
 
         void AddVertexBuffer(uint32_t pitch);
         void AddVertexAttribute(uint32_t location, SDL_GPUVertexElementFormat format, uint32_t offset);
 
         friend class Renderer;
+
+        void UpdateGui()
+        {
+            std::string nameString = "Name: " + m_name;
+            ImGui::Text(nameString.c_str());
+        }
 
     private:
         SDL_GPUDevice* m_GPUDevice = nullptr;

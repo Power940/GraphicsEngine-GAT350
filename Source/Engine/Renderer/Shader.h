@@ -10,9 +10,16 @@ namespace STR_FALL
 	public:
 		virtual ~Shader();
 
-		bool Load(const std::string& filename, class Renderer& renderer, uint32_t uniformCount = 0, uint32_t samplerCount = 0);
+		bool Load(const std::string& filename, const class Renderer& renderer);
+		bool Reload();
 
 		friend class Pipeline;
+
+		void UpdateGui()
+		{
+			std::string nameString = "Name: " + m_name;
+			ImGui::Text(nameString.c_str());
+		}
 
 	private:
 		SDL_GPUShader* m_GPUShader = nullptr;

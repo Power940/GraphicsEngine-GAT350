@@ -12,6 +12,7 @@
 #include <Core/Factory.h>
 #include <Renderer/Renderer.h>
 #include <utility>
+#include <Components/RendererComponent.h>
 
 
 namespace STR_FALL
@@ -22,7 +23,7 @@ namespace STR_FALL
 	{ friend Scene;
 
 	public:
-		std::unordered_set<std::string> m_tags;
+		std::vector<std::string> m_tags;
 		Transform3D m_transform = Transform3D();
 		std::vector<std::unique_ptr<Component>> m_components;
 		Scene* m_scene = nullptr;
@@ -45,16 +46,7 @@ namespace STR_FALL
 
 		virtual void Start();
 		virtual void Update(float dt);
-		virtual void Draw(Renderer& r)
-		{
-			for (std::unique_ptr<Component>& component : m_components)
-			{
-				if (!component->m_active)
-				{
-					continue;
-				}
-			}
-		}
+		virtual void Draw(Renderer& r);
 		virtual void OnCollision(GameObject* other) {}
 		virtual void OnDestroy();
 
@@ -82,11 +74,11 @@ namespace STR_FALL
 		}
 		void SetTransformRotation(const glm::vec3& rot)
 		{
-			m_transform.m_rot = rot;
+			m_transform.SetRotation(rot);
 		}
-		void IncrementTransformRotation(const glm::vec3& rot)
+		void SetTransformRotation(const glm::quat& rot)
 		{
-			m_transform.m_rot += rot;
+			m_transform.SetRotation(rot);
 		}
 
 		template<std::derived_from<Component> T>
@@ -125,10 +117,47 @@ namespace STR_FALL
 					auto component = Factory::Instance().Create<Component>(m_typeName);
 					if (component)
 					{
+						component->m_owner = this;
 						component->Read(componentValue);
 						AddComponent(std::move(component));
 					}
 				}
+			}
+		}
+
+		void UpdateGui() override
+		{
+			ImGui::Checkbox("##active", &m_active);
+			ImGui::SameLine();
+			Object::UpdateGui();
+
+			ImGui::Text("Tags: ");
+			for (const std::string& tag : m_tags)
+			{
+				std::string tagString = "- " + tag + "\n";
+				ImGui::Text(tagString.c_str());
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_CollapsingHeader))
+			{
+				m_transform.UpdateGui();
+			}
+
+			for (auto& component : m_components)
+			{
+				ImGui::PushID(component.get());
+				ImGui::Separator();
+
+				if (ImGui::Checkbox("##active", &component->m_active));
+				ImGui::SameLine();
+
+				if (ImGui::CollapsingHeader(component->GetClassName(), ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					component->UpdateGui();
+				}
+				ImGui::PopID();
 			}
 		}
 	};

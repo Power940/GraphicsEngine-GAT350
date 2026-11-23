@@ -1,0 +1,338 @@
+{
+  "GameObjects": [
+    {
+      "COMMENT": "camera setup"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "camera",
+      "m_prototype": false,
+      "m_tags": [
+        "camera"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "CameraComponent",
+          "m_fov": 80,
+          "m_nearPlane": 0.001,
+          "m_farPlane": 2000
+        },
+        {
+          "m_active": true,
+          "m_typeName": "CameraControllerComponent",
+          "m_sensitivity": 0.01,
+          "m_speed": 5
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "light setup"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "light1",
+      "m_prototype": false,
+      "m_tags": [
+        "light"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        -1.0472,
+        0.523599,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "LightComponent",
+          "m_lightTypeName": "directional",
+          "m_color": [ 0.235294118, 0.0784313725, 1.0, 0.2 ]
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "GameObject setup"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "test",
+      "m_prototype": false,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/Marth.obj",
+          "m_materials": [ "materials/MarthClothesArmor.instance.json", "materials/MarthSkinHair.instance.json" ]
+        }
+      ]
+    },
+
+
+
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "ground",
+      "m_prototype": false,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        100,
+        1,
+        100,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/plane.obj",
+          "m_materials": [ "materials/ground.instance.json" ]
+        }
+      ]
+    },
+
+
+
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "protoMoon",
+      "m_prototype": true,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        5,
+        5,
+        5,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/moon.glb",
+          "m_materials": [ "materials/moon.instance.json" ]
+        }
+      ]
+    },
+
+
+
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "skybox",
+      "m_prototype": false,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        100,
+        100,
+        100,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/Space.gltf",
+          "m_materials": [ "materials/space.instance.json" ]
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "Pagoda by Poly by Google [CC-BY] via Poly Pizza"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "shrine",
+      "m_prototype": false,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        21.0969,
+        0,
+        34.3211,
+        1.5,
+        1.5,
+        1.5,
+        0,
+        0.645772,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/Shrine.obj"
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "Fox by Poly by Google [CC-BY] via Poly Pizza"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "protoFox",
+      "m_prototype": true,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        0.1,
+        0.1,
+        0.1,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/Fox.obj",
+          "m_materials": [ "materials/fox.instance.json" ]
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "Tree by Marc Solà [CC-BY] via Poly Pizza"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "protoTree",
+      "m_prototype": true,
+      "m_tags": [
+        "object",
+        "tree"
+      ],
+      "m_transform": [
+        0,
+        3.7,
+        0,
+        3,
+        3,
+        3,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/Tree.obj"
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "Vine Covered Tree by Zacharylll [CC-BY] via Poly Pizza"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "protoVineTree",
+      "m_prototype": true,
+      "m_tags": [
+        "object",
+        "tree"
+      ],
+      "m_transform": [
+        0,
+        2.6,
+        0,
+        5,
+        5,
+        5,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/VineTree.obj"
+        }
+      ]
+    }
+  ]
+}

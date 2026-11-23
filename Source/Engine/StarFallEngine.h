@@ -12,6 +12,8 @@
 #include "Core/StringUtils.h"
 #include "Core/Factory.h"
 #include "Serialization/Json.h"
+#include "Editor/Editor.h"
+#include <Editor/Editor.h>
 
 
 namespace STR_FALL
@@ -20,10 +22,10 @@ namespace STR_FALL
 	{
 	public:
 		static STR_Engine& Get() { static STR_Engine engine; return engine; }
-
 		inline static Renderer m_renderer;
 		inline static Input m_input;
 		inline static Time m_time;
+		inline static Editor m_editor;
 
 		int Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT);
 		void Shutdown();

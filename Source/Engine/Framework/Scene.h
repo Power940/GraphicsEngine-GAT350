@@ -5,16 +5,20 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <ranges>
+#include <Editor/Editor.h>
+#include <algorithm>
 
 
 namespace STR_FALL
 {
-	class Scene
+	class Scene : public IGUI
 	{
 	private:
 		std::vector<std::unique_ptr<GameObject>> m_objects = {};
 		std::vector<std::unique_ptr<GameObject>> m_pendingObjects = {};
 		bool m_safeToAddObject = true;
+		glm::vec3 m_ambient = glm::vec3(0.2f);
 
 	public:
 		void AddObject(std::unique_ptr<GameObject> object)
@@ -24,7 +28,11 @@ namespace STR_FALL
 			if (m_safeToAddObject) { m_objects.push_back(std::move(object)); m_objects.back()->Start(); }
 			else { m_pendingObjects.push_back(std::move(object)); }
 		}
+
+		inline const auto& GetObjects() const { return m_objects; }
+
 		inline Object* GetObjectIndex(const int element) const { return m_objects[element].get(); }
+
 		template<typename T> inline T* GetObjectName(const std::string& name)
 		{
 			for (auto& object : m_objects)
@@ -35,12 +43,27 @@ namespace STR_FALL
 			return nullptr;
 		}
 
+		template<typename T> inline std::vector<T*> GetObjectsTag(const std::string& name)
+		{
+			std::vector<T*> result;
+			for (auto& object : m_objects)
+			{
+				T* objectT = dynamic_cast<T*>(object.get());
+				if (objectT != nullptr && std::find(objectT->m_tags.begin(), objectT->m_tags.end(), name) != objectT->m_tags.end()) { result.push_back(objectT); }
+			}
+			return result;
+		}
+
+		inline std::vector<GameObject*> GetObjectPtrs()
+		{
+			auto view = m_objects | std::views::transform([](const auto& ptr) { return ptr.get(); });
+			return { view.begin(), view.end() };
+		}
+
 		bool Load(std::string filePath);
 
 		void Update(float dt);
 		void Draw(Renderer& r);
-
-		void UpdateCollisions();
 
 		void RemoveAllObjects(bool ignorePersistant = false)
 		{
@@ -55,5 +78,7 @@ namespace STR_FALL
 				std::erase_if(m_pendingObjects, [](auto& object) { return object->m_persistent; });
 			}
 		}
+
+		void UpdateGui() override;
 	};
 }

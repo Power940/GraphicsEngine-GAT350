@@ -21,13 +21,16 @@
   <ItemGroup>
     <FxCompile Include="Gouraud.frag.hlsl" />
     <FxCompile Include="Gouraud.vert.hlsl" />
+    <FxCompile Include="MultiPhong.frag.hlsl" />
     <FxCompile Include="Phong.frag.hlsl" />
     <FxCompile Include="Phong.vert.hlsl" />
+    <FxCompile Include="PhongNormal.frag.hlsl" />
     <FxCompile Include="Unlit.frag.hlsl" />
     <FxCompile Include="Unlit.vert.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Lighting.hlsli" />
+    <None Include="Uniforms.hlsli" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
