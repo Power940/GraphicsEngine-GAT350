@@ -1,0 +1,109 @@
+{
+  "GameObjects": [
+    {
+      "COMMENT": "camera setup"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "camera",
+      "m_prototype": false,
+      "m_tags": [
+        "camera"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "CameraComponent",
+          "m_fov": 80,
+          "m_nearPlane": 0.001,
+          "m_farPlane": 2000
+        },
+        {
+          "m_active": true,
+          "m_typeName": "CameraControllerComponent",
+          "m_sensitivity": 0.01,
+          "m_speed": 5
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "light setup"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "light1",
+      "m_prototype": false,
+      "m_tags": [
+        "light"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        -1.0472,
+        0.523599,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "LightComponent",
+          "m_lightTypeName": "directional",
+          "m_color": [ 0.235294118, 0.0784313725, 1.0, 0.2 ]
+        }
+      ]
+    },
+
+
+
+    {
+      "COMMENT": "GameObject setup"
+    },
+    {
+      "m_active": true,
+      "m_typeName": "GameObject",
+      "m_name": "test",
+      "m_prototype": false,
+      "m_tags": [
+        "object"
+      ],
+      "m_transform": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_active": true,
+          "m_typeName": "ModelComponent",
+          "m_modelName": "models/flight-helmet/flighthelmet.gltf"
+        }
+      ]
+    }
+  ]
+}

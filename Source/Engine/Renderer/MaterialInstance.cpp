@@ -87,9 +87,12 @@ namespace STR_FALL
 		// empty slots fall back to a default texture so the shader can always sample
 		std::vector<SDL_GPUTextureSamplerBinding> bindings;
 		bindings.reserve(m_textures.size());
-		for (const auto& texture : m_textures)
+
+		for (size_t i = 0; i < m_textures.size(); i++)
 		{
-			const Texture& source = texture ? *texture : *m_material->GetDefaultTexture();
+			const auto& texture = m_textures[i];
+			const Texture& source = texture ? *texture : *m_material->GetDefaultTextureAt(i);
+
 			bindings.push_back({ source.GetGPUTexture(), source.GetGPUSampler() });
 		}
 

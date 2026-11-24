@@ -14,7 +14,7 @@ struct Material
     float shininess;
     
     float3 emissiveColor;
-    float padding1;
+    float normalStrength;
     
     float2 tiling;
     float2 offset;

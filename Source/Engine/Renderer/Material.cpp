@@ -37,12 +37,27 @@ namespace STR_FALL
 		JSON_READ_NAME(document, "textures", m_textureSlots);
 
 		
-		m_defaultTexture = ResourceManager::ResManager().Get<Texture>("textures/basic/white.png", renderer);
-		if (!m_defaultTexture)
+		for (const auto& textureSlot : m_textureSlots)
 		{
-			std::cerr << "Could not load default texture for Material: " << filename << std::endl;
-			return false;
+			res_t<Texture> texture;
+			if (textureSlot == "normal_map")
+			{
+				texture = ResourceManager::ResManager().Get<Texture>("textures/basic/normal.png", renderer);
+			}
+			else
+			{
+				texture = ResourceManager::ResManager().Get<Texture>("textures/basic/white.png", renderer);
+			}
+
+			if (!texture)
+			{
+				std::cerr << "Could not load default texture for Material: " << filename << std::endl;
+				return false;
+			}
+
+			m_defaultTextures.push_back(texture);
 		}
+
 
 		// shaders
 		std::string vertexShaderName;

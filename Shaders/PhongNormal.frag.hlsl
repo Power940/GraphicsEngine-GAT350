@@ -55,11 +55,12 @@ Output main(Input input)
     float specularMask = specular_texture.Sample(specular_sampler, input.texcoord).r;
     float3 emissive = emissive_texture.Sample(emissive_sampler, input.texcoord).rgb * material.emissiveColor;
     float3 normal = normal_texture.Sample(normal_sampler, input.texcoord).rgb * 2.0 - 1.0;
+    normal.xy *= material.normalStrength;
     
     float3 T = normalize(input.tangent - input.normal * dot(input.tangent, input.normal));
     float3 B = cross(input.normal, T);
     float3x3 TBN = float3x3(T, B, input.normal);
-    input.normal = normalize(mul(normal, TBN));
+    input.normal = mul(normalize(normal), TBN);
     
     float3 V = normalize(frame.cameraPosition - input.worldPos);
     float3 diffuse = lights.ambient;

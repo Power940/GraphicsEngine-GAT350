@@ -10,6 +10,9 @@
     <Filter Include="Materials">
       <UniqueIdentifier>{910ed1bf-3312-4e8f-b5eb-7b96dc2b5360}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Skyboxes">
+      <UniqueIdentifier>{5a9ddbed-442d-46f6-890f-cc31722d1141}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Build\Assets\scenes\scene.json">
@@ -53,6 +56,12 @@
     </None>
     <None Include="..\..\Build\Assets\materials\MarthSkinHair.instance.json">
       <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\textures\skybox\skybox.cubemap.json">
+      <Filter>Skyboxes</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\scenes\scene-helm.json">
+      <Filter>Scenes</Filter>
     </None>
   </ItemGroup>
 </Project>

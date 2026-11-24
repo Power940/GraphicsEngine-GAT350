@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="CubeMap.frag.hlsl" />
+    <FxCompile Include="SkyBox.vert.hlsl" />
     <FxCompile Include="Gouraud.frag.hlsl" />
     <FxCompile Include="Gouraud.vert.hlsl" />
     <FxCompile Include="MultiPhong.frag.hlsl" />

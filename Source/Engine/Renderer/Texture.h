@@ -10,10 +10,20 @@ namespace STR_FALL
 	class Texture : public Resource
 	{
 	public:
+		enum class TextureType
+		{
+			Texture2D,
+			Cube
+		};
+
 		~Texture();
 
 		bool Load(const std::string& filename, const class Renderer& renderer);
 
+		bool Load2D(const std::string& filename, const class Renderer& renderer);
+		bool LoadCubeMap(const std::string& filename, const Renderer& renderer);
+
+		TextureType GetType() const { return m_type; }
 		uint32_t GetWidth() const { return m_width; }
 		uint32_t GetHeight() const { return m_height; }
 
@@ -24,16 +34,16 @@ namespace STR_FALL
 
 		friend class Renderer;
 
-		void UpdateGui()
-		{
-			ImGui::Text("%d x %d", m_width, m_height);
-
-			float width = ImGui::GetContentRegionAvail().x * 0.8f;
-
-			ImGui::Image(m_GPUTexture, ImVec2(width, width * (static_cast<float>(m_height) / m_width)));
-		}
+		void UpdateGui() override;
 
 	private:
+		SDL_Surface* LoadSurface(const std::string& filename);
+		bool CreateGPUTexture(const SDL_GPUTextureCreateInfo& createInfo);
+		bool UploadTextureData(const std::vector<SDL_Surface*>& surfaces);
+		bool CreateSampler();
+
+		TextureType m_type{ TextureType::Texture2D };
+
 		uint32_t m_width = 0;
 		uint32_t m_height = 0;
 

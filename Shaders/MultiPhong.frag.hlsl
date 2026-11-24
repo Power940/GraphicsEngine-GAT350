@@ -21,7 +21,7 @@ cbuffer LightUniforms : register(LIGHT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Lights lights;
 }
-cbuffer MatrerialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
+cbuffer MaterialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
     Material material;
 }

@@ -15,7 +15,7 @@ namespace STR_FALL
 		float shininess = 32.0f;
 
 		glm::vec3 emissiveColor = glm::vec3(0.0f);
-		float padding1;
+		float normalStrength = 1.0f;
 
 		glm::vec2 tiling = glm::vec2(1.0f);
 		glm::vec2 offset = glm::vec2(0.0f);
@@ -42,7 +42,8 @@ namespace STR_FALL
 		int GetTextureSlot(const std::string& name) const;
 
 		const Pipeline& GetPipeline() const { return m_pipeline; }
-		const res_t<Texture>& GetDefaultTexture() const { return m_defaultTexture; }
+		const std::vector<res_t<Texture>>& GetDefaultTextures() const { return m_defaultTextures; }
+		const res_t<Texture>& GetDefaultTextureAt(size_t slot) const { return m_defaultTextures.at(slot); }
 
 		bool RecreatePipeline(SDL_Window* window);
 
@@ -75,11 +76,6 @@ namespace STR_FALL
 			{
 				m_defaults.UpdateGui();
 			}
-
-			if (ImGui::CollapsingHeader("Default Texture", ImGuiTreeNodeFlags_CollapsingHeader))
-			{
-				m_defaultTexture->UpdateGui();
-			}
 		}
 
 	private:
@@ -89,6 +85,6 @@ namespace STR_FALL
 
 		MaterialData m_defaults;
 		std::vector<std::string> m_textureSlots;
-		res_t<Texture> m_defaultTexture;
+		std::vector<res_t<Texture>> m_defaultTextures;
 	};
 }

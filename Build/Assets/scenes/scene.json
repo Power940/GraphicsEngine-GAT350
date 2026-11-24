@@ -101,7 +101,7 @@
         {
           "m_active": true,
           "m_typeName": "ModelComponent",
-          "m_modelName": "models/Marth.obj",
+          "m_modelName": "models/marth.obj",
           "m_materials": [ "materials/MarthClothesArmor.instance.json", "materials/MarthSkinHair.instance.json" ]
         }
       ]
