@@ -25,15 +25,15 @@ int main()
     SeedRandom();
     STR_Engine::Get().m_input.LockHideMouse(renderer.GetWindow());
 
-    //RunBatch(
-    //    SOLUTION_DIR "Tools\\compile_shaders.bat",
-    //    { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
-    //    true
-    //);
+    RunBatch(
+        SOLUTION_DIR "Tools\\compile_shaders.bat",
+        { SOLUTION_DIR "Shaders", SOLUTION_DIR "Build\\Assets\\shaders" },
+        true
+    );
     
     
     Scene s;
-    s.Load("scenes/scene-helm.json");
+    s.Load("scenes/scene-sky.json");
 
     //for (int i = 0; i < 20; i++)
     //{

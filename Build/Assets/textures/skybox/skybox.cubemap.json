@@ -1,10 +1,10 @@
 {
-  "faces": {
-    "right": "skybox/right.png",
-    "left": "skybox/left.png",
-    "top": "skybox/top.png",
-    "bottom": "skybox/bottom.png",
-    "front": "skybox/front.png",
-    "back": "skybox/back.png"
-  }
+  "faces": [
+    "textures/skybox/right.png",
+    "textures/skybox/left.png",
+    "textures/skybox/top.png",
+    "textures/skybox/bottom.png",
+    "textures/skybox/front.png",
+    "textures/skybox/back.png"
+  ]
 }

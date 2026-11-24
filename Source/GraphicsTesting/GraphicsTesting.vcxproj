@@ -207,9 +207,12 @@
     <None Include="..\..\Build\Assets\materials\Ogre.instance.json" />
     <None Include="..\..\Build\Assets\materials\phong.material.json" />
     <None Include="..\..\Build\Assets\materials\PhongNormal.material.json" />
+    <None Include="..\..\Build\Assets\materials\SkyBox.instance.json" />
+    <None Include="..\..\Build\Assets\materials\SkyBox.material.json" />
     <None Include="..\..\Build\Assets\materials\space.instance.json" />
     <None Include="..\..\Build\Assets\materials\unlit.material.json" />
     <None Include="..\..\Build\Assets\scenes\scene-helm.json" />
+    <None Include="..\..\Build\Assets\scenes\scene-sky.json" />
     <None Include="..\..\Build\Assets\scenes\scene.json" />
     <None Include="..\..\Build\Assets\textures\skybox\skybox.cubemap.json" />
   </ItemGroup>

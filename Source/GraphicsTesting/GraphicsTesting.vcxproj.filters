@@ -63,5 +63,14 @@
     <None Include="..\..\Build\Assets\scenes\scene-helm.json">
       <Filter>Scenes</Filter>
     </None>
+    <None Include="..\..\Build\Assets\materials\SkyBox.instance.json">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\materials\SkyBox.material.json">
+      <Filter>Materials</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\scenes\scene-sky.json">
+      <Filter>Scenes</Filter>
+    </None>
   </ItemGroup>
 </Project>

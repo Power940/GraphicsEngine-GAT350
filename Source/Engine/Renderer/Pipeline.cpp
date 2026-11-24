@@ -32,11 +32,11 @@ namespace STR_FALL
 			.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST,
 			.rasterizer_state = SDL_GPURasterizerState{
 				.fill_mode = SDL_GPU_FILLMODE_FILL,
-				.cull_mode = SDL_GPU_CULLMODE_BACK,
+				.cull_mode = SDL_GPU_CULLMODE_FRONT, //CHANGE BACK : SDL_GPU_CULLMODE_BACK
 				.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE
 			},
 			.depth_stencil_state = SDL_GPUDepthStencilState{
-				.compare_op = SDL_GPU_COMPAREOP_LESS,
+				.compare_op = SDL_GPU_COMPAREOP_LESS_OR_EQUAL, //CHANGE BACK : SDL_GPU_COMPAREOP_LESS
 				.enable_depth_test = true,
 				.enable_depth_write = true
 			},
